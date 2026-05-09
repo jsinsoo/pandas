@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas OOP 주제별 예제 코드 50개</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic",Arial,sans-serif;background:linear-gradient(135deg,#eff6ff,#ecfdf5,#f5f3ff);color:#172033;line-height:1.7}
+header{padding:30px 6vw;background:linear-gradient(120deg,#0f766e,#2563eb,#7c3aed);color:white;border-bottom-left-radius:34px;border-bottom-right-radius:34px}
+header h1{margin:0;font-size:34px}
+nav{position:sticky;top:0;background:white;padding:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;box-shadow:0 4px 12px #0001;z-index:10}
+nav a{text-decoration:none;background:#0f766e;color:white;border-radius:999px;padding:6px 11px;font-weight:bold}
+main{max-width:1200px;margin:auto;padding:24px}
+.card{background:white;border:2px solid #bbf7d0;border-radius:24px;padding:22px;margin:24px 0;box-shadow:0 8px 22px #0f766e18}
+h2{color:#0f766e} h3{color:#2563eb}
+pre{background:#052e2b;color:#ccfbf1;padding:16px;border-radius:16px;overflow:auto;border:4px solid #5eead4}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+th,td{border:1px solid #bbf7d0;padding:9px;vertical-align:top}
+th{background:#0f766e;color:white}
+td:nth-child(2){background:#f0fdf4;width:46%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+button{border:0;border-radius:14px;background:#0f766e;color:white;font-weight:800;padding:11px 16px;margin:8px 4px;cursor:pointer}
+button:hover{background:#0d9488}
+.solution{display:none;background:#f0fdf4;border-left:6px solid #10b981;border-radius:14px;padding:14px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.info{background:white;border-radius:20px;padding:20px;margin:20px 0;border:2px solid #bfdbfe}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 Pandas OOP 주제별 예제 코드 50개</h1>
+<p>50문항 모두 서로 다른 주제와 서로 다른 Pandas OOP 코드로 구성했습니다.</p>
+</header>
+<nav><a href="#q1">1</a><a href="#q2">2</a><a href="#q3">3</a><a href="#q4">4</a><a href="#q5">5</a><a href="#q6">6</a><a href="#q7">7</a><a href="#q8">8</a><a href="#q9">9</a><a href="#q10">10</a><a href="#q11">11</a><a href="#q12">12</a><a href="#q13">13</a><a href="#q14">14</a><a href="#q15">15</a><a href="#q16">16</a><a href="#q17">17</a><a href="#q18">18</a><a href="#q19">19</a><a href="#q20">20</a><a href="#q21">21</a><a href="#q22">22</a><a href="#q23">23</a><a href="#q24">24</a><a href="#q25">25</a><a href="#q26">26</a><a href="#q27">27</a><a href="#q28">28</a><a href="#q29">29</a><a href="#q30">30</a><a href="#q31">31</a><a href="#q32">32</a><a href="#q33">33</a><a href="#q34">34</a><a href="#q35">35</a><a href="#q36">36</a><a href="#q37">37</a><a href="#q38">38</a><a href="#q39">39</a><a href="#q40">40</a><a href="#q41">41</a><a href="#q42">42</a><a href="#q43">43</a><a href="#q44">44</a><a href="#q45">45</a><a href="#q46">46</a><a href="#q47">47</a><a href="#q48">48</a><a href="#q49">49</a><a href="#q50">50</a><a href="#submit">채점</a></nav>
+<main>
+<section class="info">
+<h2>🎯 학습 목표</h2>
+<p>Pandas의 데이터 생성, 탐색, 전처리, 집계, 결합, 변형, 시계열, 파일 입출력, 프로젝트 분석을 객체지향 구조로 구현합니다.</p>
+</section>
+
+<section class="card" id="q1">
+<h2>01. 성적 평균 계산 클래스</h2>
+<pre><code>import pandas as pd
+
+class ScoreAverage:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})
+
+    def run(self):
+        return round(self.df[&quot;점수&quot;].mean(), 1)
+
+app = ScoreAverage()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ScoreAverage:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return round(self.df[&quot;점수&quot;].mean(), 1)</code></td><td>평균을 계산합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = ScoreAverage()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a1" rows="2"></textarea>
+<button onclick="toggle('s1')">상세풀이 보기</button>
+<div class="solution" id="s1">
+<b>정답:</b> <code>84.3</code>
+<p>이 코드는 <b>성적 평균 계산 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q2">
+<h2>02. 최고점 찾기 클래스</h2>
+<pre><code>import pandas as pd
+
+class TopScoreFinder:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 95, 78]})
+
+    def run(self):
+        row = self.df.loc[self.df[&quot;점수&quot;].idxmax()]
+        return row[&quot;학생&quot;]
+
+app = TopScoreFinder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class TopScoreFinder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 95, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        row = self.df.loc[self.df[&quot;점수&quot;].idxmax()]</code></td><td>최댓값이 있는 위치를 찾습니다.</td></tr><tr><td>9</td><td><code>        return row[&quot;학생&quot;]</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = TopScoreFinder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a2" rows="2"></textarea>
+<button onclick="toggle('s2')">상세풀이 보기</button>
+<div class="solution" id="s2">
+<b>정답:</b> <code>지아</code>
+<p>이 코드는 <b>최고점 찾기 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q3">
+<h2>03. 최저점 찾기 클래스</h2>
+<pre><code>import pandas as pd
+
+class LowScoreFinder:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})
+
+    def run(self):
+        return self.df.loc[self.df[&quot;점수&quot;].idxmin(), &quot;학생&quot;]
+
+app = LowScoreFinder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class LowScoreFinder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.loc[self.df[&quot;점수&quot;].idxmin(), &quot;학생&quot;]</code></td><td>최솟값이 있는 위치를 찾습니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = LowScoreFinder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a3" rows="2"></textarea>
+<button onclick="toggle('s3')">상세풀이 보기</button>
+<div class="solution" id="s3">
+<b>정답:</b> <code>하준</code>
+<p>이 코드는 <b>최저점 찾기 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q4">
+<h2>04. 합격 여부 판단 클래스</h2>
+<pre><code>import pandas as pd
+
+class PassChecker:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 55, 78]})
+
+    def run(self):
+        self.df[&quot;결과&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;합격&quot; if x &gt;= 60 else &quot;불합격&quot;)
+        return self.df[&quot;결과&quot;].tolist()
+
+app = PassChecker()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class PassChecker:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 55, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;결과&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;합격&quot; if x &gt;= 60 else &quot;불합격&quot;)</code></td><td>각 값에 함수를 적용합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;결과&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = PassChecker()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a4" rows="2"></textarea>
+<button onclick="toggle('s4')">상세풀이 보기</button>
+<div class="solution" id="s4">
+<b>정답:</b> <code>[&#x27;합격&#x27;, &#x27;불합격&#x27;, &#x27;합격&#x27;]</code>
+<p>이 코드는 <b>합격 여부 판단 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q5">
+<h2>05. 등급 부여 클래스</h2>
+<pre><code>import pandas as pd
+
+class GradeMaker:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [92, 84, 73]})
+
+    def run(self):
+        self.df[&quot;등급&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;A&quot; if x &gt;= 90 else &quot;B&quot; if x &gt;= 80 else &quot;C&quot;)
+        return self.df[&quot;등급&quot;].tolist()
+
+app = GradeMaker()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class GradeMaker:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [92, 84, 73]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;등급&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;A&quot; if x &gt;= 90 else &quot;B&quot; if x &gt;= 80 else &quot;C&quot;)</code></td><td>각 값에 함수를 적용합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;등급&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = GradeMaker()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a5" rows="2"></textarea>
+<button onclick="toggle('s5')">상세풀이 보기</button>
+<div class="solution" id="s5">
+<b>정답:</b> <code>[&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;]</code>
+<p>이 코드는 <b>등급 부여 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q6">
+<h2>06. 학생 수 계산 클래스</h2>
+<pre><code>import pandas as pd
+
+class StudentCounter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;]})
+
+    def run(self):
+        return len(self.df)
+
+app = StudentCounter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class StudentCounter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return len(self.df)</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = StudentCounter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a6" rows="2"></textarea>
+<button onclick="toggle('s6')">상세풀이 보기</button>
+<div class="solution" id="s6">
+<b>정답:</b> <code>4</code>
+<p>이 코드는 <b>학생 수 계산 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q7">
+<h2>07. 점수 합계 클래스</h2>
+<pre><code>import pandas as pd
+
+class ScoreSum:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;점수&quot;: [90, 85, 78]})
+
+    def run(self):
+        return self.df[&quot;점수&quot;].sum()
+
+app = ScoreSum()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ScoreSum:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;점수&quot;: [90, 85, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df[&quot;점수&quot;].sum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = ScoreSum()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a7" rows="2"></textarea>
+<button onclick="toggle('s7')">상세풀이 보기</button>
+<div class="solution" id="s7">
+<b>정답:</b> <code>253</code>
+<p>이 코드는 <b>점수 합계 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q8">
+<h2>08. DataFrame 생성 클래스</h2>
+<pre><code>import pandas as pd
+
+class FrameBuilder:
+    def __init__(self):
+        self.names = [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;]
+        self.prices = [500, 1500, 700]
+
+    def run(self):
+        df = pd.DataFrame({&quot;상품&quot;: self.names, &quot;가격&quot;: self.prices})
+        return list(df.columns)
+
+app = FrameBuilder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class FrameBuilder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.names = [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>6</td><td><code>        self.prices = [500, 1500, 700]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        df = pd.DataFrame({&quot;상품&quot;: self.names, &quot;가격&quot;: self.prices})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>10</td><td><code>        return list(df.columns)</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = FrameBuilder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a8" rows="2"></textarea>
+<button onclick="toggle('s8')">상세풀이 보기</button>
+<div class="solution" id="s8">
+<b>정답:</b> <code>[&#x27;상품&#x27;, &#x27;가격&#x27;]</code>
+<p>이 코드는 <b>DataFrame 생성 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q9">
+<h2>09. 열 추가 클래스</h2>
+<pre><code>import pandas as pd
+
+class ColumnAdder:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;], &quot;가격&quot;: [500, 1500], &quot;수량&quot;: [10, 3]})
+
+    def run(self):
+        self.df[&quot;총액&quot;] = self.df[&quot;가격&quot;] * self.df[&quot;수량&quot;]
+        return self.df[&quot;총액&quot;].tolist()
+
+app = ColumnAdder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ColumnAdder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;], &quot;가격&quot;: [500, 1500], &quot;수량&quot;: [10, 3]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;총액&quot;] = self.df[&quot;가격&quot;] * self.df[&quot;수량&quot;]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;총액&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = ColumnAdder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a9" rows="2"></textarea>
+<button onclick="toggle('s9')">상세풀이 보기</button>
+<div class="solution" id="s9">
+<b>정답:</b> <code>[5000, 4500]</code>
+<p>이 코드는 <b>열 추가 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q10">
+<h2>10. 열 선택 클래스</h2>
+<pre><code>import pandas as pd
+
+class ColumnSelector:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;], &quot;국어&quot;: [90, 85], &quot;수학&quot;: [88, 95]})
+
+    def run(self):
+        return self.df[&quot;수학&quot;].tolist()
+
+app = ColumnSelector()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ColumnSelector:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;], &quot;국어&quot;: [90, 85], &quot;수학&quot;: [88, 95]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df[&quot;수학&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = ColumnSelector()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a10" rows="2"></textarea>
+<button onclick="toggle('s10')">상세풀이 보기</button>
+<div class="solution" id="s10">
+<b>정답:</b> <code>[88, 95]</code>
+<p>이 코드는 <b>열 선택 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q11">
+<h2>11. 조건 필터링 클래스</h2>
+<pre><code>import pandas as pd
+
+class FilterHighScore:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})
+
+    def run(self):
+        result = self.df[self.df[&quot;점수&quot;] &gt;= 85]
+        return result[&quot;이름&quot;].tolist()
+
+app = FilterHighScore()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class FilterHighScore:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        result = self.df[self.df[&quot;점수&quot;] &gt;= 85]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        return result[&quot;이름&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = FilterHighScore()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a11" rows="2"></textarea>
+<button onclick="toggle('s11')">상세풀이 보기</button>
+<div class="solution" id="s11">
+<b>정답:</b> <code>[&#x27;민수&#x27;, &#x27;지아&#x27;]</code>
+<p>이 코드는 <b>조건 필터링 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q12">
+<h2>12. 정렬 클래스</h2>
+<pre><code>import pandas as pd
+
+class SortBySales:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;익산&quot;], &quot;매출&quot;: [120, 90, 150]})
+
+    def run(self):
+        sorted_df = self.df.sort_values(&quot;매출&quot;, ascending=False)
+        return sorted_df[&quot;지역&quot;].tolist()
+
+app = SortBySales()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class SortBySales:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;익산&quot;], &quot;매출&quot;: [120, 90, 150]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        sorted_df = self.df.sort_values(&quot;매출&quot;, ascending=False)</code></td><td>지정한 열을 기준으로 정렬합니다.</td></tr><tr><td>9</td><td><code>        return sorted_df[&quot;지역&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = SortBySales()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a12" rows="2"></textarea>
+<button onclick="toggle('s12')">상세풀이 보기</button>
+<div class="solution" id="s12">
+<b>정답:</b> <code>[&#x27;익산&#x27;, &#x27;전주&#x27;, &#x27;군산&#x27;]</code>
+<p>이 코드는 <b>정렬 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q13">
+<h2>13. 인덱스 설정 클래스</h2>
+<pre><code>import pandas as pd
+
+class IndexSetter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;학번&quot;: [101, 102], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]})
+
+    def run(self):
+        result = self.df.set_index(&quot;학번&quot;)
+        return result.loc[102, &quot;이름&quot;]
+
+app = IndexSetter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class IndexSetter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;학번&quot;: [101, 102], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        result = self.df.set_index(&quot;학번&quot;)</code></td><td>특정 열을 인덱스로 설정합니다.</td></tr><tr><td>9</td><td><code>        return result.loc[102, &quot;이름&quot;]</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = IndexSetter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a13" rows="2"></textarea>
+<button onclick="toggle('s13')">상세풀이 보기</button>
+<div class="solution" id="s13">
+<b>정답:</b> <code>지아</code>
+<p>이 코드는 <b>인덱스 설정 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q14">
+<h2>14. loc 조회 클래스</h2>
+<pre><code>import pandas as pd
+
+class LocFinder:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;], &quot;점수&quot;: [90, 85]}, index=[&quot;A01&quot;, &quot;A02&quot;])
+
+    def run(self):
+        return self.df.loc[&quot;A02&quot;, &quot;점수&quot;]
+
+app = LocFinder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class LocFinder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;], &quot;점수&quot;: [90, 85]}, index=[&quot;A01&quot;, &quot;A02&quot;])</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.loc[&quot;A02&quot;, &quot;점수&quot;]</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = LocFinder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a14" rows="2"></textarea>
+<button onclick="toggle('s14')">상세풀이 보기</button>
+<div class="solution" id="s14">
+<b>정답:</b> <code>85</code>
+<p>이 코드는 <b>loc 조회 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q15">
+<h2>15. iloc 조회 클래스</h2>
+<pre><code>import pandas as pd
+
+class IlocFinder:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})
+
+    def run(self):
+        return self.df.iloc[2, 0]
+
+app = IlocFinder()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class IlocFinder:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, 85, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.iloc[2, 0]</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = IlocFinder()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a15" rows="2"></textarea>
+<button onclick="toggle('s15')">상세풀이 보기</button>
+<div class="solution" id="s15">
+<b>정답:</b> <code>하준</code>
+<p>이 코드는 <b>iloc 조회 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q16">
+<h2>16. 결측치 확인 클래스</h2>
+<pre><code>import pandas as pd
+
+class MissingCounter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, None, 78]})
+
+    def run(self):
+        return int(self.df[&quot;점수&quot;].isna().sum())
+
+app = MissingCounter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MissingCounter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;점수&quot;: [90, None, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return int(self.df[&quot;점수&quot;].isna().sum())</code></td><td>합계를 계산합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = MissingCounter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a16" rows="2"></textarea>
+<button onclick="toggle('s16')">상세풀이 보기</button>
+<div class="solution" id="s16">
+<b>정답:</b> <code>1</code>
+<p>이 코드는 <b>결측치 확인 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q17">
+<h2>17. 결측치 채우기 클래스</h2>
+<pre><code>import pandas as pd
+
+class MissingFiller:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;점수&quot;: [90, None, 78]})
+
+    def run(self):
+        self.df[&quot;점수&quot;] = self.df[&quot;점수&quot;].fillna(self.df[&quot;점수&quot;].mean())
+        return self.df[&quot;점수&quot;].tolist()
+
+app = MissingFiller()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MissingFiller:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;점수&quot;: [90, None, 78]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;점수&quot;] = self.df[&quot;점수&quot;].fillna(self.df[&quot;점수&quot;].mean())</code></td><td>평균을 계산합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;점수&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = MissingFiller()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a17" rows="2"></textarea>
+<button onclick="toggle('s17')">상세풀이 보기</button>
+<div class="solution" id="s17">
+<b>정답:</b> <code>[90.0, 84.0, 78.0]</code>
+<p>이 코드는 <b>결측치 채우기 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q18">
+<h2>18. 중복 제거 클래스</h2>
+<pre><code>import pandas as pd
+
+class DuplicateCleaner:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;], &quot;점수&quot;: [90, 90, 85]})
+
+    def run(self):
+        clean = self.df.drop_duplicates()
+        return clean[&quot;이름&quot;].tolist()
+
+app = DuplicateCleaner()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class DuplicateCleaner:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;], &quot;점수&quot;: [90, 90, 85]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        clean = self.df.drop_duplicates()</code></td><td>중복 행을 제거합니다.</td></tr><tr><td>9</td><td><code>        return clean[&quot;이름&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = DuplicateCleaner()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a18" rows="2"></textarea>
+<button onclick="toggle('s18')">상세풀이 보기</button>
+<div class="solution" id="s18">
+<b>정답:</b> <code>[&#x27;민수&#x27;, &#x27;지아&#x27;]</code>
+<p>이 코드는 <b>중복 제거 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q19">
+<h2>19. 문자열 공백 제거 클래스</h2>
+<pre><code>import pandas as pd
+
+class TextStripper:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;서울 &quot;, &quot; 부산&quot;, &quot;대구 &quot;]})
+
+    def run(self):
+        self.df[&quot;지역&quot;] = self.df[&quot;지역&quot;].str.strip()
+        return self.df[&quot;지역&quot;].tolist()
+
+app = TextStripper()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class TextStripper:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;서울 &quot;, &quot; 부산&quot;, &quot;대구 &quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;지역&quot;] = self.df[&quot;지역&quot;].str.strip()</code></td><td>문자열 양쪽 공백을 제거합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;지역&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = TextStripper()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a19" rows="2"></textarea>
+<button onclick="toggle('s19')">상세풀이 보기</button>
+<div class="solution" id="s19">
+<b>정답:</b> <code>[&#x27;서울&#x27;, &#x27;부산&#x27;, &#x27;대구&#x27;]</code>
+<p>이 코드는 <b>문자열 공백 제거 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q20">
+<h2>20. 자료형 변환 클래스</h2>
+<pre><code>import pandas as pd
+
+class TypeConverter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;점수&quot;: [&quot;90&quot;, &quot;80&quot;, &quot;70&quot;]})
+
+    def run(self):
+        self.df[&quot;점수&quot;] = self.df[&quot;점수&quot;].astype(int)
+        return int(self.df[&quot;점수&quot;].sum())
+
+app = TypeConverter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class TypeConverter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;점수&quot;: [&quot;90&quot;, &quot;80&quot;, &quot;70&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;점수&quot;] = self.df[&quot;점수&quot;].astype(int)</code></td><td>자료형을 변환합니다.</td></tr><tr><td>9</td><td><code>        return int(self.df[&quot;점수&quot;].sum())</code></td><td>합계를 계산합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = TypeConverter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a20" rows="2"></textarea>
+<button onclick="toggle('s20')">상세풀이 보기</button>
+<div class="solution" id="s20">
+<b>정답:</b> <code>240</code>
+<p>이 코드는 <b>자료형 변환 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q21">
+<h2>21. 날짜 변환 클래스</h2>
+<pre><code>import pandas as pd
+
+class DateConverter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;]})
+
+    def run(self):
+        self.df[&quot;날짜&quot;] = pd.to_datetime(self.df[&quot;날짜&quot;])
+        return self.df[&quot;날짜&quot;].dt.day.tolist()
+
+app = DateConverter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class DateConverter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;날짜&quot;] = pd.to_datetime(self.df[&quot;날짜&quot;])</code></td><td>문자열 날짜를 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;날짜&quot;].dt.day.tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = DateConverter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a21" rows="2"></textarea>
+<button onclick="toggle('s21')">상세풀이 보기</button>
+<div class="solution" id="s21">
+<b>정답:</b> <code>[1, 2]</code>
+<p>이 코드는 <b>날짜 변환 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q22">
+<h2>22. 월별 매출 분석 클래스</h2>
+<pre><code>import pandas as pd
+
+class MonthlySales:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;월&quot;: [&quot;1월&quot;, &quot;1월&quot;, &quot;2월&quot;], &quot;매출&quot;: [100, 150, 200]})
+
+    def run(self):
+        return self.df.groupby(&quot;월&quot;)[&quot;매출&quot;].sum().to_dict()
+
+app = MonthlySales()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MonthlySales:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;월&quot;: [&quot;1월&quot;, &quot;1월&quot;, &quot;2월&quot;], &quot;매출&quot;: [100, 150, 200]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.groupby(&quot;월&quot;)[&quot;매출&quot;].sum().to_dict()</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = MonthlySales()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a22" rows="2"></textarea>
+<button onclick="toggle('s22')">상세풀이 보기</button>
+<div class="solution" id="s22">
+<b>정답:</b> <code>{&#x27;1월&#x27;: 250, &#x27;2월&#x27;: 200}</code>
+<p>이 코드는 <b>월별 매출 분석 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q23">
+<h2>23. 지역별 매출 합계 클래스</h2>
+<pre><code>import pandas as pd
+
+class RegionSales:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;전주&quot;], &quot;매출&quot;: [100, 80, 150]})
+
+    def run(self):
+        return self.df.groupby(&quot;지역&quot;)[&quot;매출&quot;].sum().to_dict()
+
+app = RegionSales()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class RegionSales:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;전주&quot;], &quot;매출&quot;: [100, 80, 150]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.groupby(&quot;지역&quot;)[&quot;매출&quot;].sum().to_dict()</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = RegionSales()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a23" rows="2"></textarea>
+<button onclick="toggle('s23')">상세풀이 보기</button>
+<div class="solution" id="s23">
+<b>정답:</b> <code>{&#x27;군산&#x27;: 80, &#x27;전주&#x27;: 250}</code>
+<p>이 코드는 <b>지역별 매출 합계 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q24">
+<h2>24. 반별 평균 클래스</h2>
+<pre><code>import pandas as pd
+
+class ClassAverage:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;], &quot;점수&quot;: [90, 80, 70]})
+
+    def run(self):
+        return self.df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean().to_dict()
+
+app = ClassAverage()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ClassAverage:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;], &quot;점수&quot;: [90, 80, 70]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean().to_dict()</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = ClassAverage()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a24" rows="2"></textarea>
+<button onclick="toggle('s24')">상세풀이 보기</button>
+<div class="solution" id="s24">
+<b>정답:</b> <code>{&#x27;A&#x27;: 85.0, &#x27;B&#x27;: 70.0}</code>
+<p>이 코드는 <b>반별 평균 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q25">
+<h2>25. 그룹 개수 계산 클래스</h2>
+<pre><code>import pandas as pd
+
+class GroupCounter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;]})
+
+    def run(self):
+        return self.df.groupby(&quot;반&quot;)[&quot;이름&quot;].count().to_dict()
+
+app = GroupCounter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class GroupCounter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df.groupby(&quot;반&quot;)[&quot;이름&quot;].count().to_dict()</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = GroupCounter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a25" rows="2"></textarea>
+<button onclick="toggle('s25')">상세풀이 보기</button>
+<div class="solution" id="s25">
+<b>정답:</b> <code>{&#x27;A&#x27;: 2, &#x27;B&#x27;: 3}</code>
+<p>이 코드는 <b>그룹 개수 계산 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q26">
+<h2>26. agg 통계 클래스</h2>
+<pre><code>import pandas as pd
+
+class AggStats:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;], &quot;점수&quot;: [90, 80, 70, 85]})
+
+    def run(self):
+        result = self.df.groupby(&quot;반&quot;)[&quot;점수&quot;].agg([&quot;mean&quot;, &quot;max&quot;])
+        return list(result.columns)
+
+app = AggStats()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class AggStats:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;], &quot;점수&quot;: [90, 80, 70, 85]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        result = self.df.groupby(&quot;반&quot;)[&quot;점수&quot;].agg([&quot;mean&quot;, &quot;max&quot;])</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>        return list(result.columns)</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = AggStats()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a26" rows="2"></textarea>
+<button onclick="toggle('s26')">상세풀이 보기</button>
+<div class="solution" id="s26">
+<b>정답:</b> <code>[&#x27;mean&#x27;, &#x27;max&#x27;]</code>
+<p>이 코드는 <b>agg 통계 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q27">
+<h2>27. pivot_table 클래스</h2>
+<pre><code>import pandas as pd
+
+class PivotTableMaker:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;], &quot;제품&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;], &quot;매출&quot;: [100, 150, 80]})
+
+    def run(self):
+        table = pd.pivot_table(self.df, values=&quot;매출&quot;, index=&quot;지역&quot;, columns=&quot;제품&quot;, aggfunc=&quot;sum&quot;, fill_value=0)
+        return int(table.loc[&quot;전주&quot;, &quot;B&quot;])
+
+app = PivotTableMaker()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class PivotTableMaker:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;], &quot;제품&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;], &quot;매출&quot;: [100, 150, 80]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        table = pd.pivot_table(self.df, values=&quot;매출&quot;, index=&quot;지역&quot;, columns=&quot;제품&quot;, aggfunc=&quot;sum&quot;, fill_value=0)</code></td><td>교차 집계표를 만듭니다.</td></tr><tr><td>9</td><td><code>        return int(table.loc[&quot;전주&quot;, &quot;B&quot;])</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = PivotTableMaker()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a27" rows="2"></textarea>
+<button onclick="toggle('s27')">상세풀이 보기</button>
+<div class="solution" id="s27">
+<b>정답:</b> <code>150</code>
+<p>이 코드는 <b>pivot_table 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q28">
+<h2>28. crosstab 클래스</h2>
+<pre><code>import pandas as pd
+
+class CrossTabMaker:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;성별&quot;: [&quot;남&quot;, &quot;여&quot;, &quot;남&quot;], &quot;선호&quot;: [&quot;정보&quot;, &quot;수학&quot;, &quot;정보&quot;]})
+
+    def run(self):
+        table = pd.crosstab(self.df[&quot;성별&quot;], self.df[&quot;선호&quot;])
+        return int(table.loc[&quot;남&quot;, &quot;정보&quot;])
+
+app = CrossTabMaker()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class CrossTabMaker:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;성별&quot;: [&quot;남&quot;, &quot;여&quot;, &quot;남&quot;], &quot;선호&quot;: [&quot;정보&quot;, &quot;수학&quot;, &quot;정보&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        table = pd.crosstab(self.df[&quot;성별&quot;], self.df[&quot;선호&quot;])</code></td><td>교차 빈도표를 만듭니다.</td></tr><tr><td>9</td><td><code>        return int(table.loc[&quot;남&quot;, &quot;정보&quot;])</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = CrossTabMaker()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a28" rows="2"></textarea>
+<button onclick="toggle('s28')">상세풀이 보기</button>
+<div class="solution" id="s28">
+<b>정답:</b> <code>2</code>
+<p>이 코드는 <b>crosstab 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q29">
+<h2>29. merge 결합 클래스</h2>
+<pre><code>import pandas as pd
+
+class MergeJoiner:
+    def __init__(self):
+        self.students = pd.DataFrame({&quot;학번&quot;: [1, 2], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]})
+        self.scores = pd.DataFrame({&quot;학번&quot;: [1, 2], &quot;점수&quot;: [90, 85]})
+
+    def run(self):
+        result = pd.merge(self.students, self.scores, on=&quot;학번&quot;)
+        return result.loc[1, &quot;점수&quot;]
+
+app = MergeJoiner()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MergeJoiner:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.students = pd.DataFrame({&quot;학번&quot;: [1, 2], &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>        self.scores = pd.DataFrame({&quot;학번&quot;: [1, 2], &quot;점수&quot;: [90, 85]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        result = pd.merge(self.students, self.scores, on=&quot;학번&quot;)</code></td><td>공통 열을 기준으로 두 DataFrame을 결합합니다.</td></tr><tr><td>10</td><td><code>        return result.loc[1, &quot;점수&quot;]</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = MergeJoiner()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a29" rows="2"></textarea>
+<button onclick="toggle('s29')">상세풀이 보기</button>
+<div class="solution" id="s29">
+<b>정답:</b> <code>85</code>
+<p>이 코드는 <b>merge 결합 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q30">
+<h2>30. concat 결합 클래스</h2>
+<pre><code>import pandas as pd
+
+class ConcatJoiner:
+    def __init__(self):
+        self.a = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;], &quot;이름&quot;: [&quot;민수&quot;]})
+        self.b = pd.DataFrame({&quot;반&quot;: [&quot;B&quot;], &quot;이름&quot;: [&quot;지아&quot;]})
+
+    def run(self):
+        result = pd.concat([self.a, self.b], ignore_index=True)
+        return result[&quot;반&quot;].tolist()
+
+app = ConcatJoiner()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ConcatJoiner:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.a = pd.DataFrame({&quot;반&quot;: [&quot;A&quot;], &quot;이름&quot;: [&quot;민수&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>        self.b = pd.DataFrame({&quot;반&quot;: [&quot;B&quot;], &quot;이름&quot;: [&quot;지아&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        result = pd.concat([self.a, self.b], ignore_index=True)</code></td><td>DataFrame을 이어 붙입니다.</td></tr><tr><td>10</td><td><code>        return result[&quot;반&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = ConcatJoiner()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a30" rows="2"></textarea>
+<button onclick="toggle('s30')">상세풀이 보기</button>
+<div class="solution" id="s30">
+<b>정답:</b> <code>[&#x27;A&#x27;, &#x27;B&#x27;]</code>
+<p>이 코드는 <b>concat 결합 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q31">
+<h2>31. join 결합 클래스</h2>
+<pre><code>import pandas as pd
+
+class IndexJoiner:
+    def __init__(self):
+        self.left = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]}, index=[101, 102])
+        self.right = pd.DataFrame({&quot;점수&quot;: [90, 85]}, index=[101, 102])
+
+    def run(self):
+        result = self.left.join(self.right)
+        return result.loc[101, &quot;점수&quot;]
+
+app = IndexJoiner()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class IndexJoiner:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.left = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;]}, index=[101, 102])</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>        self.right = pd.DataFrame({&quot;점수&quot;: [90, 85]}, index=[101, 102])</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        result = self.left.join(self.right)</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>10</td><td><code>        return result.loc[101, &quot;점수&quot;]</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = IndexJoiner()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a31" rows="2"></textarea>
+<button onclick="toggle('s31')">상세풀이 보기</button>
+<div class="solution" id="s31">
+<b>정답:</b> <code>90</code>
+<p>이 코드는 <b>join 결합 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q32">
+<h2>32. melt 변형 클래스</h2>
+<pre><code>import pandas as pd
+
+class MeltTransformer:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;], &quot;국어&quot;: [90], &quot;수학&quot;: [88]})
+
+    def run(self):
+        long_df = pd.melt(self.df, id_vars=&quot;이름&quot;, var_name=&quot;과목&quot;, value_name=&quot;점수&quot;)
+        return long_df[&quot;과목&quot;].tolist()
+
+app = MeltTransformer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MeltTransformer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;], &quot;국어&quot;: [90], &quot;수학&quot;: [88]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        long_df = pd.melt(self.df, id_vars=&quot;이름&quot;, var_name=&quot;과목&quot;, value_name=&quot;점수&quot;)</code></td><td>넓은 표를 긴 형태로 변환합니다.</td></tr><tr><td>9</td><td><code>        return long_df[&quot;과목&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = MeltTransformer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a32" rows="2"></textarea>
+<button onclick="toggle('s32')">상세풀이 보기</button>
+<div class="solution" id="s32">
+<b>정답:</b> <code>[&#x27;국어&#x27;, &#x27;수학&#x27;]</code>
+<p>이 코드는 <b>melt 변형 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q33">
+<h2>33. pivot 변형 클래스</h2>
+<pre><code>import pandas as pd
+
+class PivotTransformer:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;], &quot;과목&quot;: [&quot;국어&quot;, &quot;수학&quot;], &quot;점수&quot;: [90, 88]})
+
+    def run(self):
+        wide = self.df.pivot(index=&quot;이름&quot;, columns=&quot;과목&quot;, values=&quot;점수&quot;)
+        return int(wide.loc[&quot;민수&quot;, &quot;수학&quot;])
+
+app = PivotTransformer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class PivotTransformer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;], &quot;과목&quot;: [&quot;국어&quot;, &quot;수학&quot;], &quot;점수&quot;: [90, 88]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        wide = self.df.pivot(index=&quot;이름&quot;, columns=&quot;과목&quot;, values=&quot;점수&quot;)</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        return int(wide.loc[&quot;민수&quot;, &quot;수학&quot;])</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = PivotTransformer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a33" rows="2"></textarea>
+<button onclick="toggle('s33')">상세풀이 보기</button>
+<div class="solution" id="s33">
+<b>정답:</b> <code>88</code>
+<p>이 코드는 <b>pivot 변형 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q34">
+<h2>34. stack 변형 클래스</h2>
+<pre><code>import pandas as pd
+
+class StackTransformer:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;국어&quot;: [90], &quot;수학&quot;: [88]}, index=[&quot;민수&quot;])
+
+    def run(self):
+        stacked = self.df.stack()
+        return int(stacked.loc[(&quot;민수&quot;, &quot;국어&quot;)])
+
+app = StackTransformer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class StackTransformer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;국어&quot;: [90], &quot;수학&quot;: [88]}, index=[&quot;민수&quot;])</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        stacked = self.df.stack()</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        return int(stacked.loc[(&quot;민수&quot;, &quot;국어&quot;)])</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = StackTransformer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a34" rows="2"></textarea>
+<button onclick="toggle('s34')">상세풀이 보기</button>
+<div class="solution" id="s34">
+<b>정답:</b> <code>90</code>
+<p>이 코드는 <b>stack 변형 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q35">
+<h2>35. unstack 변형 클래스</h2>
+<pre><code>import pandas as pd
+
+class UnstackTransformer:
+    def __init__(self):
+        index = pd.MultiIndex.from_tuples([(&quot;민수&quot;, &quot;국어&quot;), (&quot;민수&quot;, &quot;수학&quot;)])
+        self.s = pd.Series([90, 88], index=index)
+
+    def run(self):
+        wide = self.s.unstack()
+        return int(wide.loc[&quot;민수&quot;, &quot;수학&quot;])
+
+app = UnstackTransformer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class UnstackTransformer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        index = pd.MultiIndex.from_tuples([(&quot;민수&quot;, &quot;국어&quot;), (&quot;민수&quot;, &quot;수학&quot;)])</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>6</td><td><code>        self.s = pd.Series([90, 88], index=index)</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        wide = self.s.unstack()</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>10</td><td><code>        return int(wide.loc[&quot;민수&quot;, &quot;수학&quot;])</code></td><td>라벨 기반으로 값을 선택합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = UnstackTransformer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a35" rows="2"></textarea>
+<button onclick="toggle('s35')">상세풀이 보기</button>
+<div class="solution" id="s35">
+<b>정답:</b> <code>88</code>
+<p>이 코드는 <b>unstack 변형 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q36">
+<h2>36. apply 등급 클래스</h2>
+<pre><code>import pandas as pd
+
+class ApplyGrade:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;점수&quot;: [95, 82, 70]})
+
+    def run(self):
+        self.df[&quot;등급&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;)
+        return self.df[&quot;등급&quot;].tolist()
+
+app = ApplyGrade()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ApplyGrade:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;점수&quot;: [95, 82, 70]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;등급&quot;] = self.df[&quot;점수&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;)</code></td><td>각 값에 함수를 적용합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;등급&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = ApplyGrade()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a36" rows="2"></textarea>
+<button onclick="toggle('s36')">상세풀이 보기</button>
+<div class="solution" id="s36">
+<b>정답:</b> <code>[&#x27;우수&#x27;, &#x27;보통&#x27;, &#x27;보통&#x27;]</code>
+<p>이 코드는 <b>apply 등급 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q37">
+<h2>37. map 변환 클래스</h2>
+<pre><code>import pandas as pd
+
+class MapConverter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;코드&quot;: [&quot;M&quot;, &quot;F&quot;, &quot;M&quot;]})
+
+    def run(self):
+        self.df[&quot;성별&quot;] = self.df[&quot;코드&quot;].map({&quot;M&quot;: &quot;남&quot;, &quot;F&quot;: &quot;여&quot;})
+        return self.df[&quot;성별&quot;].tolist()
+
+app = MapConverter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MapConverter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;코드&quot;: [&quot;M&quot;, &quot;F&quot;, &quot;M&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;성별&quot;] = self.df[&quot;코드&quot;].map({&quot;M&quot;: &quot;남&quot;, &quot;F&quot;: &quot;여&quot;})</code></td><td>값을 다른 값으로 매핑합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;성별&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = MapConverter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a37" rows="2"></textarea>
+<button onclick="toggle('s37')">상세풀이 보기</button>
+<div class="solution" id="s37">
+<b>정답:</b> <code>[&#x27;남&#x27;, &#x27;여&#x27;, &#x27;남&#x27;]</code>
+<p>이 코드는 <b>map 변환 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q38">
+<h2>38. pipe 처리 클래스</h2>
+<pre><code>import pandas as pd
+
+class PipeProcessor:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;국어&quot;: [90, 80], &quot;수학&quot;: [88, 92]})
+
+    def add_average(self, df):
+        df[&quot;평균&quot;] = df.mean(axis=1)
+        return df
+
+    def run(self):
+        result = self.df.pipe(self.add_average)
+        return result[&quot;평균&quot;].tolist()
+
+app = PipeProcessor()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class PipeProcessor:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;국어&quot;: [90, 80], &quot;수학&quot;: [88, 92]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def add_average(self, df):</code></td><td>주제에 맞는 Pandas OOP 코드를 구성하는 문장입니다.</td></tr><tr><td>8</td><td><code>        df[&quot;평균&quot;] = df.mean(axis=1)</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        return df</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>12</td><td><code>        result = self.df.pipe(self.add_average)</code></td><td>DataFrame을 함수에 전달하여 처리 흐름을 연결합니다.</td></tr><tr><td>13</td><td><code>        return result[&quot;평균&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>15</td><td><code>app = PipeProcessor()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>16</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a38" rows="2"></textarea>
+<button onclick="toggle('s38')">상세풀이 보기</button>
+<div class="solution" id="s38">
+<b>정답:</b> <code>[89.0, 86.0]</code>
+<p>이 코드는 <b>pipe 처리 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q39">
+<h2>39. method chaining 클래스</h2>
+<pre><code>import pandas as pd
+
+class ChainAnalyzer:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주 &quot;, &quot;전주&quot;, &quot;군산&quot;], &quot;매출&quot;: [100, 150, 80]})
+
+    def run(self):
+        result = self.df.assign(지역=self.df[&quot;지역&quot;].str.strip()).groupby(&quot;지역&quot;)[&quot;매출&quot;].sum()
+        return result.to_dict()
+
+app = ChainAnalyzer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class ChainAnalyzer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;지역&quot;: [&quot;전주 &quot;, &quot;전주&quot;, &quot;군산&quot;], &quot;매출&quot;: [100, 150, 80]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        result = self.df.assign(지역=self.df[&quot;지역&quot;].str.strip()).groupby(&quot;지역&quot;)[&quot;매출&quot;].sum()</code></td><td>기준 열로 데이터를 묶어 집계합니다.</td></tr><tr><td>9</td><td><code>        return result.to_dict()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = ChainAnalyzer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a39" rows="2"></textarea>
+<button onclick="toggle('s39')">상세풀이 보기</button>
+<div class="solution" id="s39">
+<b>정답:</b> <code>{&#x27;군산&#x27;: 80, &#x27;전주&#x27;: 250}</code>
+<p>이 코드는 <b>method chaining 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q40">
+<h2>40. category 변환 클래스</h2>
+<pre><code>import pandas as pd
+
+class CategoryConverter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;등급&quot;: [&quot;상&quot;, &quot;중&quot;, &quot;상&quot;, &quot;하&quot;]})
+
+    def run(self):
+        self.df[&quot;등급&quot;] = self.df[&quot;등급&quot;].astype(&quot;category&quot;)
+        return str(self.df[&quot;등급&quot;].dtype)
+
+app = CategoryConverter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class CategoryConverter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;등급&quot;: [&quot;상&quot;, &quot;중&quot;, &quot;상&quot;, &quot;하&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;등급&quot;] = self.df[&quot;등급&quot;].astype(&quot;category&quot;)</code></td><td>자료형을 변환합니다.</td></tr><tr><td>9</td><td><code>        return str(self.df[&quot;등급&quot;].dtype)</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = CategoryConverter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a40" rows="2"></textarea>
+<button onclick="toggle('s40')">상세풀이 보기</button>
+<div class="solution" id="s40">
+<b>정답:</b> <code>category</code>
+<p>이 코드는 <b>category 변환 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q41">
+<h2>41. 시계열 정렬 클래스</h2>
+<pre><code>import pandas as pd
+
+class TimeSorter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;날짜&quot;: [&quot;2026-01-03&quot;, &quot;2026-01-01&quot;], &quot;값&quot;: [30, 10]})
+
+    def run(self):
+        self.df[&quot;날짜&quot;] = pd.to_datetime(self.df[&quot;날짜&quot;])
+        return self.df.sort_values(&quot;날짜&quot;)[&quot;값&quot;].tolist()
+
+app = TimeSorter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class TimeSorter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;날짜&quot;: [&quot;2026-01-03&quot;, &quot;2026-01-01&quot;], &quot;값&quot;: [30, 10]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;날짜&quot;] = pd.to_datetime(self.df[&quot;날짜&quot;])</code></td><td>문자열 날짜를 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>        return self.df.sort_values(&quot;날짜&quot;)[&quot;값&quot;].tolist()</code></td><td>지정한 열을 기준으로 정렬합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = TimeSorter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a41" rows="2"></textarea>
+<button onclick="toggle('s41')">상세풀이 보기</button>
+<div class="solution" id="s41">
+<b>정답:</b> <code>[10, 30]</code>
+<p>이 코드는 <b>시계열 정렬 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q42">
+<h2>42. 누적합 클래스</h2>
+<pre><code>import pandas as pd
+
+class CumulativeSales:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;매출&quot;: [100, 150, 120]})
+
+    def run(self):
+        self.df[&quot;누적&quot;] = self.df[&quot;매출&quot;].cumsum()
+        return self.df[&quot;누적&quot;].tolist()
+
+app = CumulativeSales()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class CumulativeSales:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;매출&quot;: [100, 150, 120]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;누적&quot;] = self.df[&quot;매출&quot;].cumsum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>9</td><td><code>        return self.df[&quot;누적&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = CumulativeSales()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a42" rows="2"></textarea>
+<button onclick="toggle('s42')">상세풀이 보기</button>
+<div class="solution" id="s42">
+<b>정답:</b> <code>[100, 250, 370]</code>
+<p>이 코드는 <b>누적합 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q43">
+<h2>43. 이동평균 클래스</h2>
+<pre><code>import pandas as pd
+
+class RollingAverage:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;방문자&quot;: [10, 20, 30, 40]})
+
+    def run(self):
+        return self.df[&quot;방문자&quot;].rolling(window=2).mean().tolist()
+
+app = RollingAverage()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class RollingAverage:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;방문자&quot;: [10, 20, 30, 40]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        return self.df[&quot;방문자&quot;].rolling(window=2).mean().tolist()</code></td><td>평균을 계산합니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>10</td><td><code>app = RollingAverage()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>11</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a43" rows="2"></textarea>
+<button onclick="toggle('s43')">상세풀이 보기</button>
+<div class="solution" id="s43">
+<b>정답:</b> <code>[nan, 15.0, 25.0, 35.0]</code>
+<p>이 코드는 <b>이동평균 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q44">
+<h2>44. CSV 읽기 클래스</h2>
+<pre><code>import pandas as pd
+from io import StringIO
+
+class CsvReader:
+    def __init__(self):
+        self.text = &quot;이름,점수\n민수,90\n지아,85&quot;
+
+    def run(self):
+        df = pd.read_csv(StringIO(self.text))
+        return df[&quot;이름&quot;].tolist()
+
+app = CsvReader()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열을 파일처럼 읽기 위해 StringIO를 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>4</td><td><code>class CsvReader:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>5</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>6</td><td><code>        self.text = &quot;이름,점수\n민수,90\n지아,85&quot;</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>8</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>9</td><td><code>        df = pd.read_csv(StringIO(self.text))</code></td><td>CSV 데이터를 DataFrame으로 읽습니다.</td></tr><tr><td>10</td><td><code>        return df[&quot;이름&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = CsvReader()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a44" rows="2"></textarea>
+<button onclick="toggle('s44')">상세풀이 보기</button>
+<div class="solution" id="s44">
+<b>정답:</b> <code>[&#x27;민수&#x27;, &#x27;지아&#x27;]</code>
+<p>이 코드는 <b>CSV 읽기 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q45">
+<h2>45. JSON 읽기 클래스</h2>
+<pre><code>import pandas as pd
+
+class JsonReader:
+    def __init__(self):
+        self.text = &#x27;[{&quot;지역&quot;:&quot;전주&quot;,&quot;기온&quot;:25},{&quot;지역&quot;:&quot;군산&quot;,&quot;기온&quot;:24}]&#x27;
+
+    def run(self):
+        df = pd.read_json(self.text)
+        return df[&quot;기온&quot;].mean()
+
+app = JsonReader()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class JsonReader:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.text = &#x27;[{&quot;지역&quot;:&quot;전주&quot;,&quot;기온&quot;:25},{&quot;지역&quot;:&quot;군산&quot;,&quot;기온&quot;:24}]&#x27;</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        df = pd.read_json(self.text)</code></td><td>JSON 데이터를 DataFrame으로 읽습니다.</td></tr><tr><td>9</td><td><code>        return df[&quot;기온&quot;].mean()</code></td><td>평균을 계산합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = JsonReader()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a45" rows="2"></textarea>
+<button onclick="toggle('s45')">상세풀이 보기</button>
+<div class="solution" id="s45">
+<b>정답:</b> <code>24.5</code>
+<p>이 코드는 <b>JSON 읽기 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q46">
+<h2>46. CSV 저장 클래스</h2>
+<pre><code>import pandas as pd
+
+class CsvWriter:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;], &quot;점수&quot;: [90]})
+
+    def run(self):
+        csv_text = self.df.to_csv(index=False)
+        return csv_text.splitlines()[0]
+
+app = CsvWriter()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class CsvWriter:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;], &quot;점수&quot;: [90]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        csv_text = self.df.to_csv(index=False)</code></td><td>DataFrame을 CSV 문자열 또는 파일로 내보냅니다.</td></tr><tr><td>9</td><td><code>        return csv_text.splitlines()[0]</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = CsvWriter()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a46" rows="2"></textarea>
+<button onclick="toggle('s46')">상세풀이 보기</button>
+<div class="solution" id="s46">
+<b>정답:</b> <code>이름,점수</code>
+<p>이 코드는 <b>CSV 저장 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q47">
+<h2>47. 공공데이터 형태 클래스</h2>
+<pre><code>import pandas as pd
+
+class PublicDataAnalyzer:
+    def __init__(self):
+        self.data = [{&quot;지역&quot;: &quot;전주&quot;, &quot;pm10&quot;: 25}, {&quot;지역&quot;: &quot;군산&quot;, &quot;pm10&quot;: 85}]
+
+    def run(self):
+        df = pd.DataFrame(self.data)
+        return df[df[&quot;pm10&quot;] &gt;= 80][&quot;지역&quot;].tolist()
+
+app = PublicDataAnalyzer()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class PublicDataAnalyzer:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.data = [{&quot;지역&quot;: &quot;전주&quot;, &quot;pm10&quot;: 25}, {&quot;지역&quot;: &quot;군산&quot;, &quot;pm10&quot;: 85}]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        df = pd.DataFrame(self.data)</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>9</td><td><code>        return df[df[&quot;pm10&quot;] &gt;= 80][&quot;지역&quot;].tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = PublicDataAnalyzer()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a47" rows="2"></textarea>
+<button onclick="toggle('s47')">상세풀이 보기</button>
+<div class="solution" id="s47">
+<b>정답:</b> <code>[&#x27;군산&#x27;]</code>
+<p>이 코드는 <b>공공데이터 형태 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q48">
+<h2>48. 웹크롤링 결과 정리 클래스</h2>
+<pre><code>import pandas as pd
+
+class CrawlingCleaner:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;상품&quot;: [&quot;키보드&quot;, &quot;마우스&quot;], &quot;가격&quot;: [&quot;45,000원&quot;, &quot;25,000원&quot;]})
+
+    def run(self):
+        self.df[&quot;가격&quot;] = self.df[&quot;가격&quot;].str.replace(&quot;,&quot;, &quot;&quot;).str.replace(&quot;원&quot;, &quot;&quot;).astype(int)
+        return int(self.df[&quot;가격&quot;].mean())
+
+app = CrawlingCleaner()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class CrawlingCleaner:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;상품&quot;: [&quot;키보드&quot;, &quot;마우스&quot;], &quot;가격&quot;: [&quot;45,000원&quot;, &quot;25,000원&quot;]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;가격&quot;] = self.df[&quot;가격&quot;].str.replace(&quot;,&quot;, &quot;&quot;).str.replace(&quot;원&quot;, &quot;&quot;).astype(int)</code></td><td>자료형을 변환합니다.</td></tr><tr><td>9</td><td><code>        return int(self.df[&quot;가격&quot;].mean())</code></td><td>평균을 계산합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>11</td><td><code>app = CrawlingCleaner()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>12</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a48" rows="2"></textarea>
+<button onclick="toggle('s48')">상세풀이 보기</button>
+<div class="solution" id="s48">
+<b>정답:</b> <code>35000</code>
+<p>이 코드는 <b>웹크롤링 결과 정리 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q49">
+<h2>49. 머신러닝 전처리 클래스</h2>
+<pre><code>import pandas as pd
+
+class MLPreprocessor:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;공부시간&quot;: [1, 2, 3], &quot;복습&quot;: [0, 1, 1], &quot;합격&quot;: [0, 0, 1]})
+
+    def run(self):
+        X = self.df[[&quot;공부시간&quot;, &quot;복습&quot;]]
+        y = self.df[&quot;합격&quot;]
+        return X.shape, y.tolist()
+
+app = MLPreprocessor()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class MLPreprocessor:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;공부시간&quot;: [1, 2, 3], &quot;복습&quot;: [0, 1, 1], &quot;합격&quot;: [0, 0, 1]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        X = self.df[[&quot;공부시간&quot;, &quot;복습&quot;]]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        y = self.df[&quot;합격&quot;]</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>10</td><td><code>        return X.shape, y.tolist()</code></td><td>계산 결과를 메서드 밖으로 반환합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = MLPreprocessor()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a49" rows="2"></textarea>
+<button onclick="toggle('s49')">상세풀이 보기</button>
+<div class="solution" id="s49">
+<b>정답:</b> <code>((3, 2), [0, 0, 1])</code>
+<p>이 코드는 <b>머신러닝 전처리 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="q50">
+<h2>50. 종합 프로젝트 클래스</h2>
+<pre><code>import pandas as pd
+
+class FinalProject:
+    def __init__(self):
+        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;국어&quot;: [90, 85, 70], &quot;수학&quot;: [88, 95, 75]})
+
+    def run(self):
+        self.df[&quot;평균&quot;] = self.df[[&quot;국어&quot;, &quot;수학&quot;]].mean(axis=1)
+        self.df[&quot;등급&quot;] = self.df[&quot;평균&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;)
+        return self.df.sort_values(&quot;평균&quot;, ascending=False)[&quot;이름&quot;].tolist()
+
+app = FinalProject()
+print(app.run())</code></pre>
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>3</td><td><code>class FinalProject:</code></td><td>문제 주제에 맞는 객체지향 클래스를 정의합니다.</td></tr><tr><td>4</td><td><code>    def __init__(self):</code></td><td>객체가 생성될 때 필요한 데이터와 속성을 준비하는 생성자입니다.</td></tr><tr><td>5</td><td><code>        self.df = pd.DataFrame({&quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;], &quot;국어&quot;: [90, 85, 70], &quot;수학&quot;: [88, 95, 75]})</code></td><td>표 형태의 DataFrame을 만듭니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>7</td><td><code>    def run(self):</code></td><td>분석을 실행하고 결과를 반환하는 메서드입니다.</td></tr><tr><td>8</td><td><code>        self.df[&quot;평균&quot;] = self.df[[&quot;국어&quot;, &quot;수학&quot;]].mean(axis=1)</code></td><td>계산 결과나 데이터를 변수 또는 객체 속성에 저장합니다.</td></tr><tr><td>9</td><td><code>        self.df[&quot;등급&quot;] = self.df[&quot;평균&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;)</code></td><td>각 값에 함수를 적용합니다.</td></tr><tr><td>10</td><td><code>        return self.df.sort_values(&quot;평균&quot;, ascending=False)[&quot;이름&quot;].tolist()</code></td><td>지정한 열을 기준으로 정렬합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>가독성을 위한 빈 줄입니다.</td></tr><tr><td>12</td><td><code>app = FinalProject()</code></td><td>클래스를 이용해 객체를 생성합니다.</td></tr><tr><td>13</td><td><code>print(app.run())</code></td><td>결과를 화면에 출력합니다.</td></tr></table>
+<h3>✍️ 출력 결과 서술형</h3>
+<p>위 코드를 실행했을 때 출력되는 값을 정확히 쓰시오.</p>
+<textarea id="a50" rows="2"></textarea>
+<button onclick="toggle('s50')">상세풀이 보기</button>
+<div class="solution" id="s50">
+<b>정답:</b> <code>[&#x27;지아&#x27;, &#x27;민수&#x27;, &#x27;하준&#x27;]</code>
+<p>이 코드는 <b>종합 프로젝트 클래스</b> 주제에 맞게 클래스를 만들고, 객체의 <code>run()</code> 메서드에서 Pandas 분석 결과를 반환한 뒤 출력합니다.</p>
+</div>
+</section>
+
+<section class="card" id="submit">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button onclick="grade()">채점하기</button>
+<button onclick="downloadTxt()">TXT 다운로드</button>
+<div id="result" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_PandasOOP_점수_응시시각.txt</p>
+</section>
+</main>
+<script>
+const answers=["84.3", "지아", "하준", "['합격', '불합격', '합격']", "['A', 'B', 'C']", "4", "253", "['상품', '가격']", "[5000, 4500]", "[88, 95]", "['민수', '지아']", "['익산', '전주', '군산']", "지아", "85", "하준", "1", "[90.0, 84.0, 78.0]", "['민수', '지아']", "['서울', '부산', '대구']", "240", "[1, 2]", "{'1월': 250, '2월': 200}", "{'군산': 80, '전주': 250}", "{'A': 85.0, 'B': 70.0}", "{'A': 2, 'B': 3}", "['mean', 'max']", "150", "2", "85", "['A', 'B']", "90", "['국어', '수학']", "88", "90", "88", "['우수', '보통', '보통']", "['남', '여', '남']", "[89.0, 86.0]", "{'군산': 80, '전주': 250}", "category", "[10, 30]", "[100, 250, 370]", "[nan, 15.0, 25.0, 35.0]", "['민수', '지아']", "24.5", "이름,점수", "['군산']", "35000", "((3, 2), [0, 0, 1])", "['지아', '민수', '하준']"];
+let report='';
+function toggle(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').trim().replace(/\s+/g,' ');}
+function grade(){
+ let score=0, lines=['Pandas OOP 주제별 예제 50문항 평가 결과','================================'];
+ for(let i=1;i<=50;i++){
+   let v=norm(document.getElementById('a'+i).value);
+   let ok=v===answers[i-1];
+   if(ok) score++;
+   lines.push(i+'번: '+(ok?'정답':'오답')+' / 입력: '+(v||'미응답')+' / 정답: '+answers[i-1]);
+ }
+ let percent=Math.round(score/50*100);
+ lines.push('================================');
+ lines.push('총점: '+score+'/50 ('+percent+'점)');
+ lines.push('응시시각: '+new Date().toLocaleString('ko-KR'));
+ report=lines.join('\n');
+ document.getElementById('result').textContent=report;
+}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){
+ if(!report) grade();
+ let sid=safe(document.getElementById('studentId').value);
+ let name=safe(document.getElementById('studentName').value);
+ let m=(report.match(/\((\d+)점\)/)||[])[1]||'0';
+ let d=new Date();
+ let stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0');
+ let fn=sid+'_'+name+'_PandasOOP_'+m+'점_'+stamp+'.txt';
+ let blob=new Blob(['학번: '+sid+'\n이름: '+name+'\n\n'+report],{type:'text/plain;charset=utf-8'});
+ let a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
