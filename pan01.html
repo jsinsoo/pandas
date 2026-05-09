@@ -9,11 +9,11 @@
 body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#eff6ff,#ecfdf5,#f5f3ff);color:#172033;line-height:1.7}
 header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#0f766e,#2563eb,#7c3aed);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
 header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
-.wrap{display:grid;grid-template-columns:295px 1fr}
+.wrap{display:grid;grid-template-columns:300px 1fr}
 nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
 nav h2{font-size:18px;margin:0 0 14px;color:#bbf7d0}
-nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
-nav button:hover,nav button.active{background:#0f766e}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer;transition:.25s}
+nav button:hover,nav button.active{background:#0f766e;transform:translateX(4px)}
 main{padding:28px}
 .section{display:none}.section.active{display:block}
 .card{background:white;border:2px solid #bbf7d0;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(15,118,110,.10)}
@@ -23,12 +23,55 @@ code{font-family:Consolas,monospace}
 .level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#0f766e;color:white;font-weight:900;margin:4px}
 .goal,.question{border:1px solid #bbf7d0;border-radius:18px;padding:16px;margin:14px 0;background:white}
 table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbf7d0;padding:10px;vertical-align:top}th{background:#0f766e;color:white}td:nth-child(2){background:#f0fdf4;width:42%}
-textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
-label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#0f766e;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+textarea,input[type=text]{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+.action{border:0;border-radius:14px;padding:12px 17px;background:#0f766e;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0;transition:.25s}
+.action:hover{background:#0d9488;transform:translateY(-1px)}
+.secondary{background:#2563eb}
 .answer{display:none;background:#f0fdf4;border-left:5px solid #10b981;border-radius:12px;padding:12px;margin-top:10px}
 .result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
 .truthbox{background:#f8fafc;border:1px solid #bbf7d0;border-radius:14px;padding:12px;margin:10px 0}
 .truth{padding:5px 0}
+.choice-wrap{margin-top:10px}
+.choice{
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap:10px;
+    width:100%;
+    padding:11px 13px;
+    margin:8px 0;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .2s, border-color .2s, box-shadow .2s, transform .2s;
+}
+.choice:hover{
+    background:#ecfdf5;
+    border-color:#5eead4;
+    box-shadow:0 4px 12px rgba(15,118,110,.12);
+}
+.choice input{
+    margin-top:6px;
+    accent-color:#0f766e;
+    flex:0 0 auto;
+}
+.choice span{display:block;flex:1;text-align:left}
+.choice:has(input:checked){
+    background:#bbf7d0;
+    border-color:#0f766e;
+    box-shadow:0 6px 16px rgba(15,118,110,.20);
+    transform:translateX(3px);
+    font-weight:800;
+}
+@supports not selector(:has(*)) {
+    .choice input:checked + span {
+        background:#bbf7d0;
+        border-radius:10px;
+        padding:4px 8px;
+        font-weight:800;
+    }
+}
 @media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
 </style>
 </head>
@@ -91,8 +134,8 @@ print(&quot;Pandas 준비 완료&quot;)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>import pandas as pd는 Pandas를 pd라는 별칭으로 불러오는 코드이다.</p>
-<label><input type="radio" name="ox1" value="O"> O</label>
-<label><input type="radio" name="ox1" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox1" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox1" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
 <div class="answer" id="oa1">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -103,7 +146,7 @@ print(&quot;Pandas 준비 완료&quot;)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. Pandas는 표 형태 데이터를 다룰 때 자주 사용하는 라이브러리이다.</div><div class="truth">ㄴ. import pandas as pd는 Pandas를 pd라는 짧은 이름으로 불러온다.</div><div class="truth">ㄷ. print()는 화면에 문자열을 출력한다.</div><div class="truth">ㄹ. pip install pandas는 DataFrame의 열을 삭제하는 코드이다.</div><div class="truth">ㅁ. Pandas는 그래프만 그리고 표 데이터는 다룰 수 없다.</div></div>
-<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq1" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq1" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq1" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq1" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq1" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
 <div class="answer" id="ma1">
 <b>정답:</b> 1번<br>
@@ -139,8 +182,8 @@ print(scores.name)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>Series는 1차원 데이터 구조로 볼 수 있다.</p>
-<label><input type="radio" name="ox2" value="O"> O</label>
-<label><input type="radio" name="ox2" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox2" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox2" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
 <div class="answer" id="oa2">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -151,7 +194,7 @@ print(scores.name)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. Series는 한 열짜리 데이터와 비슷한 1차원 구조이다.</div><div class="truth">ㄴ. name=&#x27;점수&#x27;는 Series의 이름을 점수로 지정한다.</div><div class="truth">ㄷ. scores.name은 Series의 이름을 확인한다.</div><div class="truth">ㄹ. Series는 반드시 2차원 표만 만들 수 있다.</div><div class="truth">ㅁ. pd.Series()는 CSV 파일 저장 전용 함수이다.</div></div>
-<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq2" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq2" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq2" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq2" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq2" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
 <div class="answer" id="ma2">
 <b>정답:</b> 1번<br>
@@ -176,7 +219,7 @@ df = pd.DataFrame(data)
 print(list(df.columns))</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>data = {</code></td><td>DataFrame으로 바꿀 원본 데이터를 준비합니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;김&quot;, &quot;이&quot;, &quot;박&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>}</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df = pd.DataFrame(data)</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>9</td><td><code>print(list(df.columns))</code></td><td>DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>data = {</code></td><td>DataFrame으로 바꿀 원본 데이터를 준비합니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;김&quot;, &quot;이&quot;, &quot;박&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>}</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df = pd.DataFrame(data)</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>9</td><td><code>print(list(df.columns))</code></td><td>DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -192,8 +235,8 @@ print(list(df.columns))</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>DataFrame은 행과 열로 이루어진 2차원 표 형태 데이터 구조이다.</p>
-<label><input type="radio" name="ox3" value="O"> O</label>
-<label><input type="radio" name="ox3" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox3" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox3" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
 <div class="answer" id="oa3">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -204,7 +247,7 @@ print(list(df.columns))</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. DataFrame은 행과 열을 가진 표 형태 데이터 구조이다.</div><div class="truth">ㄴ. 딕셔너리의 키는 DataFrame의 열 이름이 될 수 있다.</div><div class="truth">ㄷ. list(df.columns)는 열 이름 목록을 확인한다.</div><div class="truth">ㄹ. DataFrame은 숫자 하나만 저장할 수 있다.</div><div class="truth">ㅁ. pd.DataFrame(data)는 데이터를 삭제한다.</div></div>
-<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq3" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq3" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq3" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq3" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq3" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
 <div class="answer" id="ma3">
 <b>정답:</b> 1번<br>
@@ -229,7 +272,7 @@ print(len(df))
 print(list(df.columns))</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;가격&quot;: [500, 1500, 700]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(len(df))</code></td><td>DataFrame의 행 개수를 계산합니다.</td></tr><tr><td>9</td><td><code>print(list(df.columns))</code></td><td>DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;가격&quot;: [500, 1500, 700]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(len(df))</code></td><td>DataFrame의 행 개수를 계산합니다.</td></tr><tr><td>9</td><td><code>print(list(df.columns))</code></td><td>DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -245,8 +288,8 @@ print(list(df.columns))</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>DataFrame에서 행은 하나의 관측값, 열은 변수나 속성을 의미한다.</p>
-<label><input type="radio" name="ox4" value="O"> O</label>
-<label><input type="radio" name="ox4" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox4" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox4" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
 <div class="answer" id="oa4">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -257,7 +300,7 @@ print(list(df.columns))</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. len(df)는 DataFrame의 행 개수를 확인할 수 있다.</div><div class="truth">ㄴ. df.columns는 열 이름을 확인할 수 있다.</div><div class="truth">ㄷ. 이 예제의 행 개수는 3이다.</div><div class="truth">ㄹ. 열은 항상 숫자만 저장할 수 있다.</div><div class="truth">ㅁ. 행과 열은 DataFrame에서 의미가 없다.</div></div>
-<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq4" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq4" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq4" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq4" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq4" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
 <div class="answer" id="ma4">
 <b>정답:</b> 1번<br>
@@ -281,7 +324,7 @@ df = pd.DataFrame({
 print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>}, index=[&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;])</code></td><td>데이터나 계산 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></td><td>인덱스 이름과 열 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>}, index=[&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;])</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></td><td>인덱스 이름과 열 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -297,8 +340,8 @@ print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>인덱스는 각 행을 구분하는 이름표 역할을 할 수 있다.</p>
-<label><input type="radio" name="ox5" value="O"> O</label>
-<label><input type="radio" name="ox5" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox5" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox5" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
 <div class="answer" id="oa5">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -309,7 +352,7 @@ print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. index를 직접 지정하면 행 이름표를 만들 수 있다.</div><div class="truth">ㄴ. loc는 인덱스 이름과 열 이름으로 값을 선택할 수 있다.</div><div class="truth">ㄷ. S02 행의 이름은 지아이다.</div><div class="truth">ㄹ. loc는 반드시 위치 번호만 사용한다.</div><div class="truth">ㅁ. 인덱스는 DataFrame에서 사용할 수 없다.</div></div>
-<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq5" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq5" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq5" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq5" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq5" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
 <div class="answer" id="ma5">
 <b>정답:</b> 1번<br>
@@ -335,7 +378,7 @@ df[&quot;평균&quot;] = (df[&quot;국어&quot;] + df[&quot;수학&quot;]) / 2
 print(df.loc[0, &quot;평균&quot;])</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 78],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 80]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;평균&quot;] = (df[&quot;국어&quot;] + df[&quot;수학&quot;]) / 2</code></td><td>데이터나 계산 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>print(df.loc[0, &quot;평균&quot;])</code></td><td>인덱스 이름과 열 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 78],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 80]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;평균&quot;] = (df[&quot;국어&quot;] + df[&quot;수학&quot;]) / 2</code></td><td>데이터나 계산 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>print(df.loc[0, &quot;평균&quot;])</code></td><td>인덱스 이름과 열 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -351,8 +394,8 @@ print(df.loc[0, &quot;평균&quot;])</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>기존 열을 계산해 새로운 열을 만들 수 있다.</p>
-<label><input type="radio" name="ox6" value="O"> O</label>
-<label><input type="radio" name="ox6" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox6" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox6" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
 <div class="answer" id="oa6">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -363,7 +406,7 @@ print(df.loc[0, &quot;평균&quot;])</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. df[&#x27;평균&#x27;]처럼 새 열 이름에 값을 대입하면 새 열을 만들 수 있다.</div><div class="truth">ㄴ. 민수의 평균은 (90+88)/2로 89.0이다.</div><div class="truth">ㄷ. DataFrame은 성적표 같은 실생활 표 데이터를 표현할 수 있다.</div><div class="truth">ㄹ. 새 열은 절대 추가할 수 없다.</div><div class="truth">ㅁ. 평균 계산에는 반드시 외부 파일이 필요하다.</div></div>
-<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq6" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq6" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq6" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq6" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq6" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
 <div class="answer" id="ma6">
 <b>정답:</b> 1번<br>
@@ -405,8 +448,8 @@ print(df.loc[1, &quot;상품&quot;])</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>리스트 데이터를 DataFrame으로 변환할 때 columns로 열 이름을 지정할 수 있다.</p>
-<label><input type="radio" name="ox7" value="O"> O</label>
-<label><input type="radio" name="ox7" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox7" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox7" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
 <div class="answer" id="oa7">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -417,7 +460,7 @@ print(df.loc[1, &quot;상품&quot;])</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. 안쪽 리스트 하나는 DataFrame의 한 행으로 볼 수 있다.</div><div class="truth">ㄴ. columns=[&#x27;상품&#x27;,&#x27;가격&#x27;]은 열 이름을 지정한다.</div><div class="truth">ㄷ. 인덱스 1의 상품은 공책이다.</div><div class="truth">ㄹ. 리스트는 DataFrame으로 변환할 수 없다.</div><div class="truth">ㅁ. columns는 행 삭제 옵션이다.</div></div>
-<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq7" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq7" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq7" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq7" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq7" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
 <div class="answer" id="ma7">
 <b>정답:</b> 1번<br>
@@ -443,7 +486,7 @@ df[&quot;총액&quot;] = df[&quot;가격&quot;] * df[&quot;수량&quot;]
 print(df[&quot;총액&quot;].tolist())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;가격&quot;: [500, 1500, 700],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수량&quot;: [10, 5, 8]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;총액&quot;] = df[&quot;가격&quot;] * df[&quot;수량&quot;]</code></td><td>데이터나 계산 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;총액&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 바꿔 출력하기 쉽게 만듭니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;, &quot;지우개&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;가격&quot;: [500, 1500, 700],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수량&quot;: [10, 5, 8]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;총액&quot;] = df[&quot;가격&quot;] * df[&quot;수량&quot;]</code></td><td>데이터나 계산 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;총액&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 바꿔 출력하기 쉽게 만듭니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -459,8 +502,8 @@ print(df[&quot;총액&quot;].tolist())</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>딕셔너리 기반 DataFrame에서는 열끼리 계산하여 새 열을 만들 수 있다.</p>
-<label><input type="radio" name="ox8" value="O"> O</label>
-<label><input type="radio" name="ox8" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox8" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox8" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
 <div class="answer" id="oa8">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -471,7 +514,7 @@ print(df[&quot;총액&quot;].tolist())</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. 가격과 수량을 곱해 총액 열을 만들 수 있다.</div><div class="truth">ㄴ. 총액 결과는 [5000, 7500, 5600]이다.</div><div class="truth">ㄷ. tolist()는 Series 값을 리스트로 바꾼다.</div><div class="truth">ㄹ. 딕셔너리의 키는 행 번호만 될 수 있다.</div><div class="truth">ㅁ. 숫자 열끼리는 계산할 수 없다.</div></div>
-<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq8" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq8" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq8" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq8" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq8" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
 <div class="answer" id="ma8">
 <b>정답:</b> 1번<br>
@@ -495,7 +538,7 @@ df = pd.DataFrame({
 print(df[&quot;만족도&quot;].mean())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;응답자&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;만족도&quot;: [5, 4, 3, 5]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df[&quot;만족도&quot;].mean())</code></td><td>숫자 열의 평균을 계산합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 짧은 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>리스트나 딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;응답자&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;],</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;만족도&quot;: [5, 4, 3, 5]</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>리스트 또는 딕셔너리 안에 들어가는 실제 데이터 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df[&quot;만족도&quot;].mean())</code></td><td>숫자 열의 평균을 계산합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -511,8 +554,8 @@ print(df[&quot;만족도&quot;].mean())</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>DataFrame의 숫자 열에는 mean() 같은 통계 메서드를 적용할 수 있다.</p>
-<label><input type="radio" name="ox9" value="O"> O</label>
-<label><input type="radio" name="ox9" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox9" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox9" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
 <div class="answer" id="oa9">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -523,7 +566,7 @@ print(df[&quot;만족도&quot;].mean())</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. 만족도 열은 숫자 데이터이다.</div><div class="truth">ㄴ. mean()은 평균을 계산한다.</div><div class="truth">ㄷ. 평균 만족도는 4.25이다.</div><div class="truth">ㄹ. mean()은 문자열 공백 제거 함수이다.</div><div class="truth">ㅁ. DataFrame에서는 통계 계산이 불가능하다.</div></div>
-<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq9" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq9" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq9" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq9" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq9" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
 <div class="answer" id="ma9">
 <b>정답:</b> 1번<br>
@@ -568,8 +611,8 @@ print(df.shape)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>리스트를 DataFrame으로 바꾸고, 열과 인덱스를 지정하여 원하는 값을 선택할 수 있다.</p>
-<label><input type="radio" name="ox10" value="O"> O</label>
-<label><input type="radio" name="ox10" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox10" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox10" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
 <div class="answer" id="oa10">
 <b>정답:</b> O<br><p>해당 설명은 Pandas 입문 핵심 개념에 맞습니다.</p>
@@ -580,7 +623,7 @@ print(df.shape)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. 리스트 데이터를 DataFrame으로 변환할 수 있다.</div><div class="truth">ㄴ. df.index로 행 이름을 지정할 수 있다.</div><div class="truth">ㄷ. df.shape는 행과 열 개수를 튜플로 보여 준다.</div><div class="truth">ㄹ. loc는 열 이름을 사용할 수 없다.</div><div class="truth">ㅁ. shape 결과는 항상 문자열이다.</div></div>
-<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq10" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq10" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq10" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq10" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq10" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
 <div class="answer" id="ma10">
 <b>정답:</b> 1번<br>
@@ -608,8 +651,8 @@ print(df.shape)</code></pre>
 <section id="submit" class="section">
 <div class="card">
 <h2>📥 채점 및 TXT 산출</h2>
-<label>학번 <input id="studentId"></label>
-<label>이름 <input id="studentName"></label>
+<label>학번 <input type="text" id="studentId"></label>
+<label>이름 <input type="text" id="studentName"></label>
 <button class="action secondary" onclick="gradeAll()">채점하기</button>
 <button class="action" onclick="downloadTxt()">TXT 다운로드</button>
 <div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>

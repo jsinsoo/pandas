@@ -9,11 +9,11 @@
 body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#f8fafc,#eff6ff,#f5f3ff);color:#172033;line-height:1.7}
 header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#1e3a8a,#7c3aed,#0f766e);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
 header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
-.wrap{display:grid;grid-template-columns:290px 1fr}
+.wrap{display:grid;grid-template-columns:300px 1fr}
 nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
 nav h2{font-size:18px;margin:0 0 14px;color:#bfdbfe}
-nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
-nav button:hover,nav button.active{background:#1e3a8a}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer;transition:.25s}
+nav button:hover,nav button.active{background:#1e3a8a;transform:translateX(4px)}
 main{padding:28px}
 .section{display:none}.section.active{display:block}
 .card{background:white;border:2px solid #bfdbfe;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(30,58,138,.10)}
@@ -23,12 +23,55 @@ code{font-family:Consolas,monospace}
 .level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#1e3a8a;color:white;font-weight:900;margin:4px}
 .goal,.question{border:1px solid #bfdbfe;border-radius:18px;padding:16px;margin:14px 0;background:white}
 table{width:100%;border-collapse:collapse}th,td{border:1px solid #bfdbfe;padding:10px;vertical-align:top}th{background:#1e3a8a;color:white}td:nth-child(2){background:#eff6ff;width:42%}
-textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
-label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#1e3a8a;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#7c3aed}
+textarea,input[type=text]{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+.action{border:0;border-radius:14px;padding:12px 17px;background:#1e3a8a;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0;transition:.25s}
+.action:hover{background:#7c3aed;transform:translateY(-1px)}
+.secondary{background:#7c3aed}
 .answer{display:none;background:#eff6ff;border-left:5px solid #3b82f6;border-radius:12px;padding:12px;margin-top:10px}
 .result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
 .truthbox{background:#f8fafc;border:1px solid #bfdbfe;border-radius:14px;padding:12px;margin:10px 0}
 .truth{padding:5px 0}
+.choice-wrap{margin-top:10px}
+.choice{
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap:10px;
+    width:100%;
+    padding:11px 13px;
+    margin:8px 0;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    background:#ffffff;
+    cursor:pointer;
+    transition:background .2s, border-color .2s, box-shadow .2s, transform .2s;
+}
+.choice:hover{
+    background:#eff6ff;
+    border-color:#93c5fd;
+    box-shadow:0 4px 12px rgba(30,58,138,.12);
+}
+.choice input{
+    margin-top:6px;
+    accent-color:#1e3a8a;
+    flex:0 0 auto;
+}
+.choice span{display:block;flex:1;text-align:left}
+.choice:has(input:checked){
+    background:#bfdbfe;
+    border-color:#1e3a8a;
+    box-shadow:0 6px 16px rgba(30,58,138,.20);
+    transform:translateX(3px);
+    font-weight:800;
+}
+@supports not selector(:has(*)) {
+    .choice input:checked + span {
+        background:#bfdbfe;
+        border-radius:10px;
+        padding:4px 8px;
+        font-weight:800;
+    }
+}
 @media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
 </style>
 </head>
@@ -42,7 +85,7 @@ label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12p
 <h2>📚 핵심개념</h2>
 <button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
 <button onclick="showSec('goals',this)">학습목표</button>
-<button onclick="showConcept('apply()',this)">apply()</button><button onclick="showConcept('map()',this)">map()</button><button onclick="showConcept('applymap()',this)">applymap()</button><button onclick="showConcept('pipe()',this)">pipe()</button><button onclick="showConcept('method chaining',this)">method chaining</button><button onclick="showConcept('MultiIndex',this)">MultiIndex</button><button onclick="showConcept('category 타입',this)">category 타입</button><button onclick="showConcept('대용량 데이터 처리(chunksize)',this)">대용량 데이터 처리(chunksize)</button><button onclick="showConcept('종합',this)">종합</button>
+<button onclick="showConcept('apply()',this)">apply()</button><button onclick="showConcept('map()',this)">map()</button><button onclick="showConcept('applymap()',this)">applymap()</button><button onclick="showConcept('pipe()',this)">pipe()</button><button onclick="showConcept('method chaining',this)">method chaining</button><button onclick="showConcept('MultiIndex',this)">MultiIndex</button><button onclick="showConcept('category 타입',this)">category 타입</button><button onclick="showConcept('대용량 데이터 처리 (chunksize)',this)">대용량 데이터 처리 (chunksize)</button><button onclick="showConcept('종합',this)">종합</button>
 <button onclick="showSec('finish',this)">수업마무리</button>
 <button onclick="showSec('submit',this)">채점·TXT 산출</button>
 </nav>
@@ -50,7 +93,7 @@ label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12p
 <section id="intro" class="section active">
 <div class="card">
 <h2>🚀 수업 들어가기</h2>
-<p>고급 Pandas 문법은 단순히 데이터를 출력하는 수준을 넘어, 조건 변환, 함수형 처리, 파이프라인 구성, 다중 인덱스, 범주형 자료형, 대용량 데이터 처리까지 연결합니다. 이번 단계에서는 Pandas다운 간결하고 확장 가능한 코드를 작성하는 방법을 배웁니다.</p>
+<p>고급 Pandas 문법은 단순히 데이터를 출력하는 수준을 넘어 조건 변환, 함수형 처리, 파이프라인 구성, 다중 인덱스, 범주형 자료형, 대용량 데이터 처리까지 연결합니다.</p>
 <span class="badge">apply()</span><span class="badge">map()</span><span class="badge">applymap()</span><span class="badge">pipe()</span><span class="badge">method chaining</span><span class="badge">MultiIndex</span><span class="badge">category</span><span class="badge">chunksize</span>
 </div>
 </section>
@@ -58,9 +101,9 @@ label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12p
 <section id="goals" class="section">
 <div class="card">
 <h2>🎯 개념기반 목표지향 학습목표</h2>
-<div class="goal"><b>지식:</b> apply(), map(), applymap(), pipe(), method chaining, MultiIndex, category, chunksize의 역할을 설명한다.</div>
-<div class="goal"><b>기능:</b> 자동 등급 시스템, 전처리 파이프라인, 다중 인덱스 조회, 대용량 매출 합계를 Pandas 코드로 구현한다.</div>
-<div class="goal"><b>태도:</b> 반복 작업을 함수화하고, 읽기 쉬우며 재사용 가능한 데이터 분석 코드를 작성하려는 태도를 기른다.</div>
+<div class="goal"><b>지식 목표:</b> apply(), map(), applymap(), pipe(), method chaining, MultiIndex, category, chunksize의 역할을 설명한다.</div>
+<div class="goal"><b>기능 목표:</b> 자동 등급 시스템, 전처리 파이프라인, 다중 인덱스 조회, 대용량 매출 합계를 Pandas 코드로 구현한다.</div>
+<div class="goal"><b>태도 목표:</b> 반복 작업을 함수화하고, 읽기 쉬우며 재사용 가능한 데이터 분석 코드를 작성하려는 태도를 기른다.</div>
 </div>
 </section>
 
@@ -77,10 +120,10 @@ df = pd.DataFrame({
 })
 
 df[&quot;등급&quot;] = df[&quot;점수&quot;].apply(lambda x: &quot;A&quot; if x &gt;= 90 else &quot;B&quot; if x &gt;= 80 else &quot;C&quot;)
-print(df[[&quot;이름&quot;, &quot;등급&quot;]])</code></pre>
+print(df[&quot;등급&quot;].tolist())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [95, 82, 70, 88]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;등급&quot;] = df[&quot;점수&quot;].apply(lambda x: &quot;A&quot; if x &gt;= 90 else &quot;B&quot; if x &gt;= 80 else &quot;C&quot;)</code></td><td>Series의 각 값에 함수를 적용하여 새 결과를 만듭니다.</td></tr><tr><td>9</td><td><code>print(df[[&quot;이름&quot;, &quot;등급&quot;]])</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [95, 82, 70, 88]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;등급&quot;] = df[&quot;점수&quot;].apply(lambda x: &quot;A&quot; if x &gt;= 90 else &quot;B&quot; if x &gt;= 80 else &quot;C&quot;)</code></td><td>Series의 각 값에 함수를 적용하여 새 결과를 만듭니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;등급&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꾸어 출력하기 쉽게 합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -88,7 +131,7 @@ print(df[[&quot;이름&quot;, &quot;등급&quot;]])</code></pre>
 <textarea id="essay1" rows="2"></textarea>
 <button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
 <div class="answer" id="ea1">
-<b>정답</b><pre><code>민수 A, 지아 B, 하준 C, 서연 B</code></pre>
+<b>정답</b><pre><code>[&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;B&#x27;]</code></pre>
 <p>고급 Pandas 문법이 만들어 낸 결과를 확인하는 문항입니다.</p>
 </div>
 </div>
@@ -96,8 +139,8 @@ print(df[[&quot;이름&quot;, &quot;등급&quot;]])</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>apply()는 Series의 각 값에 함수를 적용할 수 있다.</p>
-<label><input type="radio" name="ox1" value="O"> O</label>
-<label><input type="radio" name="ox1" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox1" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox1" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
 <div class="answer" id="oa1">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -108,7 +151,7 @@ print(df[[&quot;이름&quot;, &quot;등급&quot;]])</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. apply()는 각 점수에 등급 변환 함수를 적용한다.</div><div class="truth">ㄴ. 95점은 A, 82점은 B, 70점은 C가 된다.</div><div class="truth">ㄷ. lambda는 짧은 익명 함수를 만들 때 사용할 수 있다.</div><div class="truth">ㄹ. apply()는 CSV 저장 전용 함수이다.</div><div class="truth">ㅁ. apply()는 DataFrame에서 절대 사용할 수 없다.</div></div>
-<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq1" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq1" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq1" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq1" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq1" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
 <div class="answer" id="ma1">
 <b>정답:</b> 1번<br>
@@ -134,7 +177,7 @@ df[&quot;판정&quot;] = df.apply(lambda row: &quot;우수&quot; if (row[&quot;�
 print(df[&quot;판정&quot;].tolist())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 70],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 75]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;판정&quot;] = df.apply(lambda row: &quot;우수&quot; if (row[&quot;국어&quot;] + row[&quot;수학&quot;]) / 2 &gt;= 85 else &quot;보통&quot;, axis=1)</code></td><td>DataFrame의 각 행에 함수를 적용합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;판정&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꿔 출력하기 쉽게 만듭니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 70],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 75]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df[&quot;판정&quot;] = df.apply(lambda row: &quot;우수&quot; if (row[&quot;국어&quot;] + row[&quot;수학&quot;]) / 2 &gt;= 85 else &quot;보통&quot;, axis=1)</code></td><td>DataFrame의 각 행에 함수를 적용합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;판정&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꾸어 출력하기 쉽게 합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -150,8 +193,8 @@ print(df[&quot;판정&quot;].tolist())</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>apply(axis=1)는 행 단위로 함수를 적용할 수 있다.</p>
-<label><input type="radio" name="ox2" value="O"> O</label>
-<label><input type="radio" name="ox2" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox2" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox2" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
 <div class="answer" id="oa2">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -162,7 +205,7 @@ print(df[&quot;판정&quot;].tolist())</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. axis=1은 행 단위 적용을 의미한다.</div><div class="truth">ㄴ. 각 행의 국어와 수학 평균으로 판정을 만든다.</div><div class="truth">ㄷ. 하준의 판정은 보통이다.</div><div class="truth">ㄹ. axis=1은 열 삭제 옵션이다.</div><div class="truth">ㅁ. apply(axis=1)는 숫자 열을 모두 문자열로 바꾸는 전용 기능이다.</div></div>
-<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq2" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq2" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq2" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq2" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq2" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
 <div class="answer" id="ma2">
 <b>정답:</b> 1번<br>
@@ -187,7 +230,7 @@ df[&quot;성별&quot;] = df[&quot;성별코드&quot;].map({&quot;M&quot;: &quot;
 print(df[&quot;성별&quot;].tolist())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;성별코드&quot;: [&quot;M&quot;, &quot;F&quot;, &quot;M&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;성별&quot;] = df[&quot;성별코드&quot;].map({&quot;M&quot;: &quot;남자&quot;, &quot;F&quot;: &quot;여자&quot;})</code></td><td>값을 사전에 정한 다른 값으로 변환합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;성별&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꿔 출력하기 쉽게 만듭니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;성별코드&quot;: [&quot;M&quot;, &quot;F&quot;, &quot;M&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;성별&quot;] = df[&quot;성별코드&quot;].map({&quot;M&quot;: &quot;남자&quot;, &quot;F&quot;: &quot;여자&quot;})</code></td><td>값을 사전에 정한 다른 값으로 변환합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;성별&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꾸어 출력하기 쉽게 합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -203,8 +246,8 @@ print(df[&quot;성별&quot;].tolist())</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>map()은 Series의 값을 다른 값으로 매핑할 수 있다.</p>
-<label><input type="radio" name="ox3" value="O"> O</label>
-<label><input type="radio" name="ox3" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox3" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox3" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
 <div class="answer" id="oa3">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -215,7 +258,7 @@ print(df[&quot;성별&quot;].tolist())</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. map()은 값을 다른 값으로 변환할 수 있다.</div><div class="truth">ㄴ. M은 남자, F는 여자로 변환된다.</div><div class="truth">ㄷ. 코드값을 사람이 읽기 쉬운 값으로 바꿀 때 유용하다.</div><div class="truth">ㄹ. map()은 행을 무조건 삭제한다.</div><div class="truth">ㅁ. map()은 Excel 파일 읽기 전용 함수이다.</div></div>
-<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq3" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq3" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq3" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq3" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq3" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
 <div class="answer" id="ma3">
 <b>정답:</b> 1번<br>
@@ -228,7 +271,7 @@ print(df[&quot;성별&quot;].tolist())</code></pre>
 <section class="lesson section " data-concept="applymap()">
 <div class="card">
 <div class="level">applymap()</div>
-<h2>04. DataFrame 전체 문자열 정리</h2>
+<h2>04. DataFrame 전체 문자열 공백 정리</h2>
 <pre><code>import pandas as pd
 
 df = pd.DataFrame({
@@ -240,7 +283,7 @@ clean = df.applymap(lambda x: x.strip())
 print(clean.loc[0, &quot;이름&quot;])</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot; 민수 &quot;, &quot; 지아 &quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;지역&quot;: [&quot; 전주 &quot;, &quot; 군산 &quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>clean = df.applymap(lambda x: x.strip())</code></td><td>DataFrame의 모든 셀 값에 함수를 적용합니다.</td></tr><tr><td>9</td><td><code>print(clean.loc[0, &quot;이름&quot;])</code></td><td>인덱스 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot; 민수 &quot;, &quot; 지아 &quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;지역&quot;: [&quot; 전주 &quot;, &quot; 군산 &quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>clean = df.applymap(lambda x: x.strip())</code></td><td>DataFrame의 모든 셀 값에 함수를 적용합니다.</td></tr><tr><td>9</td><td><code>print(clean.loc[0, &quot;이름&quot;])</code></td><td>인덱스 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -256,8 +299,8 @@ print(clean.loc[0, &quot;이름&quot;])</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>applymap()은 DataFrame의 각 원소에 함수를 적용할 수 있다.</p>
-<label><input type="radio" name="ox4" value="O"> O</label>
-<label><input type="radio" name="ox4" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox4" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox4" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
 <div class="answer" id="oa4">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -268,7 +311,7 @@ print(clean.loc[0, &quot;이름&quot;])</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. applymap()은 DataFrame의 각 셀 값에 함수를 적용할 수 있다.</div><div class="truth">ㄴ. strip()은 문자열 양쪽 공백을 제거한다.</div><div class="truth">ㄷ. 첫 번째 이름은 민수로 정리된다.</div><div class="truth">ㄹ. applymap()은 그룹별 평균만 계산한다.</div><div class="truth">ㅁ. applymap()은 Series 전용으로 DataFrame에는 사용할 수 없다.</div></div>
-<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq4" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq4" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq4" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq4" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq4" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
 <div class="answer" id="ma4">
 <b>정답:</b> 1번<br>
@@ -298,7 +341,7 @@ result = df.pipe(add_average)
 print(result[&quot;평균&quot;].tolist())</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>def add_average(df):</code></td><td>사용자 정의 함수를 만듭니다. 반복되는 처리 과정을 함수로 분리합니다.</td></tr><tr><td>4</td><td><code>    df[&quot;평균&quot;] = df[[&quot;국어&quot;, &quot;수학&quot;]].mean(axis=1)</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>5</td><td><code>    return df</code></td><td>처리된 DataFrame을 함수 밖으로 반환합니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>7</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>8</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>9</td><td><code>    &quot;국어&quot;: [90, 85],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>10</td><td><code>    &quot;수학&quot;: [88, 95]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>11</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>12</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>13</td><td><code>result = df.pipe(add_average)</code></td><td>DataFrame을 사용자 정의 함수로 전달해 처리 흐름을 연결합니다.</td></tr><tr><td>14</td><td><code>print(result[&quot;평균&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꿔 출력하기 쉽게 만듭니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>def add_average(df):</code></td><td>사용자 정의 함수를 만듭니다.</td></tr><tr><td>4</td><td><code>    df[&quot;평균&quot;] = df[[&quot;국어&quot;, &quot;수학&quot;]].mean(axis=1)</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>5</td><td><code>    return df</code></td><td>처리된 DataFrame을 함수 밖으로 반환합니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>7</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>8</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>9</td><td><code>    &quot;국어&quot;: [90, 85],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>10</td><td><code>    &quot;수학&quot;: [88, 95]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>11</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>12</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>13</td><td><code>result = df.pipe(add_average)</code></td><td>DataFrame을 사용자 정의 함수로 전달해 처리 흐름을 연결합니다.</td></tr><tr><td>14</td><td><code>print(result[&quot;평균&quot;].tolist())</code></td><td>Series를 파이썬 리스트로 바꾸어 출력하기 쉽게 합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -314,8 +357,8 @@ print(result[&quot;평균&quot;].tolist())</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>pipe()는 DataFrame을 사용자 정의 함수에 전달해 처리 흐름을 연결할 수 있다.</p>
-<label><input type="radio" name="ox5" value="O"> O</label>
-<label><input type="radio" name="ox5" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox5" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox5" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
 <div class="answer" id="oa5">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -326,7 +369,7 @@ print(result[&quot;평균&quot;].tolist())</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. pipe()는 DataFrame을 함수에 전달한다.</div><div class="truth">ㄴ. add_average 함수는 평균 열을 추가한다.</div><div class="truth">ㄷ. 결과 평균은 [89.0, 90.0]이다.</div><div class="truth">ㄹ. pipe()는 그래프 색상을 바꾸는 함수이다.</div><div class="truth">ㅁ. pipe()는 함수와 함께 사용할 수 없다.</div></div>
-<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq5" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq5" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq5" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq5" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq5" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
 <div class="answer" id="ma5">
 <b>정답:</b> 1번<br>
@@ -354,10 +397,10 @@ result = (
       .reset_index()
 )
 
-print(result)</code></pre>
+print(result.to_dict(&quot;records&quot;))</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주 &quot;, &quot;전주&quot;, &quot;군산&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 80]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = (</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>9</td><td><code>    df.assign(지역=df[&quot;지역&quot;].str.strip())</code></td><td>문자열 양쪽 공백을 제거합니다.</td></tr><tr><td>10</td><td><code>      .groupby(&quot;지역&quot;)[&quot;매출&quot;]</code></td><td>지정한 열을 기준으로 데이터를 그룹으로 묶습니다.</td></tr><tr><td>11</td><td><code>      .sum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>12</td><td><code>      .reset_index()</code></td><td>인덱스를 일반 열로 되돌려 표 형태를 정리합니다.</td></tr><tr><td>13</td><td><code>)</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>15</td><td><code>print(result)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주 &quot;, &quot;전주&quot;, &quot;군산&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 80]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = (</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>9</td><td><code>    df.assign(지역=df[&quot;지역&quot;].str.strip())</code></td><td>문자열 양쪽 공백을 제거합니다.</td></tr><tr><td>10</td><td><code>      .groupby(&quot;지역&quot;)[&quot;매출&quot;]</code></td><td>지정한 열을 기준으로 데이터를 그룹으로 묶습니다.</td></tr><tr><td>11</td><td><code>      .sum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>12</td><td><code>      .reset_index()</code></td><td>인덱스를 일반 열로 되돌려 표 형태를 정리합니다.</td></tr><tr><td>13</td><td><code>)</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>15</td><td><code>print(result.to_dict(&quot;records&quot;))</code></td><td>결과를 딕셔너리 형태로 변환합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -365,7 +408,7 @@ print(result)</code></pre>
 <textarea id="essay6" rows="2"></textarea>
 <button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
 <div class="answer" id="ea6">
-<b>정답</b><pre><code>전주 250, 군산 80</code></pre>
+<b>정답</b><pre><code>[{&#x27;지역&#x27;: &#x27;군산&#x27;, &#x27;매출&#x27;: 80}, {&#x27;지역&#x27;: &#x27;전주&#x27;, &#x27;매출&#x27;: 250}]</code></pre>
 <p>고급 Pandas 문법이 만들어 낸 결과를 확인하는 문항입니다.</p>
 </div>
 </div>
@@ -373,8 +416,8 @@ print(result)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>method chaining은 여러 Pandas 작업을 연결해 읽기 쉬운 흐름으로 만들 수 있다.</p>
-<label><input type="radio" name="ox6" value="O"> O</label>
-<label><input type="radio" name="ox6" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox6" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox6" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
 <div class="answer" id="oa6">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -385,7 +428,7 @@ print(result)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. assign()으로 공백이 제거된 지역 열을 만들 수 있다.</div><div class="truth">ㄴ. groupby(&#x27;지역&#x27;)으로 지역별로 묶는다.</div><div class="truth">ㄷ. sum()으로 지역별 매출 합계를 구한다.</div><div class="truth">ㄹ. method chaining은 반드시 한 줄로만 작성해야 한다.</div><div class="truth">ㅁ. reset_index()는 파일을 저장한다.</div></div>
-<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq6" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq6" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq6" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq6" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq6" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
 <div class="answer" id="ma6">
 <b>정답:</b> 1번<br>
@@ -411,7 +454,7 @@ multi = df.set_index([&quot;반&quot;, &quot;이름&quot;])
 print(multi.loc[(&quot;B&quot;, &quot;서연&quot;), &quot;점수&quot;])</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 85, 78, 92]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>multi = df.set_index([&quot;반&quot;, &quot;이름&quot;])</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>10</td><td><code>print(multi.loc[(&quot;B&quot;, &quot;서연&quot;), &quot;점수&quot;])</code></td><td>인덱스 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 85, 78, 92]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>multi = df.set_index([&quot;반&quot;, &quot;이름&quot;])</code></td><td>하나 이상의 열을 인덱스로 설정합니다.</td></tr><tr><td>10</td><td><code>print(multi.loc[(&quot;B&quot;, &quot;서연&quot;), &quot;점수&quot;])</code></td><td>인덱스 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -427,8 +470,8 @@ print(multi.loc[(&quot;B&quot;, &quot;서연&quot;), &quot;점수&quot;])</code>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>MultiIndex는 두 개 이상의 기준으로 인덱스를 구성할 수 있다.</p>
-<label><input type="radio" name="ox7" value="O"> O</label>
-<label><input type="radio" name="ox7" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox7" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox7" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
 <div class="answer" id="oa7">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -439,7 +482,7 @@ print(multi.loc[(&quot;B&quot;, &quot;서연&quot;), &quot;점수&quot;])</code>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. set_index([&#x27;반&#x27;,&#x27;이름&#x27;])은 다중 인덱스를 만들 수 있다.</div><div class="truth">ㄴ. (&#x27;B&#x27;,&#x27;서연&#x27;)처럼 튜플로 특정 행을 선택할 수 있다.</div><div class="truth">ㄷ. 서연의 점수는 92이다.</div><div class="truth">ㄹ. MultiIndex는 열이 하나일 때만 가능하다.</div><div class="truth">ㅁ. MultiIndex는 날짜 변환 함수이다.</div></div>
-<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq7" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq7" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq7" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq7" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq7" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
 <div class="answer" id="ma7">
 <b>정답:</b> 1번<br>
@@ -463,7 +506,7 @@ df[&quot;등급&quot;] = df[&quot;등급&quot;].astype(&quot;category&quot;)
 print(str(df[&quot;등급&quot;].dtype))</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;등급&quot;: [&quot;상&quot;, &quot;중&quot;, &quot;하&quot;, &quot;상&quot;, &quot;중&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>7</td><td><code>df[&quot;등급&quot;] = df[&quot;등급&quot;].astype(&quot;category&quot;)</code></td><td>열을 category 자료형으로 변환합니다.</td></tr><tr><td>8</td><td><code>print(str(df[&quot;등급&quot;].dtype))</code></td><td>열의 자료형을 확인합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;등급&quot;: [&quot;상&quot;, &quot;중&quot;, &quot;하&quot;, &quot;상&quot;, &quot;중&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>7</td><td><code>df[&quot;등급&quot;] = df[&quot;등급&quot;].astype(&quot;category&quot;)</code></td><td>열을 category 자료형으로 변환합니다.</td></tr><tr><td>8</td><td><code>print(str(df[&quot;등급&quot;].dtype))</code></td><td>열의 자료형을 확인합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -479,8 +522,8 @@ print(str(df[&quot;등급&quot;].dtype))</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>category 타입은 반복되는 범주형 데이터를 효율적으로 저장할 수 있다.</p>
-<label><input type="radio" name="ox8" value="O"> O</label>
-<label><input type="radio" name="ox8" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox8" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox8" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
 <div class="answer" id="oa8">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -491,7 +534,7 @@ print(str(df[&quot;등급&quot;].dtype))</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. astype(&#x27;category&#x27;)는 범주형 자료형으로 변환한다.</div><div class="truth">ㄴ. 등급처럼 반복되는 값에 category 타입을 사용할 수 있다.</div><div class="truth">ㄷ. 출력 자료형은 category이다.</div><div class="truth">ㄹ. category 타입은 숫자 평균 계산 전용이다.</div><div class="truth">ㅁ. category 타입은 문자열 데이터를 모두 삭제한다.</div></div>
-<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq8" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq8" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq8" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq8" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq8" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
 <div class="answer" id="ma8">
 <b>정답:</b> 1번<br>
@@ -501,9 +544,9 @@ print(str(df[&quot;등급&quot;].dtype))</code></pre>
 </div>
 </section>
 
-<section class="lesson section " data-concept="대용량 데이터 처리(chunksize)">
+<section class="lesson section " data-concept="대용량 데이터 처리 (chunksize)">
 <div class="card">
-<div class="level">대용량 데이터 처리(chunksize)</div>
+<div class="level">대용량 데이터 처리 (chunksize)</div>
 <h2>09. 가상 대용량 매출 조각 처리</h2>
 <pre><code>import pandas as pd
 from io import StringIO
@@ -522,7 +565,7 @@ for chunk in pd.read_csv(StringIO(csv_text), chunksize=2):
 print(total)</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열을 파일처럼 읽기 위해 StringIO를 불러옵니다. 예제 파일 없이도 실행되도록 하기 위한 코드입니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;지역,매출</code></td><td>CSV 내용을 문자열로 준비합니다. 실제 대용량 CSV 파일 대신 예제용 데이터를 사용합니다.</td></tr><tr><td>5</td><td><code>전주,100</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>군산,80</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>전주,150</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>8</td><td><code>익산,120</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>9</td><td><code>&#x27;&#x27;&#x27;</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>11</td><td><code>total = 0</code></td><td>누적 합계를 저장할 변수를 초기화합니다.</td></tr><tr><td>12</td><td><code>for chunk in pd.read_csv(StringIO(csv_text), chunksize=2):</code></td><td>CSV 내용을 문자열로 준비합니다. 실제 대용량 CSV 파일 대신 예제용 데이터를 사용합니다.</td></tr><tr><td>13</td><td><code>    total += chunk[&quot;매출&quot;].sum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>15</td><td><code>print(total)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열을 파일처럼 읽기 위해 StringIO를 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;지역,매출</code></td><td>CSV 내용을 문자열로 준비합니다. 실제 외부 파일 없이도 실행되게 합니다.</td></tr><tr><td>5</td><td><code>전주,100</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>6</td><td><code>군산,80</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>7</td><td><code>전주,150</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>8</td><td><code>익산,120</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>9</td><td><code>&#x27;&#x27;&#x27;</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>11</td><td><code>total = 0</code></td><td>누적 합계를 저장할 변수를 초기화합니다.</td></tr><tr><td>12</td><td><code>for chunk in pd.read_csv(StringIO(csv_text), chunksize=2):</code></td><td>CSV 내용을 문자열로 준비합니다. 실제 외부 파일 없이도 실행되게 합니다.</td></tr><tr><td>13</td><td><code>    total += chunk[&quot;매출&quot;].sum()</code></td><td>합계를 계산합니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>15</td><td><code>print(total)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -538,8 +581,8 @@ print(total)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>chunksize는 큰 CSV 데이터를 조각 단위로 읽어 처리할 수 있게 한다.</p>
-<label><input type="radio" name="ox9" value="O"> O</label>
-<label><input type="radio" name="ox9" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox9" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox9" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
 <div class="answer" id="oa9">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -550,7 +593,7 @@ print(total)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. chunksize=2는 데이터를 2행씩 나누어 읽게 한다.</div><div class="truth">ㄴ. 각 chunk의 매출 합계를 total에 누적한다.</div><div class="truth">ㄷ. 전체 매출 합계는 450이다.</div><div class="truth">ㄹ. chunksize는 모든 데이터를 한 번에 메모리에 올리기 위한 옵션이다.</div><div class="truth">ㅁ. chunksize는 DataFrame의 열 이름을 바꾸는 옵션이다.</div></div>
-<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq9" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq9" value="2"><span>2. ㄱ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq9" value="3"><span>3. ㄴ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq9" value="4"><span>4. ㄱ, ㄴ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq9" value="5"><span>5. ㄷ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
 <div class="answer" id="ma9">
 <b>정답:</b> 1번<br>
@@ -582,7 +625,7 @@ result = (
 print(result)</code></pre>
 
 <h3>🔍 한 줄씩 상세 설명</h3>
-<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [95, 82, 70, 88],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>데이터 입력 구간을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>result = (</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>    df.assign(등급=df[&quot;점수&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;))</code></td><td>Series의 각 값에 함수를 적용하여 새 결과를 만듭니다.</td></tr><tr><td>11</td><td><code>      .groupby([&quot;반&quot;, &quot;등급&quot;])[&quot;학생&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>12</td><td><code>      .count()</code></td><td>각 그룹의 데이터 개수를 계산합니다.</td></tr><tr><td>13</td><td><code>      .unstack(fill_value=0)</code></td><td>인덱스의 한 수준을 열 방향으로 펼쳐 표 형태를 바꿉니다.</td></tr><tr><td>14</td><td><code>)</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>15</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>16</td><td><code>print(result)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;학생&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [95, 82, 70, 88],</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;]</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 CSV 예시 데이터의 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>result = (</code></td><td>계산이나 변환 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>    df.assign(등급=df[&quot;점수&quot;].apply(lambda x: &quot;우수&quot; if x &gt;= 85 else &quot;보통&quot;))</code></td><td>Series의 각 값에 함수를 적용하여 새 결과를 만듭니다.</td></tr><tr><td>11</td><td><code>      .groupby([&quot;반&quot;, &quot;등급&quot;])[&quot;학생&quot;]</code></td><td>지정한 열을 기준으로 데이터를 그룹으로 묶습니다.</td></tr><tr><td>12</td><td><code>      .count()</code></td><td>각 그룹의 데이터 개수를 계산합니다.</td></tr><tr><td>13</td><td><code>      .unstack(fill_value=0)</code></td><td>인덱스의 한 수준을 열 방향으로 펼쳐 표 형태를 바꿉니다.</td></tr><tr><td>14</td><td><code>)</code></td><td>고급 Pandas 문법을 활용해 데이터를 변환하거나 분석 흐름을 구성하는 코드입니다.</td></tr><tr><td>15</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>16</td><td><code>print(result)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
 
 <h3>✍️ 코드 결과 서술형</h3>
 <div class="question">
@@ -598,8 +641,8 @@ print(result)</code></pre>
 <h3>⭕❌ 개념 진단평가 OX</h3>
 <div class="question">
 <p>apply(), assign(), groupby(), unstack()을 연결하면 자동 분석 흐름을 만들 수 있다.</p>
-<label><input type="radio" name="ox10" value="O"> O</label>
-<label><input type="radio" name="ox10" value="X"> X</label>
+<label class="choice"><input type="radio" name="ox10" value="O"><span>O</span></label>
+<label class="choice"><input type="radio" name="ox10" value="X"><span>X</span></label>
 <button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
 <div class="answer" id="oa10">
 <b>정답:</b> O<br><p>해당 설명은 고급 Pandas 문법의 핵심 개념에 맞습니다.</p>
@@ -610,7 +653,7 @@ print(result)</code></pre>
 <div class="question">
 <p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
 <div class="truthbox"><div class="truth">ㄱ. apply()로 점수를 등급으로 변환한다.</div><div class="truth">ㄴ. groupby([&#x27;반&#x27;,&#x27;등급&#x27;])로 반별·등급별로 묶는다.</div><div class="truth">ㄷ. unstack(fill_value=0)은 등급을 열 형태로 펼칠 수 있다.</div><div class="truth">ㄹ. assign()은 파일을 삭제한다.</div><div class="truth">ㅁ. groupby()는 고급 문법과 함께 사용할 수 없다.</div></div>
-<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<div class="choice-wrap"><label class="choice"><input type="radio" name="mcq10" value="1"><span>1. ㄱ, ㄴ, ㄷ</span></label><label class="choice"><input type="radio" name="mcq10" value="2"><span>2. ㄱ, ㄹ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq10" value="3"><span>3. ㄴ, ㄷ, ㄹ</span></label><label class="choice"><input type="radio" name="mcq10" value="4"><span>4. ㄱ, ㄷ, ㅁ</span></label><label class="choice"><input type="radio" name="mcq10" value="5"><span>5. ㄴ, ㄹ, ㅁ</span></label></div>
 <button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
 <div class="answer" id="ma10">
 <b>정답:</b> 1번<br>
@@ -637,8 +680,8 @@ print(result)</code></pre>
 <section id="submit" class="section">
 <div class="card">
 <h2>📥 채점 및 TXT 산출</h2>
-<label>학번 <input id="studentId"></label>
-<label>이름 <input id="studentName"></label>
+<label>학번 <input type="text" id="studentId"></label>
+<label>이름 <input type="text" id="studentName"></label>
 <button class="action secondary" onclick="gradeAll()">채점하기</button>
 <button class="action" onclick="downloadTxt()">TXT 다운로드</button>
 <div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
@@ -649,7 +692,7 @@ print(result)</code></pre>
 </div>
 
 <script>
-const essayAnswers=["민수 A, 지아 B, 하준 C, 서연 B", "['우수', '우수', '보통']", "['남자', '여자', '남자']", "민수", "[89.0, 90.0]", "전주 250, 군산 80", "92", "category", "450", "반별 등급별 학생 수"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["자동 등급 시스템 만들기", "행 단위 평균 판정 만들기", "성별 코드 이름으로 바꾸기", "DataFrame 전체 문자열 정리", "전처리 함수를 파이프라인으로 연결", "메서드 체이닝으로 매출 요약", "반과 이름을 다중 인덱스로 설정", "반복되는 등급을 category로 변환", "가상 대용량 매출 조각 처리", "고급 문법을 활용한 자동 분석 흐름"];
+const essayAnswers=["['A', 'B', 'C', 'B']", "['우수', '우수', '보통']", "['남자', '여자', '남자']", "민수", "[89.0, 90.0]", "[{'지역': '군산', '매출': 80}, {'지역': '전주', '매출': 250}]", "92", "category", "450", "반별 등급별 학생 수"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["자동 등급 시스템 만들기", "행 단위 평균 판정 만들기", "성별 코드 이름으로 바꾸기", "DataFrame 전체 문자열 공백 정리", "전처리 함수를 파이프라인으로 연결", "메서드 체이닝으로 매출 요약", "반과 이름을 다중 인덱스로 설정", "반복되는 등급을 category로 변환", "가상 대용량 매출 조각 처리", "고급 문법을 활용한 자동 분석 흐름"];
 function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
