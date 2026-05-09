@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 8단계 시계열 데이터 분석 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#eff6ff,#ecfeff,#f0fdf4);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#0369a1,#0891b2,#0f766e);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:285px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#a5f3fc}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#0891b2}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #a5f3fc;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(8,145,178,.10)}
+h2{color:#0369a1}h3{color:#0f766e}
+pre{background:#083344;color:#cffafe;padding:18px;border-radius:18px;overflow:auto;border:4px solid #67e8f9}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#0891b2;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #a5f3fc;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #a5f3fc;padding:10px;vertical-align:top}th{background:#0891b2;color:white}td:nth-child(2){background:#ecfeff;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#0891b2;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#ecfeff;border-left:5px solid #06b6d4;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #a5f3fc;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 8단계. 시계열 데이터 분석</h1>
+<p>“시간 데이터를 다루는 능력” · to_datetime · 날짜 인덱싱 · resample · rolling · 이동평균 · 누적합 · 시계열 정렬</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('to_datetime()',this)">to_datetime()</button><button onclick="showConcept('날짜 인덱싱',this)">날짜 인덱싱</button><button onclick="showConcept('resample()',this)">resample()</button><button onclick="showConcept('rolling()',this)">rolling()</button><button onclick="showConcept('이동평균',this)">이동평균</button><button onclick="showConcept('누적합',this)">누적합</button><button onclick="showConcept('시계열 정렬',this)">시계열 정렬</button><button onclick="showConcept('종합',this)">종합</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>날씨, 주식, 방문자 수, 매출처럼 시간의 흐름에 따라 변하는 데이터는 순서가 매우 중요합니다. 이번 단계에서는 날짜를 자료형으로 바꾸고, 날짜를 인덱스로 설정하며, 월별·일별 집계, 이동평균, 누적합을 통해 시간 데이터의 흐름을 읽는 방법을 배웁니다.</p>
+<span class="badge">to_datetime()</span><span class="badge">날짜 인덱싱</span><span class="badge">resample()</span><span class="badge">rolling()</span><span class="badge">이동평균</span><span class="badge">누적합</span><span class="badge">시계열 정렬</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식:</b> 날짜 자료형, 날짜 인덱스, 리샘플링, 이동평균, 누적합의 의미를 설명한다.</div>
+<div class="goal"><b>기능:</b> 월별 매출, 날씨 평균, 주식 이동평균, 누적매출을 Pandas 코드로 계산한다.</div>
+<div class="goal"><b>태도:</b> 시간의 흐름 속에서 변화와 추세를 해석하는 데이터 분석 태도를 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="to_datetime()">
+<div class="card">
+<div class="level">to_datetime()</div>
+<h2>01. 문자열 날짜를 날짜 자료형으로 변환</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;, &quot;2026-01-03&quot;],
+    &quot;매출&quot;: [100, 150, 120]
+})
+
+df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])
+print(df[&quot;날짜&quot;].dt.year.tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;, &quot;2026-01-03&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 120]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])</code></td><td>문자열로 된 날짜나 시간을 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;날짜&quot;].dt.year.tolist())</code></td><td>날짜 자료형에서 연도만 추출합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>[2026, 2026, 2026]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>to_datetime()은 문자열 날짜를 Pandas 날짜 자료형으로 변환할 수 있다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. pd.to_datetime()은 문자열 날짜를 날짜 자료형으로 변환한다.</div><div class="truth">ㄴ. 날짜 자료형이 되면 dt.year로 연도를 추출할 수 있다.</div><div class="truth">ㄷ. 위 코드의 출력은 [2026, 2026, 2026]이다.</div><div class="truth">ㄹ. to_datetime()은 중복 행 제거 전용 함수이다.</div><div class="truth">ㅁ. 날짜 변환은 시계열 분석과 전혀 관련이 없다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="날짜 인덱싱">
+<div class="card">
+<div class="level">날짜 인덱싱</div>
+<h2>02. 날짜를 인덱스로 설정하고 특정 날짜 선택</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;, &quot;2026-01-03&quot;],
+    &quot;기온&quot;: [3, 5, 4]
+})
+
+df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])
+df = df.set_index(&quot;날짜&quot;)
+print(df.loc[&quot;2026-01-02&quot;, &quot;기온&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;, &quot;2026-01-03&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;기온&quot;: [3, 5, 4]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])</code></td><td>문자열로 된 날짜나 시간을 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>df = df.set_index(&quot;날짜&quot;)</code></td><td>날짜 또는 시간 열을 인덱스로 설정하여 시계열 분석에 적합하게 만듭니다.</td></tr><tr><td>10</td><td><code>print(df.loc[&quot;2026-01-02&quot;, &quot;기온&quot;])</code></td><td>날짜 인덱스를 기준으로 특정 날짜 또는 기간 데이터를 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>5</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>날짜를 인덱스로 설정하면 날짜 라벨로 데이터를 선택할 수 있다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. set_index(&#x27;날짜&#x27;)는 날짜 열을 인덱스로 설정한다.</div><div class="truth">ㄴ. 날짜 인덱스는 loc로 특정 날짜를 선택하는 데 사용할 수 있다.</div><div class="truth">ㄷ. 2026-01-02의 기온은 5이다.</div><div class="truth">ㄹ. 날짜 인덱싱은 열 이름을 모두 삭제한다.</div><div class="truth">ㅁ. loc는 날짜 인덱스와 함께 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="resample()">
+<div class="card">
+<div class="level">resample()</div>
+<h2>03. 월별 매출 합계 계산</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-20&quot;, &quot;2026-02-01&quot;, &quot;2026-02-15&quot;],
+    &quot;매출&quot;: [100, 150, 200, 50]
+})
+
+df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])
+monthly = df.set_index(&quot;날짜&quot;)[&quot;매출&quot;].resample(&quot;ME&quot;).sum()
+print(monthly.tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-20&quot;, &quot;2026-02-01&quot;, &quot;2026-02-15&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 200, 50]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])</code></td><td>문자열로 된 날짜나 시간을 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>monthly = df.set_index(&quot;날짜&quot;)[&quot;매출&quot;].resample(&quot;ME&quot;).sum()</code></td><td>날짜 또는 시간 열을 인덱스로 설정하여 시계열 분석에 적합하게 만듭니다.</td></tr><tr><td>10</td><td><code>print(monthly.tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>[250, 250]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>resample()은 날짜 인덱스를 기준으로 월별, 일별 등 시간 단위 집계를 할 수 있다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. resample(&#x27;ME&#x27;)는 월말 기준 월별 그룹화를 의미한다.</div><div class="truth">ㄴ. sum()을 연결하면 월별 합계를 계산할 수 있다.</div><div class="truth">ㄷ. 위 코드에서 1월 합계와 2월 합계는 모두 250이다.</div><div class="truth">ㄹ. resample()은 날짜 인덱스 없이도 항상 같은 방식으로 작동한다.</div><div class="truth">ㅁ. resample()은 문자열 공백 제거 함수이다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="rolling()">
+<div class="card">
+<div class="level">rolling()</div>
+<h2>04. 3일 이동평균 계산</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=5),
+    &quot;방문자&quot;: [10, 20, 30, 40, 50]
+})
+
+df[&quot;이동평균&quot;] = df[&quot;방문자&quot;].rolling(window=3).mean()
+print(df[&quot;이동평균&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=5),</code></td><td>연속된 날짜 범위를 생성합니다. periods는 만들 날짜 개수입니다.</td></tr><tr><td>5</td><td><code>    &quot;방문자&quot;: [10, 20, 30, 40, 50]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;이동평균&quot;] = df[&quot;방문자&quot;].rolling(window=3).mean()</code></td><td>일정한 개수의 값을 이동 창으로 묶어 계산할 준비를 합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;이동평균&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>[nan, nan, 20.0, 30.0, 40.0]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>rolling(window=3).mean()은 3개 값씩 묶어 이동평균을 계산한다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. rolling(window=3)은 3개씩 묶어 계산하는 이동 창을 만든다.</div><div class="truth">ㄴ. 처음 두 행은 3개 값이 부족하므로 NaN이 된다.</div><div class="truth">ㄷ. 세 번째 이동평균은 (10+20+30)/3=20.0이다.</div><div class="truth">ㄹ. rolling()은 반드시 문자열 열에만 사용한다.</div><div class="truth">ㅁ. 이동평균은 값의 흐름을 더 불규칙하게 만들기 위한 기능이다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="이동평균">
+<div class="card">
+<div class="level">이동평균</div>
+<h2>05. 주식 가격 2일 이동평균</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: pd.date_range(&quot;2026-03-01&quot;, periods=4),
+    &quot;종가&quot;: [1000, 1100, 1050, 1200]
+})
+
+df[&quot;MA2&quot;] = df[&quot;종가&quot;].rolling(window=2).mean()
+print(df[&quot;MA2&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: pd.date_range(&quot;2026-03-01&quot;, periods=4),</code></td><td>연속된 날짜 범위를 생성합니다. periods는 만들 날짜 개수입니다.</td></tr><tr><td>5</td><td><code>    &quot;종가&quot;: [1000, 1100, 1050, 1200]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;MA2&quot;] = df[&quot;종가&quot;].rolling(window=2).mean()</code></td><td>일정한 개수의 값을 이동 창으로 묶어 계산할 준비를 합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;MA2&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>[nan, 1050.0, 1075.0, 1125.0]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>이동평균은 주식 가격이나 방문자 수처럼 시간에 따라 변하는 데이터의 흐름을 부드럽게 볼 때 사용한다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. MA2는 2개 값씩 평균을 낸 2일 이동평균으로 볼 수 있다.</div><div class="truth">ㄴ. 두 번째 MA2는 (1000+1100)/2=1050.0이다.</div><div class="truth">ㄷ. 이동평균은 시계열 추세를 부드럽게 확인하는 데 도움을 준다.</div><div class="truth">ㄹ. rolling(window=2)은 항상 합계를 계산한다.</div><div class="truth">ㅁ. 이동평균은 날짜 데이터에서는 절대 사용하지 않는다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="누적합">
+<div class="card">
+<div class="level">누적합</div>
+<h2>06. 일별 매출 누적합 계산</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: pd.date_range(&quot;2026-04-01&quot;, periods=4),
+    &quot;매출&quot;: [100, 150, 120, 80]
+})
+
+df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()
+print(df[&quot;누적매출&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: pd.date_range(&quot;2026-04-01&quot;, periods=4),</code></td><td>연속된 날짜 범위를 생성합니다. periods는 만들 날짜 개수입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 120, 80]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()</code></td><td>위에서부터 차례대로 값을 누적하여 합계를 계산합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;누적매출&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>[100, 250, 370, 450]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>cumsum()은 위에서부터 차례로 값을 누적하여 합계를 계산한다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. cumsum()은 누적합을 계산한다.</div><div class="truth">ㄴ. 두 번째 누적매출은 100+150=250이다.</div><div class="truth">ㄷ. 마지막 누적매출은 450이다.</div><div class="truth">ㄹ. cumsum()은 평균만 계산한다.</div><div class="truth">ㅁ. 누적합은 이전 값과 관련 없이 각 행을 독립적으로만 계산한다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="시계열 정렬">
+<div class="card">
+<div class="level">시계열 정렬</div>
+<h2>07. 날짜 오름차순 정렬</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: [&quot;2026-01-03&quot;, &quot;2026-01-01&quot;, &quot;2026-01-02&quot;],
+    &quot;기온&quot;: [4, 3, 5]
+})
+
+df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])
+sorted_df = df.sort_values(&quot;날짜&quot;)
+print(sorted_df[&quot;기온&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: [&quot;2026-01-03&quot;, &quot;2026-01-01&quot;, &quot;2026-01-02&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;기온&quot;: [4, 3, 5]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])</code></td><td>문자열로 된 날짜나 시간을 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>sorted_df = df.sort_values(&quot;날짜&quot;)</code></td><td>날짜 열을 기준으로 시간 순서대로 정렬합니다.</td></tr><tr><td>10</td><td><code>print(sorted_df[&quot;기온&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>[3, 5, 4]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>시계열 데이터는 날짜 순서로 정렬해야 변화 흐름을 올바르게 볼 수 있다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. sort_values(&#x27;날짜&#x27;)는 날짜 기준으로 오름차순 정렬한다.</div><div class="truth">ㄴ. 정렬 후 기온 순서는 [3, 5, 4]이다.</div><div class="truth">ㄷ. 시간 흐름 분석에서는 날짜 정렬이 중요하다.</div><div class="truth">ㄹ. 날짜 정렬은 항상 데이터를 삭제한다.</div><div class="truth">ㅁ. sort_values()는 누적합만 계산한다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="resample()">
+<div class="card">
+<div class="level">resample()</div>
+<h2>08. 날씨 데이터 일별 평균 기온</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;시간&quot;: [&quot;2026-01-01 09:00&quot;, &quot;2026-01-01 15:00&quot;, &quot;2026-01-02 09:00&quot;, &quot;2026-01-02 15:00&quot;],
+    &quot;기온&quot;: [3, 7, 4, 8]
+})
+
+df[&quot;시간&quot;] = pd.to_datetime(df[&quot;시간&quot;])
+daily = df.set_index(&quot;시간&quot;)[&quot;기온&quot;].resample(&quot;D&quot;).mean()
+print(daily.tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;시간&quot;: [&quot;2026-01-01 09:00&quot;, &quot;2026-01-01 15:00&quot;, &quot;2026-01-02 09:00&quot;, &quot;2026-01-02 15:00&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;기온&quot;: [3, 7, 4, 8]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;시간&quot;] = pd.to_datetime(df[&quot;시간&quot;])</code></td><td>문자열로 된 날짜나 시간을 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>daily = df.set_index(&quot;시간&quot;)[&quot;기온&quot;].resample(&quot;D&quot;).mean()</code></td><td>날짜 또는 시간 열을 인덱스로 설정하여 시계열 분석에 적합하게 만듭니다.</td></tr><tr><td>10</td><td><code>print(daily.tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>[5.0, 6.0]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>resample(&#x27;D&#x27;).mean()은 시간 데이터를 일별 평균으로 요약할 수 있다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. resample(&#x27;D&#x27;)는 일 단위로 데이터를 묶는다.</div><div class="truth">ㄴ. mean()을 연결하면 일별 평균을 계산한다.</div><div class="truth">ㄷ. 2026-01-01의 평균 기온은 5.0이다.</div><div class="truth">ㄹ. resample(&#x27;D&#x27;)는 월별 합계만 계산한다.</div><div class="truth">ㅁ. 날짜/시간 인덱스와는 관련이 없다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="날짜 인덱싱">
+<div class="card">
+<div class="level">날짜 인덱싱</div>
+<h2>09. 특정 기간 데이터 선택</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=5),
+    &quot;매출&quot;: [100, 120, 130, 140, 150]
+})
+
+df = df.set_index(&quot;날짜&quot;)
+period = df.loc[&quot;2026-01-02&quot;:&quot;2026-01-04&quot;]
+print(period[&quot;매출&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=5),</code></td><td>연속된 날짜 범위를 생성합니다. periods는 만들 날짜 개수입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 120, 130, 140, 150]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df = df.set_index(&quot;날짜&quot;)</code></td><td>날짜 또는 시간 열을 인덱스로 설정하여 시계열 분석에 적합하게 만듭니다.</td></tr><tr><td>9</td><td><code>period = df.loc[&quot;2026-01-02&quot;:&quot;2026-01-04&quot;]</code></td><td>날짜 인덱스를 기준으로 특정 날짜 또는 기간 데이터를 선택합니다.</td></tr><tr><td>10</td><td><code>print(period[&quot;매출&quot;].tolist())</code></td><td>Series 값을 파이썬 리스트 형태로 변환하여 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>[120, 130, 140]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>날짜 인덱스는 특정 기간 범위를 슬라이싱하는 데 사용할 수 있다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. 날짜 인덱스에서는 문자열 날짜 범위로 슬라이싱할 수 있다.</div><div class="truth">ㄴ. 2026-01-02부터 2026-01-04까지의 매출은 [120, 130, 140]이다.</div><div class="truth">ㄷ. 기간 선택은 시계열 분석에서 자주 사용된다.</div><div class="truth">ㄹ. loc 슬라이싱은 날짜 인덱스에서 사용할 수 없다.</div><div class="truth">ㅁ. set_index(&#x27;날짜&#x27;)는 날짜 열을 삭제하고 데이터 자체를 모두 없앤다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="종합">
+<div class="card">
+<div class="level">종합</div>
+<h2>10. 월별 매출과 이동평균 함께 분석</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=6, freq=&quot;ME&quot;),
+    &quot;매출&quot;: [100, 150, 130, 170, 160, 200]
+})
+
+df = df.sort_values(&quot;날짜&quot;)
+df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()
+df[&quot;이동평균&quot;] = df[&quot;매출&quot;].rolling(window=3).mean()
+
+print(df[[&quot;누적매출&quot;, &quot;이동평균&quot;]].tail(1).values.tolist()[0])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>시계열 분석에 사용할 표 형태 데이터를 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: pd.date_range(&quot;2026-01-01&quot;, periods=6, freq=&quot;ME&quot;),</code></td><td>연속된 날짜 범위를 생성합니다. periods는 만들 날짜 개수입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 130, 170, 160, 200]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df = df.sort_values(&quot;날짜&quot;)</code></td><td>날짜 열을 기준으로 시간 순서대로 정렬합니다.</td></tr><tr><td>9</td><td><code>df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()</code></td><td>위에서부터 차례대로 값을 누적하여 합계를 계산합니다.</td></tr><tr><td>10</td><td><code>df[&quot;이동평균&quot;] = df[&quot;매출&quot;].rolling(window=3).mean()</code></td><td>일정한 개수의 값을 이동 창으로 묶어 계산할 준비를 합니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>12</td><td><code>print(df[[&quot;누적매출&quot;, &quot;이동평균&quot;]].tail(1).values.tolist()[0])</code></td><td>마지막 한 행만 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>[910.0, 176.66666666666666]</code></pre>
+<p>날짜 변환, 기간 선택, 리샘플링, 이동평균, 누적합 결과를 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>시계열 분석에서는 정렬, 누적합, 이동평균을 함께 사용해 흐름을 파악할 수 있다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 시계열 데이터 분석 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. sort_values(&#x27;날짜&#x27;)로 시간 순서를 정리한다.</div><div class="truth">ㄴ. cumsum()으로 누적매출을 계산한다.</div><div class="truth">ㄷ. rolling(window=3).mean()으로 3개월 이동평균을 계산한다.</div><div class="truth">ㄹ. 이동평균은 결측치 제거 함수이다.</div><div class="truth">ㅁ. 누적합과 이동평균은 동시에 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>시계열 분석에서는 날짜 자료형, 날짜 인덱스, 정렬, 리샘플링, 이동평균, 누적합의 역할을 구분해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>문자열 날짜 준비
+→ to_datetime()으로 날짜 변환
+→ set_index()로 날짜 인덱스 설정
+→ sort_values()로 시간 순서 정렬
+→ resample()로 일별/월별 집계
+→ rolling()으로 이동평균 계산
+→ cumsum()으로 누적합 계산
+→ 시간 흐름과 추세 해석</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_8단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["[2026, 2026, 2026]", "5", "[250, 250]", "[nan, nan, 20.0, 30.0, 40.0]", "[nan, 1050.0, 1075.0, 1125.0]", "[100, 250, 370, 450]", "[3, 5, 4]", "[5.0, 6.0]", "[120, 130, 140]", "[910.0, 176.66666666666666]"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["문자열 날짜를 날짜 자료형으로 변환", "날짜를 인덱스로 설정하고 특정 날짜 선택", "월별 매출 합계 계산", "3일 이동평균 계산", "주식 가격 2일 이동평균", "일별 매출 누적합 계산", "날짜 오름차순 정렬", "날씨 데이터 일별 평균 기온", "특정 기간 데이터 선택", "월별 매출과 이동평균 함께 분석"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['8단계 Pandas 시계열 데이터 분석 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_8단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 10단계 실전 프로젝트 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#f8fafc,#ecfdf5,#eff6ff);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#0f766e,#2563eb,#7c3aed);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:300px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#bbf7d0}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#0f766e}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #bbf7d0;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(15,118,110,.10)}
+h2{color:#0f766e}h3{color:#2563eb}
+pre{background:#052e2b;color:#ccfbf1;padding:18px;border-radius:18px;overflow:auto;border:4px solid #5eead4}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#0f766e;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #bbf7d0;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbf7d0;padding:10px;vertical-align:top}th{background:#0f766e;color:white}td:nth-child(2){background:#f0fdf4;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#0f766e;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#f0fdf4;border-left:5px solid #10b981;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #bbf7d0;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+.flow{background:#f8fafc;border-left:8px solid #2563eb;border-radius:16px;padding:16px;white-space:pre-line}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 10단계. 실전 프로젝트</h1>
+<p>“데이터 실무 활용 단계” · 시각화 · 머신러닝 · API · 공공데이터 · 웹 크롤링 데이터 분석</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('Pandas + Matplotlib',this)">Pandas + Matplotlib</button><button onclick="showConcept('Pandas + Seaborn',this)">Pandas + Seaborn</button><button onclick="showConcept('Pandas + Machine Learning',this)">Pandas + Machine Learning</button><button onclick="showConcept('Pandas + API 데이터',this)">Pandas + API 데이터</button><button onclick="showConcept('Pandas + 웹 크롤링 데이터',this)">Pandas + 웹 크롤링 데이터</button><button onclick="showConcept('실전 프로젝트 종합',this)">실전 프로젝트 종합</button>
+<button onclick="showSec('flow',this)">최종 학습 흐름</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>이 단계는 Pandas 1~9단계에서 배운 내용을 실제 프로젝트로 연결하는 단계입니다. 표 데이터 생성, 파일 입출력, 탐색, 선택, 전처리, 집계, 결합, 시계열, 고급 문법을 하나의 흐름으로 엮어 실무형 결과물을 만듭니다.</p>
+<span class="badge">Pandas + Matplotlib</span><span class="badge">Pandas + Seaborn</span><span class="badge">Machine Learning</span><span class="badge">API 데이터</span><span class="badge">웹 크롤링 데이터</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식:</b> Pandas가 시각화, 머신러닝, API, 웹 크롤링 데이터 분석과 연결되는 방식을 설명한다.</div>
+<div class="goal"><b>기능:</b> 학생 성적 분석, 날씨 데이터 분석, 매출 대시보드, 머신러닝 전처리, 웹 크롤링 데이터 정리를 구현한다.</div>
+<div class="goal"><b>태도:</b> 데이터 문제를 실제 프로젝트로 정의하고, 분석 결과를 해석하여 의사결정에 활용하는 태도를 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="Pandas + Matplotlib">
+<div class="card">
+<div class="level">Pandas + Matplotlib</div>
+<h2>01. 학생 성적 막대그래프 프로젝트</h2>
+<pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, 85, 78]
+})
+
+print(df[&quot;점수&quot;].mean())
+df.plot(kind=&quot;bar&quot;, x=&quot;이름&quot;, y=&quot;점수&quot;, legend=False)
+plt.title(&quot;학생 성적 분석&quot;)
+plt.ylabel(&quot;점수&quot;)
+plt.tight_layout()
+plt.show()</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>import matplotlib.pyplot as plt</code></td><td>그래프를 그리기 위해 Matplotlib의 pyplot을 plt라는 이름으로 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>4</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>5</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;점수&quot;].mean())</code></td><td>평균값을 계산합니다.</td></tr><tr><td>10</td><td><code>df.plot(kind=&quot;bar&quot;, x=&quot;이름&quot;, y=&quot;점수&quot;, legend=False)</code></td><td>DataFrame 데이터를 그래프로 그립니다.</td></tr><tr><td>11</td><td><code>plt.title(&quot;학생 성적 분석&quot;)</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>12</td><td><code>plt.ylabel(&quot;점수&quot;)</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>13</td><td><code>plt.tight_layout()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>14</td><td><code>plt.show()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>84.33333333333333</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>Pandas와 Matplotlib을 함께 사용하면 표 데이터를 그래프로 시각화할 수 있다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df.plot(kind=&#x27;bar&#x27;)는 막대그래프를 그릴 수 있다.</div><div class="truth">ㄴ. 평균 점수는 84.33333333333333이다.</div><div class="truth">ㄷ. Matplotlib은 그래프 제목과 축 이름 설정에 사용할 수 있다.</div><div class="truth">ㄹ. plt.show()는 CSV 파일을 저장하는 함수이다.</div><div class="truth">ㅁ. Pandas 데이터는 그래프로 표현할 수 없다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + Matplotlib">
+<div class="card">
+<div class="level">Pandas + Matplotlib</div>
+<h2>02. 매출 대시보드형 선그래프</h2>
+<pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;, &quot;4월&quot;],
+    &quot;매출&quot;: [100, 150, 130, 180]
+})
+
+df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()
+print(df[&quot;누적매출&quot;].tolist())
+
+df.plot(x=&quot;월&quot;, y=[&quot;매출&quot;, &quot;누적매출&quot;], marker=&quot;o&quot;)
+plt.title(&quot;월별 매출 대시보드&quot;)
+plt.tight_layout()
+plt.show()</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>import matplotlib.pyplot as plt</code></td><td>그래프를 그리기 위해 Matplotlib의 pyplot을 plt라는 이름으로 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>4</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>5</td><td><code>    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;, &quot;4월&quot;],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;매출&quot;: [100, 150, 130, 180]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>df[&quot;누적매출&quot;] = df[&quot;매출&quot;].cumsum()</code></td><td>위에서부터 차례대로 누적합을 계산합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;누적매출&quot;].tolist())</code></td><td>Series를 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>12</td><td><code>df.plot(x=&quot;월&quot;, y=[&quot;매출&quot;, &quot;누적매출&quot;], marker=&quot;o&quot;)</code></td><td>DataFrame 데이터를 그래프로 그립니다.</td></tr><tr><td>13</td><td><code>plt.title(&quot;월별 매출 대시보드&quot;)</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>14</td><td><code>plt.tight_layout()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>15</td><td><code>plt.show()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>[100, 250, 380, 560]</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>매출 데이터는 누적합과 선그래프를 이용해 흐름을 분석할 수 있다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. cumsum()은 누적합을 계산한다.</div><div class="truth">ㄴ. 누적매출 결과는 [100, 250, 380, 560]이다.</div><div class="truth">ㄷ. 선그래프는 시간 흐름을 보여 주는 데 적합하다.</div><div class="truth">ㄹ. cumsum()은 평균을 계산한다.</div><div class="truth">ㅁ. plot()은 데이터 삭제 함수이다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + Seaborn">
+<div class="card">
+<div class="level">Pandas + Seaborn</div>
+<h2>03. 카테고리별 평균 점수 분석</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],
+    &quot;점수&quot;: [90, 80, 70, 85]
+})
+
+summary = df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean().reset_index()
+print(summary)
+
+try:
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    sns.barplot(data=summary, x=&quot;반&quot;, y=&quot;점수&quot;)
+    plt.title(&quot;반별 평균 점수&quot;)
+    plt.tight_layout()
+    plt.show()
+except ImportError:
+    print(&quot;seaborn이 설치되어 있지 않습니다.&quot;)</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 80, 70, 85]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>8</td><td><code>summary = df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean().reset_index()</code></td><td>평균값을 계산합니다.</td></tr><tr><td>9</td><td><code>print(summary)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr><tr><td>10</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>11</td><td><code>try:</code></td><td>오류가 날 수 있는 코드를 안전하게 실행하기 위한 try 구문입니다.</td></tr><tr><td>12</td><td><code>    import seaborn as sns</code></td><td>통계 시각화를 위한 Seaborn 라이브러리를 불러옵니다.</td></tr><tr><td>13</td><td><code>    import matplotlib.pyplot as plt</code></td><td>그래프를 그리기 위해 Matplotlib의 pyplot을 plt라는 이름으로 불러옵니다.</td></tr><tr><td>14</td><td><code>    sns.barplot(data=summary, x=&quot;반&quot;, y=&quot;점수&quot;)</code></td><td>Seaborn으로 막대그래프를 그립니다.</td></tr><tr><td>15</td><td><code>    plt.title(&quot;반별 평균 점수&quot;)</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>16</td><td><code>    plt.tight_layout()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>17</td><td><code>    plt.show()</code></td><td>Matplotlib 그래프의 제목, 축 이름, 배치, 출력 등을 설정합니다.</td></tr><tr><td>18</td><td><code>except ImportError:</code></td><td>라이브러리가 설치되어 있지 않을 때 실행할 예외 처리 구문입니다.</td></tr><tr><td>19</td><td><code>    print(&quot;seaborn이 설치되어 있지 않습니다.&quot;)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>A반 85.0, B반 77.5</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>Seaborn은 Pandas DataFrame을 기반으로 통계 그래프를 쉽게 그릴 수 있다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. groupby(&#x27;반&#x27;)으로 반별 평균을 계산한다.</div><div class="truth">ㄴ. A반 평균은 85.0이다.</div><div class="truth">ㄷ. try-except를 사용해 seaborn 미설치 오류를 처리한다.</div><div class="truth">ㄹ. Seaborn은 반드시 CSV 파일만 읽는다.</div><div class="truth">ㅁ. reset_index()는 그래프 제목을 바꾼다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + Machine Learning">
+<div class="card">
+<div class="level">Pandas + Machine Learning</div>
+<h2>04. 머신러닝 전처리 프로젝트</h2>
+<pre><code>import pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.DataFrame({
+    &quot;공부시간&quot;: [1, 2, 3, 4, 5],
+    &quot;복습횟수&quot;: [0, 1, 1, 2, 3],
+    &quot;합격&quot;: [0, 0, 1, 1, 1]
+})
+
+X = df[[&quot;공부시간&quot;, &quot;복습횟수&quot;]]
+y = df[&quot;합격&quot;]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+print(len(X_train), len(X_test))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from sklearn.model_selection import train_test_split</code></td><td>머신러닝 전처리나 모델 학습에 필요한 scikit-learn 기능을 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>4</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>5</td><td><code>    &quot;공부시간&quot;: [1, 2, 3, 4, 5],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;복습횟수&quot;: [0, 1, 1, 2, 3],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>    &quot;합격&quot;: [0, 0, 1, 1, 1]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>8</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>10</td><td><code>X = df[[&quot;공부시간&quot;, &quot;복습횟수&quot;]]</code></td><td>머신러닝 모델에 입력할 특성 데이터를 X에 저장합니다.</td></tr><tr><td>11</td><td><code>y = df[&quot;합격&quot;]</code></td><td>모델이 예측할 정답 데이터를 y에 저장합니다.</td></tr><tr><td>12</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>13</td><td><code>X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)</code></td><td>데이터를 학습용과 테스트용으로 나눕니다.</td></tr><tr><td>14</td><td><code>print(len(X_train), len(X_test))</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>3 2</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>Pandas는 머신러닝에서 입력 데이터 X와 정답 데이터 y를 나누는 전처리에 자주 사용된다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. X는 모델의 입력 특성 데이터이다.</div><div class="truth">ㄴ. y는 예측할 정답 데이터이다.</div><div class="truth">ㄷ. train_test_split은 학습용과 테스트용 데이터를 나눈다.</div><div class="truth">ㄹ. X에는 합격 열만 넣어야 한다.</div><div class="truth">ㅁ. Pandas는 머신러닝 전처리에 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + Machine Learning">
+<div class="card">
+<div class="level">Pandas + Machine Learning</div>
+<h2>05. 간단한 분류 모델 학습</h2>
+<pre><code>import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+
+df = pd.DataFrame({
+    &quot;공부시간&quot;: [1, 2, 3, 4, 5],
+    &quot;복습횟수&quot;: [0, 1, 1, 2, 3],
+    &quot;합격&quot;: [0, 0, 1, 1, 1]
+})
+
+X = df[[&quot;공부시간&quot;, &quot;복습횟수&quot;]]
+y = df[&quot;합격&quot;]
+
+model = DecisionTreeClassifier(random_state=42)
+model.fit(X, y)
+prediction = model.predict([[4, 2]])
+print(prediction[0])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from sklearn.tree import DecisionTreeClassifier</code></td><td>머신러닝 전처리나 모델 학습에 필요한 scikit-learn 기능을 불러옵니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>4</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>5</td><td><code>    &quot;공부시간&quot;: [1, 2, 3, 4, 5],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;복습횟수&quot;: [0, 1, 1, 2, 3],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>    &quot;합격&quot;: [0, 0, 1, 1, 1]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>8</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>10</td><td><code>X = df[[&quot;공부시간&quot;, &quot;복습횟수&quot;]]</code></td><td>머신러닝 모델에 입력할 특성 데이터를 X에 저장합니다.</td></tr><tr><td>11</td><td><code>y = df[&quot;합격&quot;]</code></td><td>모델이 예측할 정답 데이터를 y에 저장합니다.</td></tr><tr><td>12</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>13</td><td><code>model = DecisionTreeClassifier(random_state=42)</code></td><td>의사결정나무 분류 모델 객체를 만듭니다.</td></tr><tr><td>14</td><td><code>model.fit(X, y)</code></td><td>입력 데이터와 정답 데이터를 사용해 모델을 학습시킵니다.</td></tr><tr><td>15</td><td><code>prediction = model.predict([[4, 2]])</code></td><td>학습된 모델로 새로운 데이터의 결과를 예측합니다.</td></tr><tr><td>16</td><td><code>print(prediction[0])</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>1</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>Pandas로 준비한 데이터를 scikit-learn 모델 학습에 사용할 수 있다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. DecisionTreeClassifier는 분류 모델이다.</div><div class="truth">ㄴ. model.fit(X, y)는 모델을 학습시킨다.</div><div class="truth">ㄷ. predict([[4,2]])는 새 데이터의 합격 여부를 예측한다.</div><div class="truth">ㄹ. fit()은 그래프를 저장한다.</div><div class="truth">ㅁ. X와 y는 반드시 문자열 하나여야 한다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + API 데이터">
+<div class="card">
+<div class="level">Pandas + API 데이터</div>
+<h2>06. API 응답 형태 데이터 분석</h2>
+<pre><code>import pandas as pd
+
+api_data = [
+    {&quot;지역&quot;: &quot;전주&quot;, &quot;기온&quot;: 25, &quot;습도&quot;: 60},
+    {&quot;지역&quot;: &quot;군산&quot;, &quot;기온&quot;: 24, &quot;습도&quot;: 65},
+    {&quot;지역&quot;: &quot;익산&quot;, &quot;기온&quot;: 26, &quot;습도&quot;: 58}
+]
+
+df = pd.DataFrame(api_data)
+print(df[&quot;기온&quot;].mean())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>api_data = [</code></td><td>계산, 변환, 분석 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>4</td><td><code>    {&quot;지역&quot;: &quot;전주&quot;, &quot;기온&quot;: 25, &quot;습도&quot;: 60},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    {&quot;지역&quot;: &quot;군산&quot;, &quot;기온&quot;: 24, &quot;습도&quot;: 65},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    {&quot;지역&quot;: &quot;익산&quot;, &quot;기온&quot;: 26, &quot;습도&quot;: 58}</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>]</code></td><td>실전 프로젝트에서 데이터 분석 과정을 구성하는 코드입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>df = pd.DataFrame(api_data)</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;기온&quot;].mean())</code></td><td>평균값을 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>25.0</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>API에서 받은 JSON 형태 데이터는 Pandas DataFrame으로 바꿔 분석할 수 있다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. 리스트 안의 딕셔너리 구조는 DataFrame으로 바꿀 수 있다.</div><div class="truth">ㄴ. 기온 평균은 25.0이다.</div><div class="truth">ㄷ. API 데이터 분석에도 Pandas를 사용할 수 있다.</div><div class="truth">ㄹ. API 데이터는 표로 변환할 수 없다.</div><div class="truth">ㅁ. mean()은 문자열을 합치는 함수이다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + API 데이터">
+<div class="card">
+<div class="level">Pandas + API 데이터</div>
+<h2>07. 공공데이터 미세먼지 등급 요약</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;측정소&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;],
+    &quot;pm10&quot;: [20, 45, 85, 30]
+})
+
+df[&quot;등급&quot;] = df[&quot;pm10&quot;].apply(lambda x: &quot;나쁨&quot; if x &gt;= 80 else &quot;보통&quot; if x &gt;= 31 else &quot;좋음&quot;)
+print(df[&quot;등급&quot;].value_counts().to_dict())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>4</td><td><code>    &quot;측정소&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;pm10&quot;: [20, 45, 85, 30]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>8</td><td><code>df[&quot;등급&quot;] = df[&quot;pm10&quot;].apply(lambda x: &quot;나쁨&quot; if x &gt;= 80 else &quot;보통&quot; if x &gt;= 31 else &quot;좋음&quot;)</code></td><td>각 값에 조건 함수를 적용해 새로운 값을 만듭니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;등급&quot;].value_counts().to_dict())</code></td><td>값별 등장 횟수를 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>{&#x27;좋음&#x27;: 2, &#x27;보통&#x27;: 1, &#x27;나쁨&#x27;: 1}</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>공공데이터 수치를 등급으로 바꾸고 빈도를 요약할 수 있다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. apply()로 pm10 값을 등급으로 변환한다.</div><div class="truth">ㄴ. value_counts()는 등급별 개수를 계산한다.</div><div class="truth">ㄷ. 결과는 {&#x27;좋음&#x27;: 2, &#x27;보통&#x27;: 1, &#x27;나쁨&#x27;: 1}이다.</div><div class="truth">ㄹ. value_counts()는 파일을 저장한다.</div><div class="truth">ㅁ. apply()는 날짜 인덱스 전용이다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + 웹 크롤링 데이터">
+<div class="card">
+<div class="level">Pandas + 웹 크롤링 데이터</div>
+<h2>08. 크롤링 결과 표 정리</h2>
+<pre><code>import pandas as pd
+
+crawled = [
+    {&quot;제목&quot;: &quot;뉴스A&quot;, &quot;조회수&quot;: &quot;1,200&quot;},
+    {&quot;제목&quot;: &quot;뉴스B&quot;, &quot;조회수&quot;: &quot;850&quot;},
+    {&quot;제목&quot;: &quot;뉴스C&quot;, &quot;조회수&quot;: &quot;2,000&quot;}
+]
+
+df = pd.DataFrame(crawled)
+df[&quot;조회수&quot;] = df[&quot;조회수&quot;].str.replace(&quot;,&quot;, &quot;&quot;).astype(int)
+print(df.sort_values(&quot;조회수&quot;, ascending=False)[&quot;제목&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>crawled = [</code></td><td>계산, 변환, 분석 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>4</td><td><code>    {&quot;제목&quot;: &quot;뉴스A&quot;, &quot;조회수&quot;: &quot;1,200&quot;},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    {&quot;제목&quot;: &quot;뉴스B&quot;, &quot;조회수&quot;: &quot;850&quot;},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    {&quot;제목&quot;: &quot;뉴스C&quot;, &quot;조회수&quot;: &quot;2,000&quot;}</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>]</code></td><td>실전 프로젝트에서 데이터 분석 과정을 구성하는 코드입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>df = pd.DataFrame(crawled)</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>10</td><td><code>df[&quot;조회수&quot;] = df[&quot;조회수&quot;].str.replace(&quot;,&quot;, &quot;&quot;).astype(int)</code></td><td>문자열 안의 특정 기호나 글자를 다른 값으로 바꿉니다.</td></tr><tr><td>11</td><td><code>print(df.sort_values(&quot;조회수&quot;, ascending=False)[&quot;제목&quot;].tolist())</code></td><td>특정 열을 기준으로 데이터를 정렬합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>[&#x27;뉴스C&#x27;, &#x27;뉴스A&#x27;, &#x27;뉴스B&#x27;]</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>웹 크롤링 결과의 문자열 숫자는 정리 후 숫자로 변환해 분석할 수 있다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. str.replace(&#x27;,&#x27;, &#x27;&#x27;)는 쉼표를 제거한다.</div><div class="truth">ㄴ. astype(int)는 조회수를 정수로 변환한다.</div><div class="truth">ㄷ. 조회수 내림차순 제목 순서는 뉴스C, 뉴스A, 뉴스B이다.</div><div class="truth">ㄹ. 문자열 숫자는 변환 없이 항상 정확히 정렬된다.</div><div class="truth">ㅁ. sort_values()는 결측치만 채운다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="Pandas + 웹 크롤링 데이터">
+<div class="card">
+<div class="level">Pandas + 웹 크롤링 데이터</div>
+<h2>09. 크롤링 상품 가격 분석</h2>
+<pre><code>import pandas as pd
+
+items = [
+    {&quot;상품&quot;: &quot;키보드&quot;, &quot;가격&quot;: &quot;45,000원&quot;},
+    {&quot;상품&quot;: &quot;마우스&quot;, &quot;가격&quot;: &quot;25,000원&quot;},
+    {&quot;상품&quot;: &quot;모니터&quot;, &quot;가격&quot;: &quot;250,000원&quot;}
+]
+
+df = pd.DataFrame(items)
+df[&quot;가격&quot;] = df[&quot;가격&quot;].str.replace(&quot;,&quot;, &quot;&quot;).str.replace(&quot;원&quot;, &quot;&quot;).astype(int)
+print(df[&quot;가격&quot;].mean())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>items = [</code></td><td>계산, 변환, 분석 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>4</td><td><code>    {&quot;상품&quot;: &quot;키보드&quot;, &quot;가격&quot;: &quot;45,000원&quot;},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    {&quot;상품&quot;: &quot;마우스&quot;, &quot;가격&quot;: &quot;25,000원&quot;},</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    {&quot;상품&quot;: &quot;모니터&quot;, &quot;가격&quot;: &quot;250,000원&quot;}</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>]</code></td><td>실전 프로젝트에서 데이터 분석 과정을 구성하는 코드입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>df = pd.DataFrame(items)</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>10</td><td><code>df[&quot;가격&quot;] = df[&quot;가격&quot;].str.replace(&quot;,&quot;, &quot;&quot;).str.replace(&quot;원&quot;, &quot;&quot;).astype(int)</code></td><td>문자열 안의 특정 기호나 글자를 다른 값으로 바꿉니다.</td></tr><tr><td>11</td><td><code>print(df[&quot;가격&quot;].mean())</code></td><td>평균값을 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>106666.66666666667</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>크롤링된 가격 문자열은 쉼표와 단위를 제거한 뒤 숫자로 변환해야 계산할 수 있다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. 쉼표와 원 문자를 제거해야 숫자 계산이 가능하다.</div><div class="truth">ㄴ. astype(int)로 가격을 정수형으로 변환한다.</div><div class="truth">ㄷ. 평균 가격은 106666.66666666667이다.</div><div class="truth">ㄹ. &#x27;45,000원&#x27;은 그대로 평균 계산이 가능하다.</div><div class="truth">ㅁ. str.replace()는 그래프만 그리는 함수이다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="실전 프로젝트 종합">
+<div class="card">
+<div class="level">실전 프로젝트 종합</div>
+<h2>10. 학생 성적 분석 시스템</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;국어&quot;: [90, 85, 78, 95],
+    &quot;수학&quot;: [88, 95, 80, 70]
+})
+
+result = (
+    df.assign(평균=lambda x: (x[&quot;국어&quot;] + x[&quot;수학&quot;]) / 2)
+      .assign(등급=lambda x: x[&quot;평균&quot;].apply(lambda v: &quot;우수&quot; if v &gt;= 85 else &quot;보통&quot;))
+      .sort_values(&quot;평균&quot;, ascending=False)
+)
+
+print(result[[&quot;이름&quot;, &quot;평균&quot;, &quot;등급&quot;]].head(2))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 또는 리스트 데이터를 표 형태 DataFrame으로 변환합니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 78, 95],</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 80, 70]</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 또는 예시 데이터에 들어가는 값입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>9</td><td><code>result = (</code></td><td>계산, 변환, 분석 결과를 변수 또는 새 열에 저장합니다.</td></tr><tr><td>10</td><td><code>    df.assign(평균=lambda x: (x[&quot;국어&quot;] + x[&quot;수학&quot;]) / 2)</code></td><td>새 열을 추가한 DataFrame을 반환하여 분석 흐름을 이어갑니다.</td></tr><tr><td>11</td><td><code>      .assign(등급=lambda x: x[&quot;평균&quot;].apply(lambda v: &quot;우수&quot; if v &gt;= 85 else &quot;보통&quot;))</code></td><td>각 값에 조건 함수를 적용해 새로운 값을 만듭니다.</td></tr><tr><td>12</td><td><code>      .sort_values(&quot;평균&quot;, ascending=False)</code></td><td>특정 열을 기준으로 데이터를 정렬합니다.</td></tr><tr><td>13</td><td><code>)</code></td><td>실전 프로젝트에서 데이터 분석 과정을 구성하는 코드입니다.</td></tr><tr><td>14</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 나눕니다.</td></tr><tr><td>15</td><td><code>print(result[[&quot;이름&quot;, &quot;평균&quot;, &quot;등급&quot;]].head(2))</code></td><td>앞에서 지정한 개수의 행만 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>상위 2명: 지아, 민수</code></pre>
+<p>실전 프로젝트 흐름에서 계산·시각화·전처리·분석 결과의 핵심을 확인하는 문항입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>실전 프로젝트는 생성, 전처리, 계산, 정렬, 요약을 하나의 흐름으로 연결한다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 실전 프로젝트 활용 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. assign()으로 평균과 등급 열을 추가한다.</div><div class="truth">ㄴ. sort_values()로 평균 높은 순 정렬을 수행한다.</div><div class="truth">ㄷ. 상위 2명은 지아와 민수이다.</div><div class="truth">ㄹ. head(2)는 전체 데이터를 삭제한다.</div><div class="truth">ㅁ. 실전 프로젝트에서는 Pandas 기능을 함께 연결할 수 없다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>실전 프로젝트에서는 Pandas 기능을 단독으로 외우기보다 시각화, 머신러닝, API, 웹 크롤링 데이터와 어떻게 연결되는지 이해하는 것이 중요합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="flow" class="section">
+<div class="card">
+<h2>🧭 최종 학습 흐름</h2>
+<div class="flow">DataFrame 생성
+→ 파일 입출력
+→ 데이터 탐색
+→ 선택/필터링
+→ 전처리
+→ 집계
+→ 결합
+→ 시계열
+→ 고급 문법
+→ 실전 프로젝트</div>
+</div>
+</section>
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>문제 정의
+→ 데이터 수집
+→ DataFrame 생성
+→ 탐색과 전처리
+→ 집계와 결합
+→ 시계열 또는 고급 문법 적용
+→ 시각화 / 머신러닝 / API / 크롤링 분석
+→ 결과 해석과 보고서 작성</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_10단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["84.33333333333333", "[100, 250, 380, 560]", "A반 85.0, B반 77.5", "3 2", "1", "25.0", "{'좋음': 2, '보통': 1, '나쁨': 1}", "['뉴스C', '뉴스A', '뉴스B']", "106666.66666666667", "상위 2명: 지아, 민수"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["학생 성적 막대그래프 프로젝트", "매출 대시보드형 선그래프", "카테고리별 평균 점수 분석", "머신러닝 전처리 프로젝트", "간단한 분류 모델 학습", "API 응답 형태 데이터 분석", "공공데이터 미세먼지 등급 요약", "크롤링 결과 표 정리", "크롤링 상품 가격 분석", "학생 성적 분석 시스템"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['10단계 Pandas 실전 프로젝트 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_10단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>

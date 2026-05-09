@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 5단계 데이터 전처리 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#fff7ed,#eff6ff,#ecfdf5);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#ea580c,#0f766e,#2563eb);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:295px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#fed7aa}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#ea580c}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #fed7aa;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(234,88,12,.10)}
+h2{color:#c2410c}h3{color:#2563eb}
+pre{background:#431407;color:#ffedd5;padding:18px;border-radius:18px;overflow:auto;border:4px solid #fdba74}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#ea580c;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #fed7aa;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #fed7aa;padding:10px;vertical-align:top}th{background:#ea580c;color:white}td:nth-child(2){background:#fff7ed;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#ea580c;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#fff7ed;border-left:5px solid #f97316;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #fed7aa;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 5단계. 데이터 전처리</h1>
+<p>“더러운 데이터를 깨끗하게 만들기” · 결측치 · dropna · fillna · 중복 제거 · 문자열 처리 · astype · 날짜 변환</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('결측치 처리',this)">결측치 처리</button><button onclick="showConcept('dropna()',this)">dropna()</button><button onclick="showConcept('fillna()',this)">fillna()</button><button onclick="showConcept('중복 제거',this)">중복 제거</button><button onclick="showConcept('drop_duplicates()',this)">drop_duplicates()</button><button onclick="showConcept('문자열 처리',this)">문자열 처리</button><button onclick="showConcept('astype()',this)">astype()</button><button onclick="showConcept('날짜 변환',this)">날짜 변환</button><button onclick="showConcept('종합',this)">종합</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>실제 데이터는 완벽하지 않습니다. 값이 비어 있거나, 중복되어 있거나, 공백이 섞여 있거나, 숫자가 문자열로 저장되어 있기도 합니다. 전처리는 이런 데이터를 분석 가능한 깨끗한 형태로 만드는 과정입니다.</p>
+<span class="badge">결측치 처리</span><span class="badge">dropna()</span><span class="badge">fillna()</span><span class="badge">중복 제거</span><span class="badge">drop_duplicates()</span><span class="badge">문자열 처리</span><span class="badge">astype()</span><span class="badge">날짜 변환</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식 목표:</b> 결측치, 중복, 문자열 공백, 자료형 오류, 날짜 변환의 의미를 설명할 수 있다.</div>
+<div class="goal"><b>기능 목표:</b> dropna(), fillna(), drop_duplicates(), str.strip(), astype(), to_datetime()을 이용해 데이터를 정리할 수 있다.</div>
+<div class="goal"><b>태도 목표:</b> 분석 전 데이터 품질을 점검하고, 정제 근거를 남기는 태도를 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="결측치 처리">
+<div class="card">
+<div class="level">결측치 처리</div>
+<h2>01. 결측치 개수 확인하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, None, 78]
+})
+
+print(df.isna().sum()[&quot;점수&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, None, 78]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.isna().sum()[&quot;점수&quot;])</code></td><td>결측치 여부를 확인한 뒤 열별 결측치 개수를 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>1</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>결측치는 비어 있거나 누락된 값이며, isna().sum()으로 열별 개수를 확인할 수 있다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. None은 Pandas에서 결측치로 인식될 수 있다.</div><div class="truth">ㄴ. isna()는 결측치 여부를 True/False로 확인한다.</div><div class="truth">ㄷ. 점수 열의 결측치 개수는 1개이다.</div><div class="truth">ㄹ. 결측치는 분석 전 확인할 필요가 없다.</div><div class="truth">ㅁ. isna().sum()은 평균을 계산하는 함수이다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="dropna()">
+<div class="card">
+<div class="level">dropna()</div>
+<h2>02. 결측치가 있는 행 제거하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, None, 78]
+})
+
+clean = df.dropna()
+print(clean[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, None, 78]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>clean = df.dropna()</code></td><td>결측치가 포함된 행을 제거합니다.</td></tr><tr><td>9</td><td><code>print(clean[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>[&#x27;민수&#x27;, &#x27;하준&#x27;]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>dropna()는 결측치가 포함된 행이나 열을 제거할 때 사용한다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. dropna()는 결측치가 있는 행을 제거할 수 있다.</div><div class="truth">ㄴ. 위 예제에서는 지아 행이 제거된다.</div><div class="truth">ㄷ. clean에는 민수와 하준만 남는다.</div><div class="truth">ㄹ. dropna()는 결측치를 평균으로 채운다.</div><div class="truth">ㅁ. dropna()는 문자열 공백 제거 함수이다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="fillna()">
+<div class="card">
+<div class="level">fillna()</div>
+<h2>03. 누락된 성적 평균으로 복구하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, None, 78]
+})
+
+df[&quot;점수&quot;] = df[&quot;점수&quot;].fillna(df[&quot;점수&quot;].mean())
+print(df[&quot;점수&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, None, 78]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;점수&quot;] = df[&quot;점수&quot;].fillna(df[&quot;점수&quot;].mean())</code></td><td>결측치를 지정한 값으로 채웁니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;점수&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>[90.0, 84.0, 78.0]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>fillna()는 결측치를 지정한 값으로 채우는 함수이다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. fillna()는 결측치를 다른 값으로 채울 수 있다.</div><div class="truth">ㄴ. mean()은 평균을 계산한다.</div><div class="truth">ㄷ. 결측치는 84.0으로 채워진다.</div><div class="truth">ㄹ. fillna()는 항상 행을 삭제한다.</div><div class="truth">ㅁ. 평균 대체는 어떤 상황에서도 무조건 정답이다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="중복 제거">
+<div class="card">
+<div class="level">중복 제거</div>
+<h2>04. 중복 데이터 확인하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;],
+    &quot;점수&quot;: [90, 90, 85]
+})
+
+print(df.duplicated().tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 90, 85]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.duplicated().tolist())</code></td><td>각 행이 앞선 행과 중복되는지 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>[False, True, False]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>duplicated()는 각 행이 앞선 행과 중복되는지 확인한다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. duplicated()는 중복 행 여부를 확인한다.</div><div class="truth">ㄴ. 첫 번째 민수 행은 처음 등장했으므로 False이다.</div><div class="truth">ㄷ. 두 번째 민수 행은 앞 행과 같으므로 True이다.</div><div class="truth">ㄹ. duplicated()는 날짜를 변환한다.</div><div class="truth">ㅁ. duplicated()는 파일 저장 전용 함수이다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="drop_duplicates()">
+<div class="card">
+<div class="level">drop_duplicates()</div>
+<h2>05. 중복 행 제거하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;],
+    &quot;점수&quot;: [90, 90, 85]
+})
+
+clean = df.drop_duplicates()
+print(clean[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 90, 85]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>clean = df.drop_duplicates()</code></td><td>완전히 같은 중복 행을 제거합니다.</td></tr><tr><td>9</td><td><code>print(clean[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>[&#x27;민수&#x27;, &#x27;지아&#x27;]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>drop_duplicates()는 중복된 행을 제거할 수 있다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. drop_duplicates()는 중복 행 제거에 사용된다.</div><div class="truth">ㄴ. 완전히 같은 행이 여러 개 있으면 하나만 남길 수 있다.</div><div class="truth">ㄷ. 결과 이름 목록은 민수와 지아이다.</div><div class="truth">ㄹ. drop_duplicates()는 결측치를 평균으로 채운다.</div><div class="truth">ㅁ. drop_duplicates()는 그래프를 그리는 함수이다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="문자열 처리">
+<div class="card">
+<div class="level">문자열 처리</div>
+<h2>06. 문자열 공백 제거하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;서울 &quot;, &quot; 부산&quot;, &quot;대구 &quot;],
+    &quot;매출&quot;: [100, 150, 120]
+})
+
+df[&quot;지역&quot;] = df[&quot;지역&quot;].str.strip()
+print(df[&quot;지역&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;서울 &quot;, &quot; 부산&quot;, &quot;대구 &quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 120]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;지역&quot;] = df[&quot;지역&quot;].str.strip()</code></td><td>문자열의 양쪽 공백을 제거합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;지역&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>[&#x27;서울&#x27;, &#x27;부산&#x27;, &#x27;대구&#x27;]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>str.strip()은 문자열 양쪽 공백을 제거한다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. str.strip()은 문자열 양쪽 공백을 제거한다.</div><div class="truth">ㄴ. 공백이 섞인 문자열은 같은 값도 다르게 처리될 수 있다.</div><div class="truth">ㄷ. 공백 제거 결과는 서울, 부산, 대구이다.</div><div class="truth">ㄹ. str.strip()은 숫자 평균만 계산한다.</div><div class="truth">ㅁ. 문자열 처리는 데이터 전처리와 무관하다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="문자열 처리">
+<div class="card">
+<div class="level">문자열 처리</div>
+<h2>07. 문자열 포함 여부로 필터링하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;상품&quot;: [&quot;사과주스&quot;, &quot;초콜릿&quot;, &quot;오렌지주스&quot;, &quot;과자&quot;],
+    &quot;가격&quot;: [1200, 800, 1500, 1000]
+})
+
+juice = df[df[&quot;상품&quot;].str.contains(&quot;주스&quot;)]
+print(juice[&quot;상품&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;사과주스&quot;, &quot;초콜릿&quot;, &quot;오렌지주스&quot;, &quot;과자&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;가격&quot;: [1200, 800, 1500, 1000]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>juice = df[df[&quot;상품&quot;].str.contains(&quot;주스&quot;)]</code></td><td>특정 문자열이 포함되어 있는지 확인하는 조건을 만듭니다.</td></tr><tr><td>9</td><td><code>print(juice[&quot;상품&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>[&#x27;사과주스&#x27;, &#x27;오렌지주스&#x27;]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>str.contains()는 특정 문자열을 포함하는 행을 찾는 데 사용한다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. str.contains(&#x27;주스&#x27;)는 주스라는 단어가 포함된 값을 찾는다.</div><div class="truth">ㄴ. 결과에는 사과주스와 오렌지주스가 포함된다.</div><div class="truth">ㄷ. 문자열 조건 필터링은 텍스트 데이터 정리에 유용하다.</div><div class="truth">ㄹ. str.contains()는 엑셀 파일 저장 함수이다.</div><div class="truth">ㅁ. 문자열 필터링은 Pandas에서 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="astype()">
+<div class="card">
+<div class="level">astype()</div>
+<h2>08. 문자열 숫자를 정수로 변환하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;점수&quot;: [&quot;90&quot;, &quot;80&quot;, &quot;70&quot;]
+})
+
+df[&quot;점수&quot;] = df[&quot;점수&quot;].astype(int)
+print(df[&quot;점수&quot;].mean())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;점수&quot;: [&quot;90&quot;, &quot;80&quot;, &quot;70&quot;]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>6</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>7</td><td><code>df[&quot;점수&quot;] = df[&quot;점수&quot;].astype(int)</code></td><td>문자열 숫자를 정수형으로 변환합니다.</td></tr><tr><td>8</td><td><code>print(df[&quot;점수&quot;].mean())</code></td><td>숫자 데이터의 평균을 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>80.0</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>astype()은 열의 자료형을 바꿀 때 사용한다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. astype(int)는 자료형을 정수형으로 변환한다.</div><div class="truth">ㄴ. 문자열 숫자를 숫자형으로 바꾸면 평균 계산이 가능하다.</div><div class="truth">ㄷ. 평균 점수는 80.0이다.</div><div class="truth">ㄹ. astype()은 중복 행 제거 전용 함수이다.</div><div class="truth">ㅁ. 문자열 숫자는 변환 없이 모든 계산에서 항상 안전하다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="날짜 변환">
+<div class="card">
+<div class="level">날짜 변환</div>
+<h2>09. 문자열 날짜를 날짜 자료형으로 변환하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;],
+    &quot;매출&quot;: [100, 150]
+})
+
+df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])
+print(df[&quot;날짜&quot;].dt.year.tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;날짜&quot;: [&quot;2026-01-01&quot;, &quot;2026-01-02&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;날짜&quot;] = pd.to_datetime(df[&quot;날짜&quot;])</code></td><td>문자열 날짜를 Pandas 날짜 자료형으로 변환합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;날짜&quot;].dt.year.tolist())</code></td><td>날짜 자료형에서 연도만 추출합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>[2026, 2026]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>pd.to_datetime()은 문자열 날짜를 날짜 자료형으로 변환한다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. pd.to_datetime()은 문자열 날짜를 날짜 자료형으로 바꿀 수 있다.</div><div class="truth">ㄴ. 날짜 자료형이 되면 dt.year처럼 연도 정보를 추출할 수 있다.</div><div class="truth">ㄷ. 연도 리스트는 [2026, 2026]이다.</div><div class="truth">ㄹ. 날짜 변환은 시계열 분석과 관련이 없다.</div><div class="truth">ㅁ. to_datetime()은 중복 제거 함수이다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="종합">
+<div class="card">
+<div class="level">종합</div>
+<h2>10. 공백·결측치·자료형 한 번에 정리하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;서울 &quot;, &quot;서울&quot;, &quot;부산&quot;],
+    &quot;매출&quot;: [&quot;100&quot;, None, &quot;80&quot;]
+})
+
+df[&quot;지역&quot;] = df[&quot;지역&quot;].str.strip()
+df[&quot;매출&quot;] = df[&quot;매출&quot;].astype(float)
+df[&quot;매출&quot;] = df[&quot;매출&quot;].fillna(df[&quot;매출&quot;].mean())
+
+print(df[&quot;매출&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;서울 &quot;, &quot;서울&quot;, &quot;부산&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [&quot;100&quot;, None, &quot;80&quot;]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>df[&quot;지역&quot;] = df[&quot;지역&quot;].str.strip()</code></td><td>문자열의 양쪽 공백을 제거합니다.</td></tr><tr><td>9</td><td><code>df[&quot;매출&quot;] = df[&quot;매출&quot;].astype(float)</code></td><td>문자열 숫자를 실수형으로 변환합니다. None은 NaN 결측치로 처리됩니다.</td></tr><tr><td>10</td><td><code>df[&quot;매출&quot;] = df[&quot;매출&quot;].fillna(df[&quot;매출&quot;].mean())</code></td><td>결측치를 지정한 값으로 채웁니다.</td></tr><tr><td>11</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>12</td><td><code>print(df[&quot;매출&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>[100.0, 90.0, 80.0]</code></pre>
+<p>전처리 함수가 데이터를 어떻게 바꾸었는지 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>전처리는 공백 제거, 자료형 변환, 결측치 처리처럼 여러 정리 작업을 함께 수행할 수 있다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 전처리 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. str.strip()으로 지역 공백을 제거한다.</div><div class="truth">ㄴ. astype(float)로 매출을 실수형으로 바꾼다.</div><div class="truth">ㄷ. fillna(mean)으로 결측 매출을 평균으로 채운다.</div><div class="truth">ㄹ. 전처리는 분석 이후에만 의미가 있고 분석 전에는 필요 없다.</div><div class="truth">ㅁ. 결측치가 있으면 Pandas 코드는 항상 실행 자체가 불가능하다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>전처리에서는 결측치, 중복, 문자열, 자료형, 날짜 변환의 목적과 결과를 정확히 이해해야 합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>원본 데이터 확인
+→ 결측치 확인
+→ 결측치 삭제 또는 대체
+→ 중복 확인과 제거
+→ 문자열 공백과 포함 여부 정리
+→ 자료형 변환
+→ 날짜 변환
+→ 분석 가능한 깨끗한 데이터 완성</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_5단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["1", "['민수', '하준']", "[90.0, 84.0, 78.0]", "[False, True, False]", "['민수', '지아']", "['서울', '부산', '대구']", "['사과주스', '오렌지주스']", "80.0", "[2026, 2026]", "[100.0, 90.0, 80.0]"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["결측치 개수 확인하기", "결측치가 있는 행 제거하기", "누락된 성적 평균으로 복구하기", "중복 데이터 확인하기", "중복 행 제거하기", "문자열 공백 제거하기", "문자열 포함 여부로 필터링하기", "문자열 숫자를 정수로 변환하기", "문자열 날짜를 날짜 자료형으로 변환하기", "공백·결측치·자료형 한 번에 정리하기"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['5단계 Pandas 데이터 전처리 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_5단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>

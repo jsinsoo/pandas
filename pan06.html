@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 6단계 데이터 집계와 그룹 분석 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#f0fdf4,#eff6ff,#f5f3ff);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#15803d,#0f766e,#2563eb);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:295px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#bbf7d0}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#15803d}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #bbf7d0;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(21,128,61,.10)}
+h2{color:#15803d}h3{color:#2563eb}
+pre{background:#052e16;color:#dcfce7;padding:18px;border-radius:18px;overflow:auto;border:4px solid #86efac}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#15803d;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #bbf7d0;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbf7d0;padding:10px;vertical-align:top}th{background:#15803d;color:white}td:nth-child(2){background:#f0fdf4;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#15803d;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#f0fdf4;border-left:5px solid #22c55e;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #bbf7d0;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 6단계. 데이터 집계와 그룹 분석</h1>
+<p>“데이터 요약 능력 강화” · groupby · sum · mean · count · agg · pivot_table · crosstab</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('groupby()',this)">groupby()</button><button onclick="showConcept('sum()',this)">sum()</button><button onclick="showConcept('mean()',this)">mean()</button><button onclick="showConcept('count()',this)">count()</button><button onclick="showConcept('agg()',this)">agg()</button><button onclick="showConcept('pivot_table()',this)">pivot_table()</button><button onclick="showConcept('crosstab()',this)">crosstab()</button><button onclick="showConcept('groupby() + sum()',this)">groupby() + sum()</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>데이터가 많아질수록 하나하나 보는 것보다 기준별로 요약하는 능력이 중요합니다. 이번 단계에서는 반별 평균, 지역별 매출 합계, 과목별 성적 비교처럼 데이터를 묶고 요약하는 방법을 배웁니다.</p>
+<span class="badge">groupby()</span><span class="badge">sum()</span><span class="badge">mean()</span><span class="badge">count()</span><span class="badge">agg()</span><span class="badge">pivot_table()</span><span class="badge">crosstab()</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식 목표:</b> 그룹화와 집계 함수의 의미를 설명하고 groupby(), agg(), pivot_table(), crosstab()의 차이를 구분할 수 있다.</div>
+<div class="goal"><b>기능 목표:</b> 반별 평균, 지역별 매출 합계, 과목별 성적 비교표를 Pandas 코드로 작성할 수 있다.</div>
+<div class="goal"><b>태도 목표:</b> 원자료를 요약하여 의미 있는 패턴을 발견하려는 데이터 분석 태도를 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="groupby()">
+<div class="card">
+<div class="level">groupby()</div>
+<h2>01. 반별 평균 계산하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;점수&quot;: [90, 80, 70, 85]
+})
+
+result = df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean()
+print(result.to_dict())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 80, 70, 85]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>result = df.groupby(&quot;반&quot;)[&quot;점수&quot;].mean()</code></td><td>특정 열을 기준으로 그룹을 나누고 평균을 계산합니다.</td></tr><tr><td>10</td><td><code>print(result.to_dict())</code></td><td>계산 결과를 딕셔너리 형태로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>{&#x27;A&#x27;: 85.0, &#x27;B&#x27;: 77.5}</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>groupby()는 특정 열을 기준으로 데이터를 묶어 그룹별 분석을 할 때 사용한다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. groupby(&#x27;반&#x27;)은 반을 기준으로 데이터를 묶는다.</div><div class="truth">ㄴ. mean()은 그룹별 평균을 계산한다.</div><div class="truth">ㄷ. A반 평균은 85.0, B반 평균은 77.5이다.</div><div class="truth">ㄹ. groupby()는 항상 데이터를 삭제한다.</div><div class="truth">ㅁ. groupby()는 문자열 공백 제거 전용 함수이다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="sum()">
+<div class="card">
+<div class="level">sum()</div>
+<h2>02. 지역별 매출 합계 계산하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],
+    &quot;매출&quot;: [100, 150, 80, 120]
+})
+
+result = df.groupby(&quot;지역&quot;)[&quot;매출&quot;].sum()
+print(result.to_dict())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 80, 120]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = df.groupby(&quot;지역&quot;)[&quot;매출&quot;].sum()</code></td><td>특정 열을 기준으로 그룹을 나누고 합계를 계산합니다.</td></tr><tr><td>9</td><td><code>print(result.to_dict())</code></td><td>계산 결과를 딕셔너리 형태로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>{&#x27;군산&#x27;: 200, &#x27;전주&#x27;: 250}</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>sum()은 숫자 데이터의 합계를 계산하며 groupby()와 함께 그룹별 합계에 자주 사용된다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. sum()은 합계를 계산한다.</div><div class="truth">ㄴ. 전주 매출 합계는 250이다.</div><div class="truth">ㄷ. 군산 매출 합계는 200이다.</div><div class="truth">ㄹ. sum()은 평균만 계산한다.</div><div class="truth">ㅁ. 지역별 매출 분석에는 groupby()를 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="mean()">
+<div class="card">
+<div class="level">mean()</div>
+<h2>03. 과목별 평균 성적 계산하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;과목&quot;: [&quot;국어&quot;, &quot;국어&quot;, &quot;수학&quot;, &quot;수학&quot;],
+    &quot;점수&quot;: [90, 80, 70, 100]
+})
+
+result = df.groupby(&quot;과목&quot;)[&quot;점수&quot;].mean()
+print(result.to_dict())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;과목&quot;: [&quot;국어&quot;, &quot;국어&quot;, &quot;수학&quot;, &quot;수학&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 80, 70, 100]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = df.groupby(&quot;과목&quot;)[&quot;점수&quot;].mean()</code></td><td>특정 열을 기준으로 그룹을 나누고 평균을 계산합니다.</td></tr><tr><td>9</td><td><code>print(result.to_dict())</code></td><td>계산 결과를 딕셔너리 형태로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>{&#x27;국어&#x27;: 85.0, &#x27;수학&#x27;: 85.0}</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>mean()은 평균을 계산하는 집계 함수이다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. mean()은 평균을 계산한다.</div><div class="truth">ㄴ. 국어 평균은 85.0이다.</div><div class="truth">ㄷ. 수학 평균도 85.0이다.</div><div class="truth">ㄹ. mean()은 중복 행 제거 전용 함수이다.</div><div class="truth">ㅁ. 평균은 숫자 데이터와 전혀 관련이 없다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="count()">
+<div class="card">
+<div class="level">count()</div>
+<h2>04. 반별 학생 수 세기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;],
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;]
+})
+
+result = df.groupby(&quot;반&quot;)[&quot;이름&quot;].count()
+print(result.to_dict())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = df.groupby(&quot;반&quot;)[&quot;이름&quot;].count()</code></td><td>특정 열을 기준으로 그룹을 나누고 개수를 계산합니다.</td></tr><tr><td>9</td><td><code>print(result.to_dict())</code></td><td>계산 결과를 딕셔너리 형태로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>{&#x27;A&#x27;: 2, &#x27;B&#x27;: 3}</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>count()는 결측치가 아닌 값의 개수를 세는 집계 함수이다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. count()는 데이터 개수를 계산한다.</div><div class="truth">ㄴ. A반 학생 수는 2명이다.</div><div class="truth">ㄷ. B반 학생 수는 3명이다.</div><div class="truth">ㄹ. count()는 반드시 평균을 계산한다.</div><div class="truth">ㅁ. count()는 파일 저장 전용 함수이다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="agg()">
+<div class="card">
+<div class="level">agg()</div>
+<h2>05. 그룹별 여러 통계 한 번에 계산하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],
+    &quot;점수&quot;: [90, 80, 70, 85]
+})
+
+result = df.groupby(&quot;반&quot;)[&quot;점수&quot;].agg([&quot;mean&quot;, &quot;max&quot;, &quot;min&quot;])
+print(list(result.columns))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 80, 70, 85]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = df.groupby(&quot;반&quot;)[&quot;점수&quot;].agg([&quot;mean&quot;, &quot;max&quot;, &quot;min&quot;])</code></td><td>여러 집계 함수를 한 번에 적용합니다.</td></tr><tr><td>9</td><td><code>print(list(result.columns))</code></td><td>결과 DataFrame의 열 이름을 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>[&#x27;mean&#x27;, &#x27;max&#x27;, &#x27;min&#x27;]</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>agg()는 여러 집계 함수를 한 번에 적용할 때 사용한다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. agg()는 여러 집계 함수를 한 번에 적용할 수 있다.</div><div class="truth">ㄴ. mean, max, min을 동시에 계산할 수 있다.</div><div class="truth">ㄷ. 결과 열 이름은 mean, max, min이다.</div><div class="truth">ㄹ. agg()는 CSV 읽기 전용 함수이다.</div><div class="truth">ㅁ. agg()는 그룹 분석과 함께 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="pivot_table()">
+<div class="card">
+<div class="level">pivot_table()</div>
+<h2>06. 지역별·제품별 매출 교차표 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],
+    &quot;제품&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;],
+    &quot;매출&quot;: [100, 150, 80, 120]
+})
+
+pivot = pd.pivot_table(df, values=&quot;매출&quot;, index=&quot;지역&quot;, columns=&quot;제품&quot;, aggfunc=&quot;sum&quot;)
+print(pivot.loc[&quot;전주&quot;, &quot;B&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;제품&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;매출&quot;: [100, 150, 80, 120]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>pivot = pd.pivot_table(df, values=&quot;매출&quot;, index=&quot;지역&quot;, columns=&quot;제품&quot;, aggfunc=&quot;sum&quot;)</code></td><td>행 기준, 열 기준, 값, 집계 함수를 지정해 교차 집계표를 만듭니다.</td></tr><tr><td>10</td><td><code>print(pivot.loc[&quot;전주&quot;, &quot;B&quot;])</code></td><td>행 이름과 열 이름을 이용해 특정 위치의 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>150</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>pivot_table()은 행 기준과 열 기준을 지정해 교차 집계표를 만들 수 있다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. pivot_table()은 교차 집계표를 만들 수 있다.</div><div class="truth">ㄴ. index=&#x27;지역&#x27;은 행 기준을 지역으로 둔다.</div><div class="truth">ㄷ. 전주 지역 B 제품 매출은 150이다.</div><div class="truth">ㄹ. pivot_table()은 결측치만 삭제하는 함수이다.</div><div class="truth">ㅁ. aggfunc=&#x27;sum&#x27;은 평균만 계산한다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="crosstab()">
+<div class="card">
+<div class="level">crosstab()</div>
+<h2>07. 성별과 선호 과목 교차 빈도표 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;성별&quot;: [&quot;남&quot;, &quot;여&quot;, &quot;남&quot;, &quot;여&quot;, &quot;남&quot;],
+    &quot;선호과목&quot;: [&quot;정보&quot;, &quot;수학&quot;, &quot;정보&quot;, &quot;정보&quot;, &quot;과학&quot;]
+})
+
+table = pd.crosstab(df[&quot;성별&quot;], df[&quot;선호과목&quot;])
+print(table.loc[&quot;남&quot;, &quot;정보&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;성별&quot;: [&quot;남&quot;, &quot;여&quot;, &quot;남&quot;, &quot;여&quot;, &quot;남&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;선호과목&quot;: [&quot;정보&quot;, &quot;수학&quot;, &quot;정보&quot;, &quot;정보&quot;, &quot;과학&quot;]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>table = pd.crosstab(df[&quot;성별&quot;], df[&quot;선호과목&quot;])</code></td><td>두 범주형 변수의 교차 빈도표를 만듭니다.</td></tr><tr><td>9</td><td><code>print(table.loc[&quot;남&quot;, &quot;정보&quot;])</code></td><td>행 이름과 열 이름을 이용해 특정 위치의 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>2</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>crosstab()은 두 범주형 변수의 교차 빈도표를 만들 때 사용한다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. crosstab()은 두 범주형 변수의 빈도표를 만들 수 있다.</div><div class="truth">ㄴ. 성별과 선호과목의 관계를 볼 수 있다.</div><div class="truth">ㄷ. 남학생 중 정보 선호 빈도는 2이다.</div><div class="truth">ㄹ. crosstab()은 날짜 변환 함수이다.</div><div class="truth">ㅁ. crosstab()은 숫자 평균만 계산한다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="groupby() + sum()">
+<div class="card">
+<div class="level">groupby() + sum()</div>
+<h2>08. 월별 매출 합계 리스트 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;월&quot;: [&quot;1월&quot;, &quot;1월&quot;, &quot;2월&quot;, &quot;2월&quot;],
+    &quot;매출&quot;: [100, 120, 150, 170]
+})
+
+monthly = df.groupby(&quot;월&quot;)[&quot;매출&quot;].sum()
+print(monthly.tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;월&quot;: [&quot;1월&quot;, &quot;1월&quot;, &quot;2월&quot;, &quot;2월&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 120, 150, 170]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>monthly = df.groupby(&quot;월&quot;)[&quot;매출&quot;].sum()</code></td><td>특정 열을 기준으로 그룹을 나누고 합계를 계산합니다.</td></tr><tr><td>9</td><td><code>print(monthly.tolist())</code></td><td>계산 결과를 리스트 형태로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>[220, 320]</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>groupby()와 sum()을 함께 쓰면 기준별 합계를 쉽게 계산할 수 있다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. groupby(&#x27;월&#x27;)은 월별로 데이터를 묶는다.</div><div class="truth">ㄴ. sum()은 각 월의 매출 합계를 계산한다.</div><div class="truth">ㄷ. 결과 리스트는 [220, 320]이다.</div><div class="truth">ㄹ. 1월 합계는 100이다.</div><div class="truth">ㅁ. 월별 합계는 Pandas에서 계산할 수 없다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="agg()">
+<div class="card">
+<div class="level">agg()</div>
+<h2>09. 지역별 매출 합계와 평균 동시에 계산하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],
+    &quot;매출&quot;: [100, 150, 80, 120]
+})
+
+summary = df.groupby(&quot;지역&quot;)[&quot;매출&quot;].agg([&quot;sum&quot;, &quot;mean&quot;])
+print(summary.loc[&quot;전주&quot;, &quot;mean&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주&quot;, &quot;전주&quot;, &quot;군산&quot;, &quot;군산&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 80, 120]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>summary = df.groupby(&quot;지역&quot;)[&quot;매출&quot;].agg([&quot;sum&quot;, &quot;mean&quot;])</code></td><td>여러 집계 함수를 한 번에 적용합니다.</td></tr><tr><td>9</td><td><code>print(summary.loc[&quot;전주&quot;, &quot;mean&quot;])</code></td><td>행 이름과 열 이름을 이용해 특정 위치의 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>125.0</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>agg()를 이용하면 합계와 평균 같은 여러 통계를 동시에 요약할 수 있다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. agg([&#x27;sum&#x27;,&#x27;mean&#x27;])은 합계와 평균을 함께 계산한다.</div><div class="truth">ㄴ. 전주 매출 합계는 250이다.</div><div class="truth">ㄷ. 전주 매출 평균은 125.0이다.</div><div class="truth">ㄹ. agg()는 하나의 통계만 가능하다.</div><div class="truth">ㅁ. mean은 개수가 아니라 평균이다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="pivot_table()">
+<div class="card">
+<div class="level">pivot_table()</div>
+<h2>10. 학생별 과목별 성적 비교표 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;학생&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;, &quot;지아&quot;],
+    &quot;과목&quot;: [&quot;국어&quot;, &quot;수학&quot;, &quot;국어&quot;, &quot;수학&quot;],
+    &quot;점수&quot;: [90, 88, 85, 95]
+})
+
+table = pd.pivot_table(df, values=&quot;점수&quot;, index=&quot;학생&quot;, columns=&quot;과목&quot;, aggfunc=&quot;mean&quot;)
+print(table.loc[&quot;지아&quot;, &quot;수학&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;학생&quot;: [&quot;민수&quot;, &quot;민수&quot;, &quot;지아&quot;, &quot;지아&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;과목&quot;: [&quot;국어&quot;, &quot;수학&quot;, &quot;국어&quot;, &quot;수학&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 88, 85, 95]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>table = pd.pivot_table(df, values=&quot;점수&quot;, index=&quot;학생&quot;, columns=&quot;과목&quot;, aggfunc=&quot;mean&quot;)</code></td><td>행 기준, 열 기준, 값, 집계 함수를 지정해 교차 집계표를 만듭니다.</td></tr><tr><td>10</td><td><code>print(table.loc[&quot;지아&quot;, &quot;수학&quot;])</code></td><td>행 이름과 열 이름을 이용해 특정 위치의 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>95</code></pre>
+<p>그룹별 집계 결과에서 핵심 요약값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>pivot_table()은 학생별 과목별 비교표처럼 데이터를 재구성하는 데 유용하다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 집계와 그룹 분석 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. index=&#x27;학생&#x27;은 행 기준을 학생으로 둔다.</div><div class="truth">ㄴ. columns=&#x27;과목&#x27;은 열 기준을 과목으로 둔다.</div><div class="truth">ㄷ. 지아의 수학 점수는 95이다.</div><div class="truth">ㄹ. pivot_table()은 그래프만 그린다.</div><div class="truth">ㅁ. values=&#x27;점수&#x27;는 파일 이름을 지정한다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>집계 함수의 역할과 결과 해석을 함께 이해해야 합니다. groupby()는 묶고, sum·mean·count·agg는 요약하며, pivot_table()과 crosstab()은 표 형태로 재구성합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>원본 데이터 확인
+→ 기준 열 선택
+→ groupby()로 묶기
+→ sum / mean / count로 요약
+→ agg()로 여러 통계 계산
+→ pivot_table()로 교차 집계표 만들기
+→ crosstab()으로 범주형 빈도표 만들기
+→ 보고서와 대시보드로 확장</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_6단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["{'A': 85.0, 'B': 77.5}", "{'군산': 200, '전주': 250}", "{'국어': 85.0, '수학': 85.0}", "{'A': 2, 'B': 3}", "['mean', 'max', 'min']", "150", "2", "[220, 320]", "125.0", "95"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["반별 평균 계산하기", "지역별 매출 합계 계산하기", "과목별 평균 성적 계산하기", "반별 학생 수 세기", "그룹별 여러 통계 한 번에 계산하기", "지역별·제품별 매출 교차표 만들기", "성별과 선호 과목 교차 빈도표 만들기", "월별 매출 합계 리스트 만들기", "지역별 매출 합계와 평균 동시에 계산하기", "학생별 과목별 성적 비교표 만들기"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['6단계 Pandas 데이터 집계와 그룹 분석 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_6단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>

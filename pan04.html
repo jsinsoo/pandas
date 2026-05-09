@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 4단계 데이터 선택과 필터링 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#f0fdf4,#eff6ff,#f5f3ff);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#15803d,#2563eb,#7c3aed);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:295px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#bbf7d0}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#15803d}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #bbf7d0;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(21,128,61,.10)}
+h2{color:#15803d}h3{color:#2563eb}
+pre{background:#052e16;color:#dcfce7;padding:18px;border-radius:18px;overflow:auto;border:4px solid #86efac}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#15803d;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #bbf7d0;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbf7d0;padding:10px;vertical-align:top}th{background:#15803d;color:white}td:nth-child(2){background:#f0fdf4;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#15803d;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#f0fdf4;border-left:5px solid #22c55e;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #bbf7d0;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 4단계. 데이터 선택과 필터링</h1>
+<p>“원하는 데이터만 추출하기” · 열 선택 · 다중 열 선택 · loc · iloc · 조건 필터링 · query · sort_values</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('열 선택',this)">열 선택</button><button onclick="showConcept('다중 열 선택',this)">다중 열 선택</button><button onclick="showConcept('loc',this)">loc</button><button onclick="showConcept('iloc',this)">iloc</button><button onclick="showConcept('조건 필터링',this)">조건 필터링</button><button onclick="showConcept('query()',this)">query()</button><button onclick="showConcept('정렬(sort_values())',this)">정렬(sort_values())</button><button onclick="showConcept('종합',this)">종합</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>데이터 분석에서는 전체 데이터보다 목적에 맞는 일부 데이터를 정확히 뽑아내는 능력이 중요합니다. 이번 단계에서는 열 선택, 행 선택, 조건 필터링, query(), 정렬을 이용해 원하는 데이터를 추출하는 방법을 배웁니다.</p>
+<span class="badge">열 선택</span><span class="badge">다중 열 선택</span><span class="badge">loc</span><span class="badge">iloc</span><span class="badge">조건 필터링</span><span class="badge">query()</span><span class="badge">sort_values()</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식 목표:</b> 열 선택, loc, iloc, 조건 필터링, query(), sort_values()의 차이를 설명할 수 있다.</div>
+<div class="goal"><b>기능 목표:</b> 상위권 학생과 특정 지역 매출처럼 조건에 맞는 데이터를 추출하고 정렬할 수 있다.</div>
+<div class="goal"><b>태도 목표:</b> 분석 목적에 맞게 필요한 데이터만 선별하는 데이터 사고력을 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="열 선택">
+<div class="card">
+<div class="level">열 선택</div>
+<h2>01. 성적표에서 점수 열만 선택하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, 85, 78],
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;]
+})
+
+print(df[&quot;점수&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>print(df[&quot;점수&quot;].tolist())</code></td><td>선택한 열의 값을 리스트로 바꾸어 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>[90, 85, 78]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>DataFrame에서 하나의 열은 df[&#x27;열이름&#x27;] 형식으로 선택할 수 있다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df[&#x27;점수&#x27;]는 점수 열 하나를 선택한다.</div><div class="truth">ㄴ. 선택된 점수 열은 Series 형태로 볼 수 있다.</div><div class="truth">ㄷ. tolist()를 사용하면 [90, 85, 78]처럼 리스트로 확인할 수 있다.</div><div class="truth">ㄹ. df[&#x27;점수&#x27;]는 점수 열을 삭제한다.</div><div class="truth">ㅁ. 열 선택은 DataFrame에서 불가능하다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="다중 열 선택">
+<div class="card">
+<div class="level">다중 열 선택</div>
+<h2>02. 이름과 수학 점수 열 선택하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;국어&quot;: [90, 85, 78],
+    &quot;수학&quot;: [88, 95, 80]
+})
+
+result = df[[&quot;이름&quot;, &quot;수학&quot;]]
+print(list(result.columns))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 78],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 80]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>result = df[[&quot;이름&quot;, &quot;수학&quot;]]</code></td><td>이름과 수학 두 열을 동시에 선택합니다.</td></tr><tr><td>10</td><td><code>print(list(result.columns))</code></td><td>결과 DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>[&#x27;이름&#x27;, &#x27;수학&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>여러 열을 선택할 때는 열 이름 리스트를 이중 대괄호 안에 넣는다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df[[&#x27;이름&#x27;,&#x27;수학&#x27;]]은 두 열을 선택한다.</div><div class="truth">ㄴ. 여러 열 선택 결과는 DataFrame 형태이다.</div><div class="truth">ㄷ. 결과의 열 이름은 이름과 수학이다.</div><div class="truth">ㄹ. df[&#x27;이름&#x27;,&#x27;수학&#x27;]처럼 쉼표만 쓰면 항상 올바르게 작동한다.</div><div class="truth">ㅁ. 다중 열 선택에는 열 이름 리스트를 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="loc">
+<div class="card">
+<div class="level">loc</div>
+<h2>03. 인덱스 이름으로 특정 학생 찾기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, 85, 78]
+}, index=[&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;])
+
+print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>}, index=[&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;])</code></td><td>선택, 필터링, 정렬 결과를 변수에 저장합니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.loc[&quot;S02&quot;, &quot;이름&quot;])</code></td><td>인덱스 이름과 열 이름을 기준으로 특정 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>지아</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>loc는 인덱스 이름과 열 이름을 기준으로 데이터를 선택할 수 있다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. loc는 라벨, 즉 이름 기준 선택에 사용된다.</div><div class="truth">ㄴ. df.loc[&#x27;S02&#x27;,&#x27;이름&#x27;]은 S02 행의 이름 값을 선택한다.</div><div class="truth">ㄷ. S02 행의 이름은 지아이다.</div><div class="truth">ㄹ. loc는 반드시 숫자 위치만 사용한다.</div><div class="truth">ㅁ. loc는 열 이름을 함께 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="iloc">
+<div class="card">
+<div class="level">iloc</div>
+<h2>04. 위치 번호로 특정 값 선택하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],
+    &quot;점수&quot;: [90, 85, 78]
+})
+
+print(df.iloc[1, 0])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.iloc[1, 0])</code></td><td>행과 열의 위치 번호를 기준으로 특정 값을 선택합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>지아</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>iloc는 행과 열의 위치 번호를 기준으로 데이터를 선택한다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. iloc는 위치 번호 기반 선택에 사용된다.</div><div class="truth">ㄴ. df.iloc[1,0]은 두 번째 행, 첫 번째 열을 선택한다.</div><div class="truth">ㄷ. 두 번째 행 첫 번째 열의 값은 지아이다.</div><div class="truth">ㄹ. iloc에는 반드시 인덱스 이름 S01 같은 라벨만 사용해야 한다.</div><div class="truth">ㅁ. iloc는 DataFrame에서 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="조건 필터링">
+<div class="card">
+<div class="level">조건 필터링</div>
+<h2>05. 상위권 학생 찾기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;점수&quot;: [90, 85, 78, 95]
+})
+
+high = df[df[&quot;점수&quot;] &gt;= 90]
+print(high[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78, 95]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>high = df[df[&quot;점수&quot;] &gt;= 90]</code></td><td>조건을 만족하는 행만 선택하여 새로운 DataFrame으로 만듭니다.</td></tr><tr><td>9</td><td><code>print(high[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>[&#x27;민수&#x27;, &#x27;서연&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>조건 필터링은 조건을 만족하는 행만 골라내는 방법이다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df[&#x27;점수&#x27;] &gt;= 90은 점수가 90 이상인지 True/False로 판별한다.</div><div class="truth">ㄴ. df[조건] 형식으로 조건을 만족하는 행만 고를 수 있다.</div><div class="truth">ㄷ. 90점 이상 학생은 민수와 서연이다.</div><div class="truth">ㄹ. 조건 필터링은 열 이름을 모두 삭제한다.</div><div class="truth">ㅁ. 비교 연산자는 Pandas에서 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="조건 필터링">
+<div class="card">
+<div class="level">조건 필터링</div>
+<h2>06. 두 조건을 모두 만족하는 학생 찾기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;국어&quot;: [90, 85, 78, 95],
+    &quot;수학&quot;: [88, 95, 80, 70]
+})
+
+result = df[(df[&quot;국어&quot;] &gt;= 85) &amp; (df[&quot;수학&quot;] &gt;= 85)]
+print(result[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;국어&quot;: [90, 85, 78, 95],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;수학&quot;: [88, 95, 80, 70]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>result = df[(df[&quot;국어&quot;] &gt;= 85) &amp; (df[&quot;수학&quot;] &gt;= 85)]</code></td><td>두 조건을 모두 만족하는 행만 선택하기 위한 복합 조건입니다.</td></tr><tr><td>10</td><td><code>print(result[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>[&#x27;민수&#x27;, &#x27;지아&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>여러 조건을 함께 사용할 때는 각 조건을 괄호로 묶고 &amp; 또는 |를 사용한다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. &amp;는 두 조건을 모두 만족해야 할 때 사용한다.</div><div class="truth">ㄴ. Pandas 조건식은 각 조건을 괄호로 묶는 것이 안전하다.</div><div class="truth">ㄷ. 국어와 수학이 모두 85 이상인 학생은 민수와 지아이다.</div><div class="truth">ㄹ. Pandas 조건식에서는 &amp; 대신 파이썬 and만 항상 사용해야 한다.</div><div class="truth">ㅁ. 여러 조건 필터링은 DataFrame에서 불가능하다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="query()">
+<div class="card">
+<div class="level">query()</div>
+<h2>07. query로 상위권 학생 찾기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;점수&quot;: [90, 85, 78, 95]
+})
+
+result = df.query(&quot;점수 &gt;= 90&quot;)
+print(result[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78, 95]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>result = df.query(&quot;점수 &gt;= 90&quot;)</code></td><td>문자열 조건식을 사용해 행을 필터링합니다.</td></tr><tr><td>9</td><td><code>print(result[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>[&#x27;민수&#x27;, &#x27;서연&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>query()는 문자열 조건식으로 행을 필터링할 수 있다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. query(&#x27;점수 &gt;= 90&#x27;)는 점수가 90 이상인 행을 선택한다.</div><div class="truth">ㄴ. query()는 조건식을 문자열로 작성할 수 있다.</div><div class="truth">ㄷ. 결과 학생은 민수와 서연이다.</div><div class="truth">ㄹ. query()는 CSV 저장 전용 함수이다.</div><div class="truth">ㅁ. query()에서는 조건식을 절대 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="정렬(sort_values())">
+<div class="card">
+<div class="level">정렬(sort_values())</div>
+<h2>08. 점수 높은 순으로 정렬하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],
+    &quot;점수&quot;: [90, 85, 78, 95]
+})
+
+sorted_df = df.sort_values(&quot;점수&quot;, ascending=False)
+print(sorted_df[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85, 78, 95]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>sorted_df = df.sort_values(&quot;점수&quot;, ascending=False)</code></td><td>특정 열을 기준으로 DataFrame을 정렬합니다.</td></tr><tr><td>9</td><td><code>print(sorted_df[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>[&#x27;서연&#x27;, &#x27;민수&#x27;, &#x27;지아&#x27;, &#x27;하준&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>sort_values()는 특정 열을 기준으로 데이터를 정렬한다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. sort_values(&#x27;점수&#x27;)는 점수 열 기준으로 정렬한다.</div><div class="truth">ㄴ. ascending=False는 내림차순 정렬을 의미한다.</div><div class="truth">ㄷ. 점수 높은 순서는 서연, 민수, 지아, 하준이다.</div><div class="truth">ㄹ. sort_values()는 결측치를 평균으로 채운다.</div><div class="truth">ㅁ. ascending=False는 오름차순만 의미한다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="정렬(sort_values())">
+<div class="card">
+<div class="level">정렬(sort_values())</div>
+<h2>09. 특정 지역 매출 높은 순 조회</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;익산&quot;, &quot;전주&quot;, &quot;군산&quot;],
+    &quot;매출&quot;: [120, 90, 150, 200, 110]
+})
+
+jeonju = df[df[&quot;지역&quot;] == &quot;전주&quot;]
+result = jeonju.sort_values(&quot;매출&quot;, ascending=False)
+print(result[&quot;매출&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;, &quot;익산&quot;, &quot;전주&quot;, &quot;군산&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [120, 90, 150, 200, 110]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>jeonju = df[df[&quot;지역&quot;] == &quot;전주&quot;]</code></td><td>조건을 만족하는 행만 선택하여 새로운 DataFrame으로 만듭니다.</td></tr><tr><td>9</td><td><code>result = jeonju.sort_values(&quot;매출&quot;, ascending=False)</code></td><td>특정 열을 기준으로 DataFrame을 정렬합니다.</td></tr><tr><td>10</td><td><code>print(result[&quot;매출&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>[200, 120]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>조건 필터링 후 정렬을 연결하면 특정 지역의 상위 매출을 찾을 수 있다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df[&#x27;지역&#x27;]==&#x27;전주&#x27;는 지역이 전주인 행을 찾는 조건이다.</div><div class="truth">ㄴ. 전주 지역 매출은 120과 200이다.</div><div class="truth">ㄷ. 내림차순 정렬 결과는 [200, 120]이다.</div><div class="truth">ㄹ. 조건 필터링 후에는 정렬을 사용할 수 없다.</div><div class="truth">ㅁ. sort_values()는 반드시 문자열 열에만 사용할 수 있다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="종합">
+<div class="card">
+<div class="level">종합</div>
+<h2>10. 우수 학생 TOP 3 추출하기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;],
+    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;],
+    &quot;점수&quot;: [90, 85, 78, 95, 88]
+})
+
+top3 = df[df[&quot;점수&quot;] &gt;= 85].sort_values(&quot;점수&quot;, ascending=False).head(3)
+print(top3[&quot;이름&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 행과 열이 있는 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;, &quot;하준&quot;, &quot;서연&quot;, &quot;도윤&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>5</td><td><code>    &quot;반&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;],</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>6</td><td><code>    &quot;점수&quot;: [90, 85, 78, 95, 88]</code></td><td>DataFrame을 구성하는 열 이름과 값 목록입니다.</td></tr><tr><td>7</td><td><code>})</code></td><td>DataFrame 생성에 사용할 데이터 입력을 끝냅니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>top3 = df[df[&quot;점수&quot;] &gt;= 85].sort_values(&quot;점수&quot;, ascending=False).head(3)</code></td><td>조건을 만족하는 행만 선택하여 새로운 DataFrame으로 만듭니다.</td></tr><tr><td>10</td><td><code>print(top3[&quot;이름&quot;].tolist())</code></td><td>Series 값을 리스트 형태로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>[&#x27;서연&#x27;, &#x27;민수&#x27;, &#x27;도윤&#x27;]</code></pre>
+<p>선택, 필터링, 정렬 결과에서 핵심 값을 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>조건 필터링, 정렬, head()를 함께 사용하면 원하는 상위 데이터를 추출할 수 있다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 데이터 선택과 필터링 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. df[&#x27;점수&#x27;] &gt;= 85로 85점 이상 학생을 먼저 고른다.</div><div class="truth">ㄴ. sort_values(..., ascending=False)로 점수 높은 순 정렬을 한다.</div><div class="truth">ㄷ. head(3)은 상위 3개 행만 선택한다.</div><div class="truth">ㄹ. 메서드를 연결하면 항상 오류가 발생한다.</div><div class="truth">ㅁ. head(3)은 하위 3개만 선택한다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>선택 기준이 열 이름인지, 인덱스 이름인지, 위치 번호인지, 조건식인지 구분하는 것이 핵심입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>전체 데이터 확인
+→ 필요한 열 선택
+→ 여러 열 선택
+→ loc로 이름 기준 선택
+→ iloc로 위치 기준 선택
+→ 조건 필터링
+→ query()로 조건식 표현
+→ sort_values()로 정렬
+→ 원하는 데이터 추출 완료</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_4단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["[90, 85, 78]", "['이름', '수학']", "지아", "지아", "['민수', '서연']", "['민수', '지아']", "['민수', '서연']", "['서연', '민수', '지아', '하준']", "[200, 120]", "['서연', '민수', '도윤']"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["성적표에서 점수 열만 선택하기", "이름과 수학 점수 열 선택하기", "인덱스 이름으로 특정 학생 찾기", "위치 번호로 특정 값 선택하기", "상위권 학생 찾기", "두 조건을 모두 만족하는 학생 찾기", "query로 상위권 학생 찾기", "점수 높은 순으로 정렬하기", "특정 지역 매출 높은 순 조회", "우수 학생 TOP 3 추출하기"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['4단계 Pandas 데이터 선택과 필터링 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_4단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>

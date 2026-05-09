@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Pandas 2단계 데이터 불러오기 저장 수업지도안</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;background:linear-gradient(135deg,#eff6ff,#fff7ed,#ecfdf5);color:#172033;line-height:1.7}
+header{padding:34px 7vw;color:white;background:linear-gradient(120deg,#ea580c,#2563eb,#0f766e);border-bottom-left-radius:38px;border-bottom-right-radius:38px}
+header h1{margin:0;font-size:36px}header p{font-size:20px;margin:10px 0 0;opacity:.95}
+.wrap{display:grid;grid-template-columns:295px 1fr}
+nav{background:#111827;color:white;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h2{font-size:18px;margin:0 0 14px;color:#fed7aa}
+nav button{width:100%;text-align:left;border:0;border-radius:14px;padding:11px;margin:6px 0;color:white;background:#374151;cursor:pointer}
+nav button:hover,nav button.active{background:#ea580c}
+main{padding:28px}
+.section{display:none}.section.active{display:block}
+.card{background:white;border:2px solid #fed7aa;border-radius:26px;padding:24px;margin:22px 0;box-shadow:0 10px 28px rgba(234,88,12,.10)}
+h2{color:#c2410c}h3{color:#2563eb}
+pre{background:#431407;color:#ffedd5;padding:18px;border-radius:18px;overflow:auto;border:4px solid #fdba74}
+code{font-family:Consolas,monospace}
+.level,.badge{display:inline-block;padding:7px 13px;border-radius:999px;background:#ea580c;color:white;font-weight:900;margin:4px}
+.goal,.question{border:1px solid #fed7aa;border-radius:18px;padding:16px;margin:14px 0;background:white}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #fed7aa;padding:10px;vertical-align:top}th{background:#ea580c;color:white}td:nth-child(2){background:#fff7ed;width:42%}
+textarea,input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+label{display:block;margin:8px 0}.action{border:0;border-radius:14px;padding:12px 17px;background:#ea580c;color:white;font-weight:800;cursor:pointer;margin:8px 6px 8px 0}.secondary{background:#2563eb}
+.answer{display:none;background:#fff7ed;border-left:5px solid #f97316;border-radius:12px;padding:12px;margin-top:10px}
+.result{white-space:pre-wrap;background:#eff6ff;border:1px solid #93c5fd;border-radius:16px;padding:16px}
+.truthbox{background:#f8fafc;border:1px solid #fed7aa;border-radius:14px;padding:12px;margin:10px 0}
+.truth{padding:5px 0}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}nav{height:auto;position:relative}}
+</style>
+</head>
+<body>
+<header>
+<h1>🐼 2단계. 데이터 불러오기/저장</h1>
+<p>“파일 처리 능력 기르기” · read_csv · read_excel · read_json · to_csv · to_excel · to_json</p>
+</header>
+<div class="wrap">
+<nav>
+<h2>📚 핵심개념</h2>
+<button class="active" onclick="showSec('intro',this)">수업 들어가기</button>
+<button onclick="showSec('goals',this)">학습목표</button>
+<button onclick="showConcept('read_csv()',this)">read_csv()</button><button onclick="showConcept('read_excel()',this)">read_excel()</button><button onclick="showConcept('read_json()',this)">read_json()</button><button onclick="showConcept('to_csv()',this)">to_csv()</button><button onclick="showConcept('to_excel()',this)">to_excel()</button><button onclick="showConcept('to_json()',this)">to_json()</button><button onclick="showConcept('공공데이터 파일 불러오기',this)">공공데이터 파일 불러오기</button><button onclick="showConcept('파일 처리 종합',this)">파일 처리 종합</button>
+<button onclick="showSec('finish',this)">수업마무리</button>
+<button onclick="showSec('submit',this)">채점·TXT 산출</button>
+</nav>
+<main>
+<section id="intro" class="section active">
+<div class="card">
+<h2>🚀 수업 들어가기</h2>
+<p>데이터 분석은 파일을 불러오는 것에서 시작하고, 분석 결과를 다시 저장하는 것으로 완성됩니다. 이번 단계에서는 CSV, Excel, JSON 형식의 데이터를 읽고 저장하는 기본 흐름을 배웁니다.</p>
+<span class="badge">read_csv()</span><span class="badge">read_excel()</span><span class="badge">read_json()</span><span class="badge">to_csv()</span><span class="badge">to_excel()</span><span class="badge">to_json()</span>
+</div>
+</section>
+
+<section id="goals" class="section">
+<div class="card">
+<h2>🎯 개념기반 목표지향 학습목표</h2>
+<div class="goal"><b>지식 목표:</b> CSV, Excel, JSON 파일 형식과 Pandas 입출력 함수의 역할을 설명할 수 있다.</div>
+<div class="goal"><b>기능 목표:</b> 학생 성적 CSV, 매출 데이터, 공공데이터를 읽고 필요한 결과를 저장할 수 있다.</div>
+<div class="goal"><b>태도 목표:</b> 데이터를 분석 가능한 형식으로 불러오고 결과를 재사용 가능한 파일로 저장하는 태도를 기른다.</div>
+</div>
+</section>
+
+
+<section class="lesson section active" data-concept="read_csv()">
+<div class="card">
+<div class="level">read_csv()</div>
+<h2>01. 학생 성적 CSV 읽기</h2>
+<pre><code>import pandas as pd
+from io import StringIO
+
+csv_text = &#x27;&#x27;&#x27;이름,점수
+민수,90
+지아,85
+하준,78
+&#x27;&#x27;&#x27;
+
+df = pd.read_csv(StringIO(csv_text))
+print(df[&quot;점수&quot;].mean())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열 데이터를 파일처럼 읽기 위해 StringIO를 불러옵니다. 실제 외부 파일이 없어도 예제가 실행됩니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;이름,점수</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>5</td><td><code>민수,90</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>지아,85</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>하준,78</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>8</td><td><code>&#x27;&#x27;&#x27;</code></td><td>여러 줄 문자열의 시작 또는 끝입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>10</td><td><code>df = pd.read_csv(StringIO(csv_text))</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>11</td><td><code>print(df[&quot;점수&quot;].mean())</code></td><td>숫자 데이터의 평균을 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay1" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea1')">상세 풀이 보기</button>
+<div class="answer" id="ea1">
+<b>정답</b><pre><code>84.33333333333333</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>read_csv()는 CSV 형식 데이터를 DataFrame으로 읽어올 때 사용한다.</p>
+<label><input type="radio" name="ox1" value="O"> O</label>
+<label><input type="radio" name="ox1" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa1')">상세 풀이 보기</button>
+<div class="answer" id="oa1">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. read_csv()는 CSV 데이터를 DataFrame으로 읽을 수 있다.</div><div class="truth">ㄴ. StringIO는 문자열을 파일처럼 읽게 해 준다.</div><div class="truth">ㄷ. 점수 평균은 84.33333333333333이다.</div><div class="truth">ㄹ. read_csv()는 엑셀 파일 저장 전용 함수이다.</div><div class="truth">ㅁ. CSV 데이터는 Pandas로 읽을 수 없다.</div></div>
+<label><input type="radio" name="mcq1" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq1" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq1" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq1" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq1" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma1')">상세 풀이 보기</button>
+<div class="answer" id="ma1">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="read_csv()">
+<div class="card">
+<div class="level">read_csv()</div>
+<h2>02. CSV에서 특정 열 확인하기</h2>
+<pre><code>import pandas as pd
+from io import StringIO
+
+csv_text = &#x27;&#x27;&#x27;상품,가격
+연필,500
+공책,1500
+지우개,700
+&#x27;&#x27;&#x27;
+
+df = pd.read_csv(StringIO(csv_text))
+print(df[&quot;상품&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열 데이터를 파일처럼 읽기 위해 StringIO를 불러옵니다. 실제 외부 파일이 없어도 예제가 실행됩니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;상품,가격</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>5</td><td><code>연필,500</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>공책,1500</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>지우개,700</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>8</td><td><code>&#x27;&#x27;&#x27;</code></td><td>여러 줄 문자열의 시작 또는 끝입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>10</td><td><code>df = pd.read_csv(StringIO(csv_text))</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>11</td><td><code>print(df[&quot;상품&quot;].tolist())</code></td><td>Series 값을 리스트로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay2" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea2')">상세 풀이 보기</button>
+<div class="answer" id="ea2">
+<b>정답</b><pre><code>[&#x27;연필&#x27;, &#x27;공책&#x27;, &#x27;지우개&#x27;]</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>read_csv()로 읽은 DataFrame에서도 열 선택을 할 수 있다.</p>
+<label><input type="radio" name="ox2" value="O"> O</label>
+<label><input type="radio" name="ox2" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa2')">상세 풀이 보기</button>
+<div class="answer" id="oa2">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. CSV 파일은 쉼표로 열을 구분하는 텍스트 데이터이다.</div><div class="truth">ㄴ. df[&#x27;상품&#x27;]은 상품 열을 선택한다.</div><div class="truth">ㄷ. tolist()는 Series를 리스트로 바꾼다.</div><div class="truth">ㄹ. read_csv() 결과에서는 열 선택이 불가능하다.</div><div class="truth">ㅁ. tolist()는 파일을 삭제한다.</div></div>
+<label><input type="radio" name="mcq2" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq2" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq2" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq2" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq2" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma2')">상세 풀이 보기</button>
+<div class="answer" id="ma2">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="read_excel()">
+<div class="card">
+<div class="level">read_excel()</div>
+<h2>03. 엑셀 파일 읽기 구조 이해</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;],
+    &quot;매출&quot;: [100, 150, 120]
+})
+
+print(df.head(2))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 표 형태 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;],</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 120]</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(df.head(2))</code></td><td>데이터의 앞부분을 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay3" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea3')">상세 풀이 보기</button>
+<div class="answer" id="ea3">
+<b>정답</b><pre><code>1월, 2월</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>read_excel()은 엑셀 파일을 읽을 때 사용하며, 읽은 결과는 DataFrame으로 다룰 수 있다.</p>
+<label><input type="radio" name="ox3" value="O"> O</label>
+<label><input type="radio" name="ox3" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa3')">상세 풀이 보기</button>
+<div class="answer" id="oa3">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. read_excel()은 엑셀 파일을 DataFrame으로 읽는 함수이다.</div><div class="truth">ㄴ. 엑셀에서 읽은 데이터도 head()로 앞부분을 확인할 수 있다.</div><div class="truth">ㄷ. 위 예제의 앞 두 월은 1월과 2월이다.</div><div class="truth">ㄹ. read_excel()은 JSON 저장 함수이다.</div><div class="truth">ㅁ. 엑셀 데이터는 DataFrame으로 다룰 수 없다.</div></div>
+<label><input type="radio" name="mcq3" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq3" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq3" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq3" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq3" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma3')">상세 풀이 보기</button>
+<div class="answer" id="ma3">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="read_excel()">
+<div class="card">
+<div class="level">read_excel()</div>
+<h2>04. 엑셀 시트 개념 이해</h2>
+<pre><code>import pandas as pd
+
+sheet_jan = pd.DataFrame({
+    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;],
+    &quot;매출&quot;: [100, 150]
+})
+
+print(sheet_jan[&quot;매출&quot;].sum())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>sheet_jan = pd.DataFrame({</code></td><td>딕셔너리 데이터를 표 형태 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;상품&quot;: [&quot;연필&quot;, &quot;공책&quot;],</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150]</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(sheet_jan[&quot;매출&quot;].sum())</code></td><td>숫자 데이터의 합계를 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay4" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea4')">상세 풀이 보기</button>
+<div class="answer" id="ea4">
+<b>정답</b><pre><code>250</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>read_excel()에서 sheet_name을 지정하면 특정 시트를 선택해 읽을 수 있다.</p>
+<label><input type="radio" name="ox4" value="O"> O</label>
+<label><input type="radio" name="ox4" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa4')">상세 풀이 보기</button>
+<div class="answer" id="oa4">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. 엑셀 파일은 여러 시트를 가질 수 있다.</div><div class="truth">ㄴ. read_excel(..., sheet_name=&#x27;1월&#x27;)처럼 특정 시트를 읽을 수 있다.</div><div class="truth">ㄷ. 예제의 매출 합계는 250이다.</div><div class="truth">ㄹ. sheet_name은 CSV의 쉼표를 바꾸는 옵션이다.</div><div class="truth">ㅁ. 엑셀 시트는 Pandas에서 선택할 수 없다.</div></div>
+<label><input type="radio" name="mcq4" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq4" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq4" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq4" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq4" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma4')">상세 풀이 보기</button>
+<div class="answer" id="ma4">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="read_json()">
+<div class="card">
+<div class="level">read_json()</div>
+<h2>05. JSON 형태 공공데이터 읽기</h2>
+<pre><code>import pandas as pd
+
+json_text = &#x27;&#x27;&#x27;[
+    {&quot;지역&quot;: &quot;전주&quot;, &quot;기온&quot;: 25},
+    {&quot;지역&quot;: &quot;군산&quot;, &quot;기온&quot;: 24},
+    {&quot;지역&quot;: &quot;익산&quot;, &quot;기온&quot;: 26}
+]&#x27;&#x27;&#x27;
+
+df = pd.read_json(json_text)
+print(df[&quot;기온&quot;].mean())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>json_text = &#x27;&#x27;&#x27;[</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>4</td><td><code>    {&quot;지역&quot;: &quot;전주&quot;, &quot;기온&quot;: 25},</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    {&quot;지역&quot;: &quot;군산&quot;, &quot;기온&quot;: 24},</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>    {&quot;지역&quot;: &quot;익산&quot;, &quot;기온&quot;: 26}</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>]&#x27;&#x27;&#x27;</code></td><td>여러 줄 문자열의 시작 또는 끝입니다.</td></tr><tr><td>8</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>9</td><td><code>df = pd.read_json(json_text)</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>10</td><td><code>print(df[&quot;기온&quot;].mean())</code></td><td>숫자 데이터의 평균을 계산합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay5" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea5')">상세 풀이 보기</button>
+<div class="answer" id="ea5">
+<b>정답</b><pre><code>25.0</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>read_json()은 JSON 형식 데이터를 DataFrame으로 읽을 수 있다.</p>
+<label><input type="radio" name="ox5" value="O"> O</label>
+<label><input type="radio" name="ox5" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa5')">상세 풀이 보기</button>
+<div class="answer" id="oa5">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. JSON은 키와 값 구조를 가진 데이터 형식이다.</div><div class="truth">ㄴ. read_json()은 JSON 데이터를 DataFrame으로 변환할 수 있다.</div><div class="truth">ㄷ. 기온 평균은 25.0이다.</div><div class="truth">ㄹ. read_json()은 막대그래프만 그린다.</div><div class="truth">ㅁ. JSON 데이터는 표 형태로 바꿀 수 없다.</div></div>
+<label><input type="radio" name="mcq5" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq5" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq5" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq5" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq5" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma5')">상세 풀이 보기</button>
+<div class="answer" id="ma5">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="to_csv()">
+<div class="card">
+<div class="level">to_csv()</div>
+<h2>06. 학생 성적 CSV 저장 문자열 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;],
+    &quot;점수&quot;: [90, 85]
+})
+
+csv_result = df.to_csv(index=False)
+print(csv_result.splitlines()[0])</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 표 형태 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;이름&quot;: [&quot;민수&quot;, &quot;지아&quot;],</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    &quot;점수&quot;: [90, 85]</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>csv_result = df.to_csv(index=False)</code></td><td>DataFrame을 CSV 형식 문자열 또는 파일로 내보냅니다.</td></tr><tr><td>9</td><td><code>print(csv_result.splitlines()[0])</code></td><td>문자열을 줄 단위로 나누어 특정 줄을 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay6" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea6')">상세 풀이 보기</button>
+<div class="answer" id="ea6">
+<b>정답</b><pre><code>이름,점수</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>to_csv()는 DataFrame을 CSV 형식으로 저장하거나 문자열로 만들 수 있다.</p>
+<label><input type="radio" name="ox6" value="O"> O</label>
+<label><input type="radio" name="ox6" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa6')">상세 풀이 보기</button>
+<div class="answer" id="oa6">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. to_csv()는 DataFrame을 CSV 형식으로 내보낼 수 있다.</div><div class="truth">ㄴ. index=False는 인덱스를 저장하지 않게 한다.</div><div class="truth">ㄷ. 첫 줄에는 열 이름인 이름,점수가 나온다.</div><div class="truth">ㄹ. to_csv()는 CSV를 읽는 함수이다.</div><div class="truth">ㅁ. index=False는 모든 열을 삭제한다.</div></div>
+<label><input type="radio" name="mcq6" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq6" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq6" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq6" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq6" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma6')">상세 풀이 보기</button>
+<div class="answer" id="ma6">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="to_excel()">
+<div class="card">
+<div class="level">to_excel()</div>
+<h2>07. 엑셀 저장 전 데이터 준비</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;],
+    &quot;매출&quot;: [100, 150, 120]
+})
+
+print(list(df.columns))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 표 형태 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;월&quot;: [&quot;1월&quot;, &quot;2월&quot;, &quot;3월&quot;],</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    &quot;매출&quot;: [100, 150, 120]</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>print(list(df.columns))</code></td><td>DataFrame의 열 이름 목록을 확인합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay7" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea7')">상세 풀이 보기</button>
+<div class="answer" id="ea7">
+<b>정답</b><pre><code>[&#x27;월&#x27;, &#x27;매출&#x27;]</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>to_excel()은 DataFrame을 엑셀 파일로 저장할 때 사용한다.</p>
+<label><input type="radio" name="ox7" value="O"> O</label>
+<label><input type="radio" name="ox7" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa7')">상세 풀이 보기</button>
+<div class="answer" id="oa7">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. to_excel()은 DataFrame을 엑셀 파일로 저장할 수 있다.</div><div class="truth">ㄴ. 엑셀 저장 전 DataFrame의 열 구조를 확인할 수 있다.</div><div class="truth">ㄷ. 예제의 열 이름은 월과 매출이다.</div><div class="truth">ㄹ. to_excel()은 JSON 파일 읽기 전용 함수이다.</div><div class="truth">ㅁ. DataFrame은 엑셀로 저장할 수 없다.</div></div>
+<label><input type="radio" name="mcq7" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq7" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq7" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq7" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq7" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma7')">상세 풀이 보기</button>
+<div class="answer" id="ma7">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="to_json()">
+<div class="card">
+<div class="level">to_json()</div>
+<h2>08. 공공데이터 JSON 저장 문자열 만들기</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    &quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;],
+    &quot;기온&quot;: [25, 24]
+})
+
+json_result = df.to_json(orient=&quot;records&quot;, force_ascii=False)
+print(json_result)</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>3</td><td><code>df = pd.DataFrame({</code></td><td>딕셔너리 데이터를 표 형태 DataFrame으로 만듭니다.</td></tr><tr><td>4</td><td><code>    &quot;지역&quot;: [&quot;전주&quot;, &quot;군산&quot;],</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>5</td><td><code>    &quot;기온&quot;: [25, 24]</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>})</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>8</td><td><code>json_result = df.to_json(orient=&quot;records&quot;, force_ascii=False)</code></td><td>DataFrame을 JSON 형식 문자열 또는 파일로 내보냅니다.</td></tr><tr><td>9</td><td><code>print(json_result)</code></td><td>괄호 안의 결과를 화면에 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay8" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea8')">상세 풀이 보기</button>
+<div class="answer" id="ea8">
+<b>정답</b><pre><code>[{&quot;지역&quot;:&quot;전주&quot;,&quot;기온&quot;:25},{&quot;지역&quot;:&quot;군산&quot;,&quot;기온&quot;:24}]</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>to_json()은 DataFrame을 JSON 형식으로 변환하거나 저장할 수 있다.</p>
+<label><input type="radio" name="ox8" value="O"> O</label>
+<label><input type="radio" name="ox8" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa8')">상세 풀이 보기</button>
+<div class="answer" id="oa8">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. to_json()은 DataFrame을 JSON 형식으로 내보낼 수 있다.</div><div class="truth">ㄴ. orient=&#x27;records&#x27;는 행 단위 딕셔너리 목록 형태를 만든다.</div><div class="truth">ㄷ. force_ascii=False는 한글을 읽기 좋게 유지하는 데 도움을 준다.</div><div class="truth">ㄹ. to_json()은 CSV 파일만 읽는다.</div><div class="truth">ㅁ. JSON 변환에는 DataFrame을 사용할 수 없다.</div></div>
+<label><input type="radio" name="mcq8" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq8" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq8" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq8" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq8" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma8')">상세 풀이 보기</button>
+<div class="answer" id="ma8">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="공공데이터 파일 불러오기">
+<div class="card">
+<div class="level">공공데이터 파일 불러오기</div>
+<h2>09. 공공데이터 CSV 불러와 열 선택</h2>
+<pre><code>import pandas as pd
+from io import StringIO
+
+csv_text = &#x27;&#x27;&#x27;지역,미세먼지,상태
+전주,25,좋음
+군산,45,보통
+익산,85,나쁨
+&#x27;&#x27;&#x27;
+
+df = pd.read_csv(StringIO(csv_text))
+print(df[[&quot;지역&quot;, &quot;상태&quot;]].to_string(index=False))</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열 데이터를 파일처럼 읽기 위해 StringIO를 불러옵니다. 실제 외부 파일이 없어도 예제가 실행됩니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;지역,미세먼지,상태</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>5</td><td><code>전주,25,좋음</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>군산,45,보통</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>익산,85,나쁨</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>8</td><td><code>&#x27;&#x27;&#x27;</code></td><td>여러 줄 문자열의 시작 또는 끝입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>10</td><td><code>df = pd.read_csv(StringIO(csv_text))</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>11</td><td><code>print(df[[&quot;지역&quot;, &quot;상태&quot;]].to_string(index=False))</code></td><td>DataFrame을 문자열 형태로 보기 좋게 출력합니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay9" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea9')">상세 풀이 보기</button>
+<div class="answer" id="ea9">
+<b>정답</b><pre><code>전주 좋음, 군산 보통, 익산 나쁨</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>공공데이터 파일을 읽은 뒤 필요한 열만 선택해 분석할 수 있다.</p>
+<label><input type="radio" name="ox9" value="O"> O</label>
+<label><input type="radio" name="ox9" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa9')">상세 풀이 보기</button>
+<div class="answer" id="oa9">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. 공공데이터 CSV도 read_csv()로 읽을 수 있다.</div><div class="truth">ㄴ. df[[&#x27;지역&#x27;,&#x27;상태&#x27;]]는 두 열을 선택한다.</div><div class="truth">ㄷ. 미세먼지 상태를 지역별로 확인할 수 있다.</div><div class="truth">ㄹ. CSV를 읽으면 열 선택을 할 수 없다.</div><div class="truth">ㅁ. 공공데이터는 Pandas 분석 대상이 될 수 없다.</div></div>
+<label><input type="radio" name="mcq9" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq9" value="2"> 2. ㄱ, ㄷ, ㄹ</label><label><input type="radio" name="mcq9" value="3"> 3. ㄴ, ㄹ, ㅁ</label><label><input type="radio" name="mcq9" value="4"> 4. ㄱ, ㄴ, ㅁ</label><label><input type="radio" name="mcq9" value="5"> 5. ㄷ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma9')">상세 풀이 보기</button>
+<div class="answer" id="ma9">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="lesson section " data-concept="파일 처리 종합">
+<div class="card">
+<div class="level">파일 처리 종합</div>
+<h2>10. CSV 읽기 → 처리 → 저장 흐름</h2>
+<pre><code>import pandas as pd
+from io import StringIO
+
+csv_text = &#x27;&#x27;&#x27;이름,점수
+민수,90
+지아,75
+하준,82
+&#x27;&#x27;&#x27;
+
+df = pd.read_csv(StringIO(csv_text))
+df[&quot;합격여부&quot;] = df[&quot;점수&quot;].apply(lambda x: &quot;합격&quot; if x &gt;= 80 else &quot;재도전&quot;)
+result_csv = df.to_csv(index=False)
+
+print(df[&quot;합격여부&quot;].tolist())</code></pre>
+
+<h3>🔍 한 줄씩 상세 설명</h3>
+<table><tr><th>줄</th><th>코드</th><th>설명</th></tr><tr><td>1</td><td><code>import pandas as pd</code></td><td>Pandas 라이브러리를 pd라는 이름으로 불러옵니다.</td></tr><tr><td>2</td><td><code>from io import StringIO</code></td><td>문자열 데이터를 파일처럼 읽기 위해 StringIO를 불러옵니다. 실제 외부 파일이 없어도 예제가 실행됩니다.</td></tr><tr><td>3</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>4</td><td><code>csv_text = &#x27;&#x27;&#x27;이름,점수</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>5</td><td><code>민수,90</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>6</td><td><code>지아,75</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>7</td><td><code>하준,82</code></td><td>파일 입출력 또는 데이터 확인을 위한 Pandas 코드입니다.</td></tr><tr><td>8</td><td><code>&#x27;&#x27;&#x27;</code></td><td>여러 줄 문자열의 시작 또는 끝입니다.</td></tr><tr><td>9</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>10</td><td><code>df = pd.read_csv(StringIO(csv_text))</code></td><td>예제용 CSV 또는 JSON 문자열 데이터를 준비합니다.</td></tr><tr><td>11</td><td><code>df[&quot;합격여부&quot;] = df[&quot;점수&quot;].apply(lambda x: &quot;합격&quot; if x &gt;= 80 else &quot;재도전&quot;)</code></td><td>각 점수에 조건 함수를 적용해 합격여부를 만듭니다.</td></tr><tr><td>12</td><td><code>result_csv = df.to_csv(index=False)</code></td><td>DataFrame을 CSV 형식 문자열 또는 파일로 내보냅니다.</td></tr><tr><td>13</td><td><code>&nbsp;</code></td><td>빈 줄입니다. 코드 흐름을 보기 좋게 구분합니다.</td></tr><tr><td>14</td><td><code>print(df[&quot;합격여부&quot;].tolist())</code></td><td>Series 값을 리스트로 바꾸어 출력하기 쉽게 만듭니다.</td></tr></table>
+
+<h3>✍️ 코드 결과 서술형</h3>
+<div class="question">
+<p>이 코드의 핵심 출력 결과 또는 핵심 값을 쓰시오.</p>
+<textarea id="essay10" rows="2"></textarea>
+<button class="action" onclick="toggleAns('ea10')">상세 풀이 보기</button>
+<div class="answer" id="ea10">
+<b>정답</b><pre><code>[&#x27;합격&#x27;, &#x27;재도전&#x27;, &#x27;합격&#x27;]</code></pre>
+<p>이 문항은 파일 읽기, 저장, 변환 과정의 핵심 결과를 확인하는 문제입니다.</p>
+</div>
+</div>
+
+<h3>⭕❌ 개념 진단평가 OX</h3>
+<div class="question">
+<p>파일 처리는 읽기, 처리하기, 저장하기 흐름으로 구성할 수 있다.</p>
+<label><input type="radio" name="ox10" value="O"> O</label>
+<label><input type="radio" name="ox10" value="X"> X</label>
+<button class="action" onclick="toggleAns('oa10')">상세 풀이 보기</button>
+<div class="answer" id="oa10">
+<b>정답:</b> O<br><p>해당 설명은 Pandas 파일 입출력 핵심 개념에 맞습니다.</p>
+</div>
+</div>
+
+<h3>🧩 심화 형성평가: ㄱ~ㅁ 중 옳은 것 3개가 모인 보기 고르기</h3>
+<div class="question">
+<p>아래 ㄱ, ㄴ, ㄷ, ㄹ, ㅁ 설명을 읽고, 옳은 것 3개를 모두 모아놓은 보기를 고르시오.</p>
+<div class="truthbox"><div class="truth">ㄱ. read_csv()로 데이터를 읽는다.</div><div class="truth">ㄴ. apply()로 점수에 따라 합격여부를 만든다.</div><div class="truth">ㄷ. to_csv()로 처리 결과를 CSV 형식으로 만들 수 있다.</div><div class="truth">ㄹ. 파일 처리는 저장 없이 읽기만 가능하다.</div><div class="truth">ㅁ. apply()는 엑셀 시트 이름을 지정하는 함수이다.</div></div>
+<label><input type="radio" name="mcq10" value="1"> 1. ㄱ, ㄴ, ㄷ</label><label><input type="radio" name="mcq10" value="2"> 2. ㄱ, ㄹ, ㅁ</label><label><input type="radio" name="mcq10" value="3"> 3. ㄴ, ㄷ, ㄹ</label><label><input type="radio" name="mcq10" value="4"> 4. ㄱ, ㄷ, ㅁ</label><label><input type="radio" name="mcq10" value="5"> 5. ㄴ, ㄹ, ㅁ</label>
+<button class="action" onclick="toggleAns('ma10')">상세 풀이 보기</button>
+<div class="answer" id="ma10">
+<b>정답:</b> 1번<br>
+<p>파일 읽기와 저장에서는 함수의 방향이 중요합니다. read 계열은 불러오기, to 계열은 내보내기입니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id="finish" class="section">
+<div class="card">
+<h2>🌟 수업마무리하기</h2>
+<pre><code>CSV / Excel / JSON 데이터 준비
+→ read_csv(), read_excel(), read_json()으로 불러오기
+→ DataFrame으로 확인하고 처리하기
+→ to_csv(), to_excel(), to_json()으로 저장하기
+→ 공공데이터와 실전 프로젝트로 확장</code></pre>
+</div>
+</section>
+
+<section id="submit" class="section">
+<div class="card">
+<h2>📥 채점 및 TXT 산출</h2>
+<label>학번 <input id="studentId"></label>
+<label>이름 <input id="studentName"></label>
+<button class="action secondary" onclick="gradeAll()">채점하기</button>
+<button class="action" onclick="downloadTxt()">TXT 다운로드</button>
+<div id="gradeResult" class="result">아직 채점하지 않았습니다.</div>
+<p>파일명: 학번_이름_2단원_점수_응시시각.txt</p>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const essayAnswers=["84.33333333333333", "['연필', '공책', '지우개']", "1월, 2월", "250", "25.0", "이름,점수", "['월', '매출']", "[{\"지역\":\"전주\",\"기온\":25},{\"지역\":\"군산\",\"기온\":24}]", "전주 좋음, 군산 보통, 익산 나쁨", "['합격', '재도전', '합격']"], oxAnswers=["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"], mcqAnswers=["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"], titles=["학생 성적 CSV 읽기", "CSV에서 특정 열 확인하기", "엑셀 파일 읽기 구조 이해", "엑셀 시트 개념 이해", "JSON 형태 공공데이터 읽기", "학생 성적 CSV 저장 문자열 만들기", "엑셀 저장 전 데이터 준비", "공공데이터 JSON 저장 문자열 만들기", "공공데이터 CSV 불러와 열 선택", "CSV 읽기 → 처리 → 저장 흐름"];
+function showSec(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function showConcept(c,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.lesson').forEach(s=>{if(s.dataset.concept===c)s.classList.add('active')});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleAns(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block';}
+function norm(s){return (s||'').replace(/\r/g,'').trim();}
+let lastReport='';
+function gradeAll(){let score=0,total=30,lines=['2단계 Pandas 데이터 불러오기/저장 평가 결과','================================'];
+for(let i=1;i<=10;i++){let ok=norm(document.getElementById('essay'+i).value)===norm(essayAnswers[i-1]);if(ok)score++;lines.push(`${titles[i-1]} - 서술형: ${ok?'정답':'오답'} / 정답: ${essayAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="ox${i}"]:checked`),v=c?c.value:'',ok=v===oxAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - OX: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${oxAnswers[i-1]}`);}
+for(let i=1;i<=10;i++){let c=document.querySelector(`input[name="mcq${i}"]:checked`),v=c?c.value:'',ok=v===mcqAnswers[i-1];if(ok)score++;lines.push(`${titles[i-1]} - ㄱ~ㅁ 진위형: ${ok?'정답':'오답'} / 선택: ${v||'미응답'} / 정답: ${mcqAnswers[i-1]}번`);}
+let percent=Math.round(score/total*100);lines.push('================================');lines.push(`총점: ${score}/${total} (${percent}점)`);lines.push(`응시시각: ${new Date().toLocaleString('ko-KR')}`);lastReport=lines.join('\n');document.getElementById('gradeResult').textContent=lastReport;}
+function safe(s){return (s||'미입력').trim().replace(/[\\/:*?"<>| ]/g,'_');}
+function downloadTxt(){if(!lastReport)gradeAll();let sid=safe(document.getElementById('studentId').value),name=safe(document.getElementById('studentName').value),m=(lastReport.match(/\((\d+)점\)/)||[])[1]||'0',d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'-'+String(d.getMinutes()).padStart(2,'0'),fn=`${sid}_${name}_2단원_${m}점_${stamp}.txt`;let blob=new Blob([`학번: ${sid}\n이름: ${name}\n\n${lastReport}`],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();URL.revokeObjectURL(a.href);}
+</script>
+</body></html>
