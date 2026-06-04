@@ -1,0 +1,1721 @@
+matplotlib 10단계 100개 코드 서술형 문제
+------------------------------------------------------------
+[문항 001] 예시 1. matplotlib 불러오기와 버전 확인
+------------------------------------------------------------
+
+import matplotlib
+print(matplotlib.__version__)
+
+[학생 답안]
+
+
+
+[정답]
+실행 환경의 matplotlib 버전이 출력됩니다.
+예: 3.10.0
+
+------------------------------------------------------------
+[문항 002] 예시 2. pyplot 기본 별칭 사용
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+print(plt.__name__)
+
+[학생 답안]
+
+
+
+[정답]
+matplotlib.pyplot
+
+------------------------------------------------------------
+[문항 003] 예시 3. 빈 Figure 만들기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig = plt.figure()
+print(type(fig).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+Figure
+
+------------------------------------------------------------
+[문항 004] 예시 4. Axes 하나 만들기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+print(type(ax).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+Axes
+
+------------------------------------------------------------
+[문항 005] 예시 5. Figure 크기 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(6, 4))
+print(fig.get_size_inches())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[6. 4.]
+
+------------------------------------------------------------
+[문항 006] 예시 6. DPI 설정 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(dpi=120)
+print(fig.dpi)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+120
+
+------------------------------------------------------------
+[문항 007] 예시 7. 한글 폰트 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.rcParams['font.family'] = 'Malgun Gothic'
+print(plt.rcParams['font.family'])
+
+[학생 답안]
+
+
+
+[정답]
+['Malgun Gothic']
+
+------------------------------------------------------------
+[문항 008] 예시 8. 마이너스 깨짐 방지 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.rcParams['axes.unicode_minus'] = False
+print(plt.rcParams['axes.unicode_minus'])
+
+[학생 답안]
+
+
+
+[정답]
+False
+
+------------------------------------------------------------
+[문항 009] 예시 9. 현재 Figure 번호 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig = plt.figure(num=7)
+print(fig.number)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+7
+
+------------------------------------------------------------
+[문항 010] 예시 10. Figure 닫기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig = plt.figure()
+plt.close(fig)
+print(plt.get_fignums())
+
+[학생 답안]
+
+
+
+[정답]
+[]
+
+------------------------------------------------------------
+[문항 011] 예시 1. 기본 선 그래프 그리기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+x = [1, 2, 3]
+y = [10, 20, 15]
+line, = plt.plot(x, y)
+print(line.get_xydata().tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[[1.0, 10.0], [2.0, 20.0], [3.0, 15.0]]
+
+------------------------------------------------------------
+[문항 012] 예시 2. 선 색상 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([1,2,3], [2,4,6], color='red')
+print(line.get_color())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+red
+
+------------------------------------------------------------
+[문항 013] 예시 3. 선 스타일 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([1,2,3], [2,4,6], linestyle='--')
+print(line.get_linestyle())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+--
+
+------------------------------------------------------------
+[문항 014] 예시 4. 마커 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([1,2,3], [2,4,6], marker='o')
+print(line.get_marker())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+o
+
+------------------------------------------------------------
+[문항 015] 예시 5. 선 두께 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([1,2,3], [2,4,6], linewidth=3)
+print(line.get_linewidth())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+3.0
+
+------------------------------------------------------------
+[문항 016] 예시 6. 여러 선 개수 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3], [1,2,3])
+plt.plot([1,2,3], [3,2,1])
+ax = plt.gca()
+print(len(ax.lines))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 017] 예시 7. 선 라벨 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([1,2,3], [1,4,9], label='제곱')
+print(line.get_label())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+제곱
+
+------------------------------------------------------------
+[문항 018] 예시 8. x 데이터 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([10,20,30], [1,2,3])
+print(line.get_xdata().tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[10, 20, 30]
+
+------------------------------------------------------------
+[문항 019] 예시 9. y 데이터 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+line, = plt.plot([10,20,30], [1,2,3])
+print(line.get_ydata().tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[1, 2, 3]
+
+------------------------------------------------------------
+[문항 020] 예시 10. 격자 설정 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.grid(True)
+print(len(ax.get_xgridlines()) > 0)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+True
+
+------------------------------------------------------------
+[문항 021] 예시 1. 그래프 제목 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_title('성적 변화')
+print(ax.get_title())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+성적 변화
+
+------------------------------------------------------------
+[문항 022] 예시 2. x축 이름 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_xlabel('시간')
+print(ax.get_xlabel())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+시간
+
+------------------------------------------------------------
+[문항 023] 예시 3. y축 이름 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_ylabel('점수')
+print(ax.get_ylabel())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+점수
+
+------------------------------------------------------------
+[문항 024] 예시 4. x축 범위 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_xlim(0, 10)
+print(ax.get_xlim())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+(0.0, 10.0)
+
+------------------------------------------------------------
+[문항 025] 예시 5. y축 범위 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_ylim(50, 100)
+print(ax.get_ylim())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+(50.0, 100.0)
+
+------------------------------------------------------------
+[문항 026] 예시 6. x축 눈금 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_xticks([1, 2, 3])
+print(ax.get_xticks().tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[1, 2, 3]
+
+------------------------------------------------------------
+[문항 027] 예시 7. y축 눈금 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_yticks([0, 50, 100])
+print(ax.get_yticks().tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[0, 50, 100]
+
+------------------------------------------------------------
+[문항 028] 예시 8. x축 눈금 글자 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_xticks([1, 2, 3])
+ax.set_xticklabels(['월', '화', '수'])
+print([t.get_text() for t in ax.get_xticklabels()])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['월', '화', '수']
+
+------------------------------------------------------------
+[문항 029] 예시 9. 범례 표시
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2,3], [1,4,9], label='제곱')
+legend = ax.legend()
+print([t.get_text() for t in legend.get_texts()])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['제곱']
+
+------------------------------------------------------------
+[문항 030] 예시 10. 주석 텍스트 추가
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.annotate('최고점', xy=(2, 95))
+print(ax.texts[0].get_text())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+최고점
+
+------------------------------------------------------------
+[문항 031] 예시 1. 기본 막대그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar(['A','B','C'], [10,20,15])
+print([bar.get_height() for bar in bars])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[10, 20, 15]
+
+------------------------------------------------------------
+[문항 032] 예시 2. 막대 색상 지정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar(['A'], [10], color='green')
+print(bars[0].get_facecolor()[3])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+1.0
+
+------------------------------------------------------------
+[문항 033] 예시 3. 가로 막대그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.barh(['A','B'], [5,8])
+print([bar.get_width() for bar in bars])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[5, 8]
+
+------------------------------------------------------------
+[문항 034] 예시 4. 막대 너비 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar(['A','B'], [5,8], width=0.5)
+print(bars[0].get_width())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+0.5
+
+------------------------------------------------------------
+[문항 035] 예시 5. 막대 위 숫자 표시
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar(['A','B'], [5,8])
+ax.bar_label(bars)
+print([t.get_text() for t in ax.texts])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['5', '8']
+
+------------------------------------------------------------
+[문항 036] 예시 6. 누적 막대그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.bar(['A','B'], [3,4], label='국어')
+bars = ax.bar(['A','B'], [2,1], bottom=[3,4], label='수학')
+print([bar.get_y() for bar in bars])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[3, 4]
+
+------------------------------------------------------------
+[문항 037] 예시 7. 여러 막대 위치 계산
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+x = [0, 1, 2]
+width = 0.3
+left = [i - width/2 for i in x]
+right = [i + width/2 for i in x]
+print(left)
+print(right)
+
+[학생 답안]
+
+
+
+[정답]
+[-0.15, 0.85, 1.85]
+[0.15, 1.15, 2.15]
+
+------------------------------------------------------------
+[문항 038] 예시 8. 막대그래프 제목과 축 이름
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.bar(['A','B'], [5,8])
+ax.set_title('반별 인원')
+ax.set_ylabel('명')
+print(ax.get_title(), ax.get_ylabel())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+반별 인원 명
+
+------------------------------------------------------------
+[문항 039] 예시 9. 막대 개수 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar(['봄','여름','가을','겨울'], [3,7,5,2])
+print(len(bars))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+4
+
+------------------------------------------------------------
+[문항 040] 예시 10. 막대의 x 위치 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+bars = ax.bar([0,1], [10,20])
+print([bar.get_x() for bar in bars])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[-0.4, 0.6]
+
+------------------------------------------------------------
+[문항 041] 예시 1. 산점도 점 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+sc = ax.scatter([1,2,3], [4,5,6])
+print(len(sc.get_offsets()))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+3
+
+------------------------------------------------------------
+[문항 042] 예시 2. 산점도 좌표 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+sc = ax.scatter([1,2], [3,4])
+print(sc.get_offsets().tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[[1.0, 3.0], [2.0, 4.0]]
+
+------------------------------------------------------------
+[문항 043] 예시 3. 산점도 크기 지정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+sc = ax.scatter([1,2], [3,4], s=[50,100])
+print(sc.get_sizes().tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[50, 100]
+
+------------------------------------------------------------
+[문항 044] 예시 4. 히스토그램 구간 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+counts, bins, patches = ax.hist([1,2,2,3,3,3], bins=3)
+print(counts.tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[1.0, 2.0, 3.0]
+
+------------------------------------------------------------
+[문항 045] 예시 5. 히스토그램 경계 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+counts, bins, patches = ax.hist([0,1,2,3], bins=2)
+print(bins.tolist())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+[0.0, 1.5, 3.0]
+
+------------------------------------------------------------
+[문항 046] 예시 6. 원그래프 조각 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+wedges, texts = ax.pie([30, 70])
+print(len(wedges))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 047] 예시 7. 원그래프 라벨 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+wedges, texts = ax.pie([30, 70], labels=['A', 'B'])
+print([t.get_text() for t in texts])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['A', 'B']
+
+------------------------------------------------------------
+[문항 048] 예시 8. 원그래프 비율 표시
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+wedges, texts, autotexts = ax.pie([1, 1], autopct='%1.0f%%')
+print([t.get_text() for t in autotexts])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['50%', '50%']
+
+------------------------------------------------------------
+[문항 049] 예시 9. 상자그림 중앙값 선 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+result = ax.boxplot([1,2,3,4,5])
+print(len(result['medians']))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+1
+
+------------------------------------------------------------
+[문항 050] 예시 10. 바이올린 플롯 몸통 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+result = ax.violinplot([[1,2,3], [2,3,4]])
+print(len(result['bodies']))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 051] 예시 1. 1행 2열 서브플롯
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 2)
+print(len(axes))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 052] 예시 2. 2행 2열 서브플롯
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(2, 2)
+print(axes.shape)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+(2, 2)
+
+------------------------------------------------------------
+[문항 053] 예시 3. 첫 번째 서브플롯 제목
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 2)
+axes[0].set_title('첫 그래프')
+print(axes[0].get_title())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+첫 그래프
+
+------------------------------------------------------------
+[문항 054] 예시 4. 서브플롯 각각 선 그리기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 2)
+axes[0].plot([1,2], [1,2])
+axes[1].plot([1,2], [2,1])
+print(len(axes[0].lines), len(axes[1].lines))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+1 1
+
+------------------------------------------------------------
+[문항 055] 예시 5. 공유 x축 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(2, 1, sharex=True)
+print(axes[0].get_shared_x_axes().joined(axes[0], axes[1]))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+True
+
+------------------------------------------------------------
+[문항 056] 예시 6. Figure 전체 제목
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 2)
+fig.suptitle('전체 비교')
+print(fig._suptitle.get_text())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+전체 비교
+
+------------------------------------------------------------
+[문항 057] 예시 7. tight_layout 호출
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(2, 2)
+fig.tight_layout()
+print('정리 완료')
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+정리 완료
+
+------------------------------------------------------------
+[문항 058] 예시 8. add_subplot으로 축 추가
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig = plt.figure()
+ax = fig.add_subplot(111)
+print(type(ax).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+Axes
+
+------------------------------------------------------------
+[문항 059] 예시 9. subplot_mosaic 사용
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplot_mosaic([['A', 'B'], ['C', 'C']])
+print(sorted(axes.keys()))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['A', 'B', 'C']
+
+------------------------------------------------------------
+[문항 060] 예시 10. 서브플롯 축 개수 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(3, 1)
+print(len(fig.axes))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+3
+
+------------------------------------------------------------
+[문항 061] 예시 1. 그래프 PNG 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2,3], [1,4,9])
+fig.savefig('line.png')
+print('line.png 저장 완료')
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+line.png 저장 완료
+
+------------------------------------------------------------
+[문항 062] 예시 2. 저장 파일 존재 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import os
+fig, ax = plt.subplots()
+ax.plot([1,2], [3,4])
+fig.savefig('check.png')
+plt.close(fig)
+print(os.path.exists('check.png'))
+
+[학생 답안]
+
+
+
+[정답]
+True
+
+------------------------------------------------------------
+[문항 063] 예시 3. 투명 배경 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2], [1,2])
+fig.savefig('transparent.png', transparent=True)
+print('투명 배경 저장')
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+투명 배경 저장
+
+------------------------------------------------------------
+[문항 064] 예시 4. bbox_inches 저장 옵션
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_title('제목')
+fig.savefig('tight.png', bbox_inches='tight')
+print('여백 정리 저장')
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+여백 정리 저장
+
+------------------------------------------------------------
+[문항 065] 예시 5. PDF 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2,3], [3,2,1])
+fig.savefig('graph.pdf')
+print('PDF 저장 완료')
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+PDF 저장 완료
+
+------------------------------------------------------------
+[문항 066] 예시 6. 이미지 배열 표시
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+fig, ax = plt.subplots()
+img = ax.imshow(np.array([[1,2],[3,4]]))
+print(img.get_array().shape)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+(2, 2)
+
+------------------------------------------------------------
+[문항 067] 예시 7. 컬러맵 이름 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+fig, ax = plt.subplots()
+img = ax.imshow(np.array([[1,2],[3,4]]), cmap='gray')
+print(img.get_cmap().name)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+gray
+
+------------------------------------------------------------
+[문항 068] 예시 8. 컬러바 추가
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+fig, ax = plt.subplots()
+img = ax.imshow(np.array([[1,2],[3,4]]))
+fig.colorbar(img, ax=ax)
+print(len(fig.axes))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 069] 예시 9. 축 숨기기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.axis('off')
+print(ax.axison)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+False
+
+------------------------------------------------------------
+[문항 070] 예시 10. show 대신 저장 메시지
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3], [1,4,9])
+plt.savefig('result.png')
+print('그래프 저장 후 확인')
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+그래프 저장 후 확인
+
+------------------------------------------------------------
+[문항 071] 예시 1. numpy 배열 선 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.array([1,2,3])
+y = x ** 2
+line, = plt.plot(x, y)
+print(line.get_ydata().tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[1, 4, 9]
+
+------------------------------------------------------------
+[문항 072] 예시 2. linspace로 부드러운 선
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.linspace(0, 1, 5)
+y = x * 10
+line, = plt.plot(x, y)
+print(line.get_xdata().round(2).tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[0.0, 0.25, 0.5, 0.75, 1.0]
+
+------------------------------------------------------------
+[문항 073] 예시 3. sin 그래프 데이터
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.array([0, np.pi/2, np.pi])
+y = np.sin(x)
+plt.plot(x, y)
+print(np.round(y, 1).tolist())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+[0.0, 1.0, 0.0]
+
+------------------------------------------------------------
+[문항 074] 예시 4. pandas Series 선 그래프
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+s = pd.Series([10,20,15], index=['월','화','수'])
+ax = s.plot()
+print(len(ax.lines))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+1
+
+------------------------------------------------------------
+[문항 075] 예시 5. pandas DataFrame 선 그래프
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame({'국어':[90,80], '수학':[100,95]})
+ax = df.plot()
+print(len(ax.lines))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 076] 예시 6. pandas 막대그래프
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+s = pd.Series([3,5,2], index=['A','B','C'])
+ax = s.plot(kind='bar')
+print(len(ax.patches))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+3
+
+------------------------------------------------------------
+[문항 077] 예시 7. pandas 산점도
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame({'공부시간':[1,2,3], '점수':[60,70,90]})
+ax = df.plot(kind='scatter', x='공부시간', y='점수')
+print(len(ax.collections))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+1
+
+------------------------------------------------------------
+[문항 078] 예시 8. DataFrame 히스토그램
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame({'점수':[70,80,80,90,100]})
+axes = df.hist(column='점수')
+print(axes.shape)
+plt.close('all')
+
+[학생 답안]
+
+
+
+[정답]
+(1, 1)
+
+------------------------------------------------------------
+[문항 079] 예시 9. 날짜 인덱스 그래프
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+dates = pd.date_range('2026-06-01', periods=3)
+s = pd.Series([10,15,13], index=dates)
+ax = s.plot()
+print(len(ax.lines[0].get_xdata()))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+3
+
+------------------------------------------------------------
+[문항 080] 예시 10. CSV 데이터 시각화 준비
+------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame({'월':['1월','2월'], '매출':[100,150]})
+ax = df.plot(kind='bar', x='월', y='매출')
+print(ax.get_xlabel())
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+월
+
+------------------------------------------------------------
+[문항 081] 예시 1. 사용 가능한 스타일 개수
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+print(len(plt.style.available) > 0)
+
+[학생 답안]
+
+
+
+[정답]
+True
+
+------------------------------------------------------------
+[문항 082] 예시 2. 스타일 적용하기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.style.use('default')
+print('default 스타일 적용')
+
+[학생 답안]
+
+
+
+[정답]
+default 스타일 적용
+
+------------------------------------------------------------
+[문항 083] 예시 3. rcParams 선 두께 변경
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+plt.rcParams['lines.linewidth'] = 2.5
+print(plt.rcParams['lines.linewidth'])
+
+[학생 답안]
+
+
+
+[정답]
+2.5
+
+------------------------------------------------------------
+[문항 084] 예시 4. 색상 순환 확인
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2], [1,2])
+ax.plot([1,2], [2,1])
+print(len(ax.lines))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 085] 예시 5. 쌍둥이 y축 만들기
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+print(len(fig.axes))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
+[문항 086] 예시 6. 로그 스케일 설정
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.set_yscale('log')
+print(ax.get_yscale())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+log
+
+------------------------------------------------------------
+[문항 087] 예시 7. 채우기 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+poly = ax.fill_between([1,2,3], [1,2,1])
+print(type(poly).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+FillBetweenPolyCollection
+
+------------------------------------------------------------
+[문항 088] 예시 8. 오차 막대 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+container = ax.errorbar([1,2,3], [2,3,4], yerr=[0.1,0.2,0.1])
+print(type(container).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+ErrorbarContainer
+
+------------------------------------------------------------
+[문항 089] 예시 9. 계단 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+line, = ax.step([1,2,3], [10,20,15])
+print(line.get_drawstyle())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+steps-pre
+
+------------------------------------------------------------
+[문항 090] 예시 10. stem 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+markerline, stemlines, baseline = ax.stem([1,2,3], [2,5,3])
+print(type(markerline).__name__)
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+Line2D
+
+------------------------------------------------------------
+[문항 091] 예시 1. 성적 변화 선 그래프 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+months = ['3월','4월','5월']
+scores = [80,85,92]
+plt.plot(months, scores, marker='o')
+plt.title('성적 변화')
+plt.savefig('score_line.png')
+print('성적 변화 그래프 저장')
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+성적 변화 그래프 저장
+
+------------------------------------------------------------
+[문항 092] 예시 2. 반별 평균 막대그래프 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+classes = ['1반','2반','3반']
+avg = [85,90,88]
+plt.bar(classes, avg)
+plt.savefig('class_bar.png')
+print(max(avg))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+90
+
+------------------------------------------------------------
+[문항 093] 예시 3. 공부시간과 점수 산점도
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+hours = [1,2,3,4]
+scores = [60,70,80,95]
+plt.scatter(hours, scores)
+print(len(hours), len(scores))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+4 4
+
+------------------------------------------------------------
+[문항 094] 예시 4. 월별 방문자 꺾은선
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+visitors = [100,120,150,130]
+plt.plot(range(1,5), visitors)
+print(sum(visitors))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+500
+
+------------------------------------------------------------
+[문항 095] 예시 5. 카테고리 비율 원그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+labels = ['AI', '로봇', '수학']
+values = [40, 35, 25]
+plt.pie(values, labels=labels)
+print(labels[values.index(max(values))])
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+AI
+
+------------------------------------------------------------
+[문항 096] 예시 6. 기온 히스토그램
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+temp = [20,21,21,22,23,23,23]
+counts, bins, patches = plt.hist(temp, bins=4)
+print(int(max(counts)))
+plt.close()
+
+[학생 답안]
+
+
+
+[정답]
+3
+
+------------------------------------------------------------
+[문항 097] 예시 7. 최고점 표시 주석
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+x = [1,2,3]
+y = [70,95,85]
+fig, ax = plt.subplots()
+ax.plot(x, y)
+ax.annotate('최고점', xy=(2,95))
+print(ax.texts[0].get_text())
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+최고점
+
+------------------------------------------------------------
+[문항 098] 예시 8. 두 과목 비교 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot([1,2,3], [80,85,90], label='국어')
+ax.plot([1,2,3], [75,88,92], label='수학')
+legend = ax.legend()
+print([t.get_text() for t in legend.get_texts()])
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+['국어', '수학']
+
+------------------------------------------------------------
+[문항 099] 예시 9. 그래프 파일 여러 개 저장
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+for name, data in {'a':[1,2,3], 'b':[3,2,1]}.items():
+    plt.figure()
+    plt.plot(data)
+    plt.savefig(f'{name}.png')
+    plt.close()
+print('2개 저장')
+
+[학생 답안]
+
+
+
+[정답]
+2개 저장
+
+------------------------------------------------------------
+[문항 100] 예시 10. 종합 분석 그래프
+------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 2)
+axes[0].bar(['A','B'], [10,15])
+axes[1].plot([1,2,3], [2,4,6])
+fig.savefig('summary_matplotlib.png')
+print(len(fig.axes))
+plt.close(fig)
+
+[학생 답안]
+
+
+
+[정답]
+2
+
+------------------------------------------------------------
